@@ -4,6 +4,9 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+if (Get-Variable -Name PSNativeCommandUseErrorActionPreference -ErrorAction SilentlyContinue) {
+    $PSNativeCommandUseErrorActionPreference = $false
+}
 
 function Has-Command($Name) {
     return $null -ne (Get-Command $Name -ErrorAction SilentlyContinue)
@@ -47,8 +50,13 @@ try {
         git commit -m "Initial LinguaFlow app"
     }
 
+    $repoExists = $false
     gh repo view $fullName *> $null
-    if ($LASTEXITCODE -ne 0) {
+    if ($LASTEXITCODE -eq 0) {
+        $repoExists = $true
+    }
+
+    if (-not $repoExists) {
         gh repo create $RepoName $visibility --source . --remote origin --push
     } else {
         git remote remove origin 2>$null
@@ -66,8 +74,13 @@ try {
     $tempFile = New-TemporaryFile
     Set-Content -LiteralPath $tempFile -Value $body -Encoding UTF8
 
+    $pagesEnabled = $false
     gh api --method POST "/repos/$fullName/pages" --input $tempFile *> $null
-    if ($LASTEXITCODE -ne 0) {
+    if ($LASTEXITCODE -eq 0) {
+        $pagesEnabled = $true
+    }
+
+    if (-not $pagesEnabled) {
         gh api --method PUT "/repos/$fullName/pages" --input $tempFile *> $null
     }
 
