@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f766e" />
+    <title>LinguaFlow 英语学习</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="主导航">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">LF</div>
+          <div>
+            <strong>LinguaFlow</strong>
+            <span>英语学习</span>
+          </div>
+        </div>
+        <nav class="side-nav">
+          <button class="nav-item active" data-view="dashboard" type="button">
+            <span class="icon" aria-hidden="true">⌂</span>
+            <span>首页</span>
+          </button>
+          <button class="nav-item" data-view="vocabulary" type="button">
+            <span class="icon" aria-hidden="true">A</span>
+            <span>单词</span>
+          </button>
+          <button class="nav-item" data-view="listening" type="button">
+            <span class="icon" aria-hidden="true">♪</span>
+            <span>听力</span>
+          </button>
+          <button class="nav-item" data-view="reading" type="button">
+            <span class="icon" aria-hidden="true">¶</span>
+            <span>阅读</span>
+          </button>
+          <button class="nav-item" data-view="speaking" type="button">
+            <span class="icon" aria-hidden="true">◉</span>
+            <span>口语</span>
+          </button>
+        </nav>
+        <div class="streak-panel">
+          <span>连续学习</span>
+          <strong id="streakDays">1 天</strong>
+          <div class="mini-progress" aria-hidden="true"><span id="streakBar"></span></div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p id="todayLabel"></p>
+            <h1 id="viewTitle">今日学习</h1>
+          </div>
+          <div class="top-actions">
+            <button class="icon-button" id="resetDayButton" type="button" title="重置今日进度" aria-label="重置今日进度">
+              ↺
+            </button>
+            <button class="primary-button" id="completeTaskButton" type="button">完成一项</button>
+          </div>
+        </header>
+
+        <section class="view active" id="dashboard" aria-label="今日学习">
+          <div class="metrics-grid">
+            <article class="metric-card">
+              <span>今日分钟</span>
+              <strong id="minutesMetric">0</strong>
+              <small>目标 30 分钟</small>
+            </article>
+            <article class="metric-card">
+              <span>已学单词</span>
+              <strong id="wordsMetric">0</strong>
+              <small>目标 20 个</small>
+            </article>
+            <article class="metric-card">
+              <span>练习正确率</span>
+              <strong id="accuracyMetric">0%</strong>
+              <small>近 10 题</small>
+            </article>
+            <article class="metric-card">
+              <span>当前等级</span>
+              <strong id="levelMetric">A1</strong>
+              <small>入门到进阶</small>
+            </article>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel today-plan">
+              <div class="section-heading">
+                <h2>今日计划</h2>
+                <span id="planDoneLabel">0/4</span>
+              </div>
+              <div class="task-list" id="taskList"></div>
+            </section>
+
+            <section class="panel">
+              <div class="section-heading">
+                <h2>快速练习</h2>
+                <span id="quizScoreLabel">0 分</span>
+              </div>
+              <div class="quiz-box">
+                <p class="eyebrow">选择正确释义</p>
+                <h3 id="quizWord">focus</h3>
+                <div class="choice-list" id="choiceList"></div>
+                <p class="feedback" id="quizFeedback" aria-live="polite"></p>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="vocabulary" aria-label="单词学习">
+          <div class="learn-layout">
+            <section class="flashcard">
+              <div class="flashcard-top">
+                <span id="cardLevel">A1</span>
+                <button class="icon-button" id="speakWordButton" type="button" title="朗读单词" aria-label="朗读单词">♪</button>
+              </div>
+              <h2 id="cardWord">focus</h2>
+              <p id="cardPhonetic">/ˈfəʊkəs/</p>
+              <p id="cardMeaning">专注；焦点</p>
+              <p id="cardExample">I need to focus on my English lesson.</p>
+              <div class="card-actions">
+                <button class="secondary-button" id="prevCardButton" type="button">上一个</button>
+                <button class="primary-button" id="knowCardButton" type="button">认识</button>
+                <button class="secondary-button" id="nextCardButton" type="button">下一个</button>
+              </div>
+            </section>
+            <section class="panel word-bank">
+              <div class="section-heading">
+                <h2>词库</h2>
+                <span id="knownWordsLabel">0 已掌握</span>
+              </div>
+              <div id="wordBankList" class="word-bank-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="listening" aria-label="听力训练">
+          <div class="content-grid">
+            <section class="panel listening-panel">
+              <div class="section-heading">
+                <h2>听写训练</h2>
+                <button class="icon-button" id="playListeningButton" type="button" title="播放句子" aria-label="播放句子">▶</button>
+              </div>
+              <p class="listening-text" id="listeningPrompt">Every small step builds a strong habit.</p>
+              <label class="input-label" for="dictationInput">听到的句子</label>
+              <textarea id="dictationInput" rows="4" placeholder="输入英文句子"></textarea>
+              <div class="inline-actions">
+                <button class="primary-button" id="checkDictationButton" type="button">检查</button>
+                <button class="secondary-button" id="nextListeningButton" type="button">下一句</button>
+              </div>
+              <p class="feedback" id="dictationFeedback" aria-live="polite"></p>
+            </section>
+            <section class="panel">
+              <div class="section-heading">
+                <h2>听力素材</h2>
+                <span>短句</span>
+              </div>
+              <div class="resource-list" id="listeningList"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="reading" aria-label="阅读理解">
+          <div class="content-grid">
+            <article class="panel reading-card">
+              <div class="section-heading">
+                <h2>短文阅读</h2>
+                <span>3 分钟</span>
+              </div>
+              <h3>Building an English Habit</h3>
+              <p>
+                Learning English becomes easier when practice is small and regular. Read one short
+                text, listen to one clear sentence, and speak for one minute every day. Progress
+                grows from repeatable actions.
+              </p>
+              <div class="reading-question">
+                <strong>What helps English learning become easier?</strong>
+                <div class="choice-list" id="readingChoices"></div>
+                <p class="feedback" id="readingFeedback" aria-live="polite"></p>
+              </div>
+            </article>
+            <section class="panel">
+              <div class="section-heading">
+                <h2>生词摘录</h2>
+                <span>自动保存</span>
+              </div>
+              <div class="note-form">
+                <input id="noteInput" type="text" placeholder="输入生词或短语" />
+                <button class="primary-button" id="addNoteButton" type="button">添加</button>
+              </div>
+              <div class="note-list" id="noteList"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="speaking" aria-label="口语训练">
+          <div class="content-grid">
+            <section class="panel speaking-panel">
+              <div class="section-heading">
+                <h2>跟读训练</h2>
+                <button class="icon-button" id="playSpeakingButton" type="button" title="播放示范" aria-label="播放示范">▶</button>
+              </div>
+              <p class="speaking-line" id="speakingLine">Could you say that again more slowly?</p>
+              <div class="recorder">
+                <button class="record-button" id="recordButton" type="button" aria-label="开始口语练习">
+                  <span></span>
+                </button>
+                <div>
+                  <strong id="recordStatus">准备练习</strong>
+                  <p id="recordTimer">00:00</p>
+                </div>
+              </div>
+              <p class="feedback" id="speakingFeedback" aria-live="polite"></p>
+            </section>
+            <section class="panel">
+              <div class="section-heading">
+                <h2>场景表达</h2>
+                <span>日常</span>
+              </div>
+              <div class="phrase-list" id="phraseList"></div>
+            </section>
+          </div>
+        </section>
+      </main>
+
+      <nav class="mobile-nav" aria-label="底部导航">
+        <button class="mobile-nav-item active" data-view="dashboard" type="button">⌂<span>首页</span></button>
+        <button class="mobile-nav-item" data-view="vocabulary" type="button">A<span>单词</span></button>
+        <button class="mobile-nav-item" data-view="listening" type="button">♪<span>听力</span></button>
+        <button class="mobile-nav-item" data-view="reading" type="button">¶<span>阅读</span></button>
+        <button class="mobile-nav-item" data-view="speaking" type="button">◉<span>口语</span></button>
+      </nav>
+    </div>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>

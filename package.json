@@ -1,0 +1,12 @@
+{
+  "name": "linguaflow-english-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "check": "node --check app.js && node --check sw.js && node --check server.mjs && node --check scripts/smoke-test.mjs && node --check scripts/sync-android-assets.mjs",
+    "smoke": "node scripts/smoke-test.mjs",
+    "android:sync": "node scripts/sync-android-assets.mjs"
+  }
+}

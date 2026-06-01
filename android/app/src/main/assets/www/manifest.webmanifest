@@ -1,0 +1,17 @@
+{
+  "name": "LinguaFlow 英语学习",
+  "short_name": "LinguaFlow",
+  "description": "网页版和手机端都可用的英语学习应用",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f4f7f6",
+  "theme_color": "#0f766e",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
