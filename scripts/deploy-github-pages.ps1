@@ -12,6 +12,18 @@ function Has-Command($Name) {
     return $null -ne (Get-Command $Name -ErrorAction SilentlyContinue)
 }
 
+function Invoke-QuietNative($Command) {
+    $previousPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        & $Command *> $null
+        return $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $previousPreference
+    }
+}
+
 if (-not (Has-Command "gh")) {
     throw "GitHub CLI is not installed. Install it from https://cli.github.com/ and run this script again."
 }
@@ -22,8 +34,7 @@ if (-not (Has-Command "git")) {
 
 Push-Location (Split-Path -Parent $PSScriptRoot)
 try {
-    gh auth status *> $null
-    if ($LASTEXITCODE -ne 0) {
+    if ((Invoke-QuietNative { gh auth status }) -ne 0) {
         gh auth login --hostname github.com --web --git-protocol https
     }
 
@@ -51,8 +62,7 @@ try {
     }
 
     $repoExists = $false
-    gh repo view $fullName *> $null
-    if ($LASTEXITCODE -eq 0) {
+    if ((Invoke-QuietNative { gh repo view $fullName }) -eq 0) {
         $repoExists = $true
     }
 
@@ -75,8 +85,7 @@ try {
     Set-Content -LiteralPath $tempFile -Value $body -Encoding UTF8
 
     $pagesEnabled = $false
-    gh api --method POST "/repos/$fullName/pages" --input $tempFile *> $null
-    if ($LASTEXITCODE -eq 0) {
+    if ((Invoke-QuietNative { gh api --method POST "/repos/$fullName/pages" --input $tempFile }) -eq 0) {
         $pagesEnabled = $true
     }
 
