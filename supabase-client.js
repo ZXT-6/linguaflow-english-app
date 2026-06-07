@@ -1,16 +1,29 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
 const SUPABASE_URL = window.__LINGUAFLOW_SUPABASE_URL__ || "";
 const SUPABASE_ANON_KEY = window.__LINGUAFLOW_SUPABASE_ANON_KEY__ || "";
+const SUPABASE_CDN = "https://esm.sh/@supabase/supabase-js@2";
 
 let _client = null;
+let _loadError = null;
 
-export function getSupabase() {
+async function loadSupabaseSDK() {
+  try {
+    return await import(SUPABASE_CDN);
+  } catch (e) {
+    _loadError = e;
+    return null;
+  }
+}
+
+export async function getSupabase() {
   if (!_client) {
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
       throw new Error("Supabase 未配置。请在 index.html 中设置 __LINGUAFLOW_SUPABASE_URL__ 和 __LINGUAFLOW_SUPABASE_ANON_KEY__。");
     }
-    _client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const sdk = await loadSupabaseSDK();
+    if (!sdk) {
+      throw new Error(_loadError?.message || "Supabase SDK 加载失败");
+    }
+    _client = sdk.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   }
   return _client;
 }
