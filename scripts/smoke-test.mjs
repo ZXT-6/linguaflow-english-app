@@ -51,13 +51,38 @@ async function expectAsset(path, expectedText) {
   }
 }
 
+async function expectContentType(path, expectedText) {
+  const response = await fetch(`${baseUrl}${path}`);
+  const contentType = response.headers.get("content-type") || "";
+  if (!contentType.includes(expectedText)) {
+    throw new Error(`${path} content type was ${contentType}, expected ${expectedText}`);
+  }
+}
+
 try {
   await waitForServer();
   await expectAsset("/", "LinguaFlow");
+  await expectAsset("/", "dailyPathList");
+  await expectAsset("/", "syncStatusLabel");
+  await expectAsset("/", "reviewQueueList");
+  await expectAsset("/", "desktopCalendar");
+  await expectAsset("/", "mistakeList");
+  await expectAsset("/", "profileStats");
   await expectAsset("/app.js", "const STORAGE_KEY");
+  await expectAsset("/app.js", "renderMistakes");
+  await expectAsset("/supabase-client.js", "getSupabase");
+  await expectAsset("/daily-path-core.mjs", "advanceDailyPath");
+  await expectAsset("/learning-core.mjs", "updateWordProgress");
+  await expectAsset("/sync-client.mjs", "loadRemoteState");
+  await expectAsset("/sync-core.mjs", "mergeOrDetectConflict");
+  await expectContentType("/learning-core.mjs", "text/javascript");
+  await expectContentType("/sync-client.mjs", "text/javascript");
   await expectAsset("/styles.css", ".mobile-nav");
+  await expectAsset("/styles.css", ".dashboard-layout");
   await expectAsset("/manifest.webmanifest", "standalone");
   await expectAsset("/icons/icon.svg", "<svg");
+  await expectAsset("/assets/learner-hero.svg", "<svg");
+  await expectAsset("/assets/learner-avatar.svg", "<svg");
   console.log("Smoke test passed");
 } finally {
   server.kill();

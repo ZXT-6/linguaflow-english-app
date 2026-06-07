@@ -5,8 +5,20 @@
   "type": "module",
   "scripts": {
     "dev": "node server.mjs",
-    "check": "node --check app.js && node --check sw.js && node --check server.mjs && node --check scripts/smoke-test.mjs && node --check scripts/sync-android-assets.mjs",
+    "build": "node scripts/build-static.mjs",
+    "check": "node --check app.js && node --check daily-path-core.mjs && node --check learning-core.mjs && node --check sync-client.mjs && node --check sync-core.mjs && node --check sw.js && node --check server.mjs && node --check netlify/functions/auth.mjs && node --check netlify/functions/admin.mjs && node --check netlify/functions/learning-state.mjs && node --check scripts/build-static.mjs && node --check scripts/build-static-test.mjs && node --check scripts/daily-path-core-test.mjs && node --check scripts/learning-core-test.mjs && node --check scripts/netlify-config-test.mjs && node --check scripts/netlify-function-test.mjs && node --check scripts/service-worker-test.mjs && node --check scripts/smoke-test.mjs && node --check scripts/sync-core-test.mjs && node --check scripts/sync-android-assets.mjs && node --check scripts/ui-contract-test.mjs",
+    "test": "node scripts/learning-core-test.mjs && node scripts/daily-path-core-test.mjs && node scripts/sync-core-test.mjs && node scripts/build-static-test.mjs && node scripts/netlify-config-test.mjs && node scripts/netlify-function-test.mjs && node scripts/service-worker-test.mjs && node scripts/ui-contract-test.mjs",
     "smoke": "node scripts/smoke-test.mjs",
-    "android:sync": "node scripts/sync-android-assets.mjs"
+    "android:sync": "node scripts/sync-android-assets.mjs",
+    "vocab:import": "node scripts/import-kylebing-vocab.mjs",
+    "db:seed": "node scripts/seed-supabase.mjs",
+    "db:setup": "npm run vocab:import && npm run db:seed"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^10.0.11",
+    "@supabase/supabase-js": "^2.49.4"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^4.2.5"
   }
 }

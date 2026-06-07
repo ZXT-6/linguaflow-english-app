@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 140" role="img" aria-labelledby="title desc">
+  <title id="title">Empty review</title>
+  <desc id="desc">Review notebook, coffee beans and pen line illustration.</desc>
+  <rect width="180" height="140" rx="22" fill="#fffaf2"/>
+  <g fill="none" stroke="#6f4e37" stroke-linecap="round" stroke-linejoin="round" stroke-width="4">
+    <path d="M48 33h67a15 15 0 0 1 15 15v58H48z"/>
+    <path d="M48 48h82"/>
+    <path d="M67 68h42M67 86h34"/>
+    <path d="M41 43v63"/>
+    <path d="M122 83l22-22 10 10-22 22-15 5z"/>
+    <path d="M142 61l8-8"/>
+    <path d="M58 116h78"/>
+    <path d="M45 23c7-7 15-6 21 1"/>
+  </g>
+  <g fill="#b8764d" opacity=".22">
+    <ellipse cx="142" cy="34" rx="6" ry="9" transform="rotate(32 142 34)"/>
+    <ellipse cx="155" cy="43" rx="5" ry="8" transform="rotate(32 155 43)"/>
+  </g>
+</svg>

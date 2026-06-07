@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 140" role="img" aria-labelledby="title desc">
+  <title id="title">Empty bookmark</title>
+  <desc id="desc">Bookmark and dictionary line illustration for empty favorites.</desc>
+  <rect width="180" height="140" rx="22" fill="#fffaf2"/>
+  <g fill="none" stroke="#6f4e37" stroke-linecap="round" stroke-linejoin="round" stroke-width="4">
+    <path d="M45 36h72a16 16 0 0 1 16 16v55H61a16 16 0 0 1-16-16z"/>
+    <path d="M61 52h56M61 69h39"/>
+    <path d="M118 28v54l14-10 14 10V28z"/>
+    <path d="M49 107c9 8 20 10 34 8h50"/>
+  </g>
+  <circle cx="39" cy="31" r="6" fill="#b8764d" opacity=".2"/>
+</svg>

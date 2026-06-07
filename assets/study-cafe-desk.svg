@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260" role="img" aria-labelledby="title desc">
+  <title id="title">Study cafe desk</title>
+  <desc id="desc">Minimal coffee, open book, notebook and pen line illustration.</desc>
+  <rect width="360" height="260" rx="28" fill="#fffaf2"/>
+  <g fill="none" stroke="#6f4e37" stroke-linecap="round" stroke-linejoin="round" stroke-width="4">
+    <path d="M62 191h236"/>
+    <path d="M86 73c31-14 58-8 84 13v93c-27-20-56-26-84-13z"/>
+    <path d="M170 86c27-21 56-27 84-13v93c-28-13-57-7-84 13z"/>
+    <path d="M170 86v93"/>
+    <path d="M104 99c15-4 30-2 45 6M104 122c15-4 30-2 45 6M190 105c15-8 30-10 45-6M190 128c15-8 30-10 45-6"/>
+    <path d="M260 113h41v33a21 21 0 0 1-21 21h-1a19 19 0 0 1-19-19z"/>
+    <path d="M301 124h9a13 13 0 0 1 0 26h-9"/>
+    <path d="M270 89c0 8-7 9-7 17M285 84c0 8-7 9-7 17"/>
+    <path d="M67 165l45-45 15 15-45 45-22 7z"/>
+    <path d="M112 120l12-12"/>
+    <path d="M91 54h59"/>
+    <path d="M102 42h36"/>
+  </g>
+  <g fill="#b8764d" opacity=".18">
+    <circle cx="294" cy="62" r="9"/>
+    <circle cx="315" cy="74" r="6"/>
+    <circle cx="52" cy="74" r="7"/>
+  </g>
+</svg>

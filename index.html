@@ -3,13 +3,106 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0f766e" />
+    <meta name="theme-color" content="#f7f3eb" />
     <title>LinguaFlow 英语学习</title>
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="stylesheet" href="./styles.css" />
+    <script>
+      window.__LINGUAFLOW_SUPABASE_URL__ = "https://YOUR_PROJECT_ID.supabase.co";
+      window.__LINGUAFLOW_SUPABASE_ANON_KEY__ = "YOUR_ANON_KEY";
+    </script>
   </head>
   <body>
-    <div class="app-shell">
+    <section class="auth-shell" aria-label="登录入口">
+      <div class="auth-view" id="auth">
+        <div class="auth-hero auth-cafe-panel">
+          <div class="auth-brand" aria-label="LinguaFlow 英语学习">
+            <span class="auth-brand-mark" aria-hidden="true">LF</span>
+            <span class="auth-brand-copy">
+              <strong>LinguaFlow</strong>
+              <small>英语学习</small>
+            </span>
+          </div>
+          <h1>先登录，再开始今天的学习</h1>
+          <p>把每天的单词、练习和错题记录保留下来，让学习进度一直跟着你。</p>
+          <figure class="auth-cafe-illustration" aria-label="Study Café 产品介绍插画">
+            <img src="./assets/study-cafe-desk.svg" alt="咖啡馆学习桌面线稿插画" />
+            <figcaption>
+              <strong>Study Café learning flow</strong>
+              <span>单词、练习、听写、复习，每天一条清晰路径。</span>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="auth-layout">
+          <section class="panel auth-panel">
+            <div class="section-heading">
+              <h2>账号登录</h2>
+              <span id="authModeLabel">邮箱注册</span>
+            </div>
+            <div class="segmented-control">
+              <button class="segment-button" data-auth-mode="login" type="button">登录</button>
+              <button class="segment-button active" data-auth-mode="register" type="button">注册</button>
+            </div>
+            <form id="authForm" class="auth-form">
+              <div class="auth-field" data-auth-field="register" hidden>
+                <label class="input-label" for="authEmailInput">邮箱</label>
+                <input id="authEmailInput" type="email" placeholder="输入邮箱" autocomplete="email" />
+              </div>
+              <div class="auth-field" data-auth-field="both">
+                <label class="input-label" for="authUsernameInput">用户名</label>
+                <input id="authUsernameInput" type="text" placeholder="输入用户名" autocomplete="username" required />
+              </div>
+              <div class="auth-field" data-auth-field="both">
+                <label class="input-label" for="authPasswordInput">密码</label>
+                <input id="authPasswordInput" type="password" placeholder="输入密码" autocomplete="current-password" required />
+              </div>
+              <div class="auth-field" data-auth-field="register" hidden>
+                <label class="input-label" for="authCodeInput">验证码</label>
+                <div class="code-row">
+                  <input id="authCodeInput" type="text" inputmode="numeric" maxlength="6" placeholder="邮箱验证码" />
+                  <button class="secondary-button" id="sendCodeButton" type="button">发送验证码</button>
+                </div>
+              </div>
+              <button class="primary-button" type="submit">继续</button>
+              <p class="feedback" id="authFeedback" aria-live="polite"></p>
+              <div class="auth-links">
+                <button class="text-button" id="forgotPasswordLink" type="button">忘记密码？</button>
+              </div>
+            </form>
+            <form id="resetPasswordForm" class="auth-form" hidden>
+              <div class="section-heading">
+                <h3>重置密码</h3>
+                <span id="resetModeLabel">输入邮箱获取验证码</span>
+              </div>
+              <div class="auth-field">
+                <label class="input-label" for="resetEmailInput">邮箱</label>
+                <input id="resetEmailInput" type="email" placeholder="输入注册邮箱" autocomplete="email" required />
+              </div>
+              <div class="auth-field" id="resetCodeField">
+                <label class="input-label" for="resetCodeInput">验证码</label>
+                <div class="code-row">
+                  <input id="resetCodeInput" type="text" inputmode="numeric" maxlength="6" placeholder="6位验证码" />
+                  <button class="secondary-button" id="sendResetCodeButton" type="button">发送验证码</button>
+                </div>
+              </div>
+              <div class="auth-field" id="resetPasswordField">
+                <label class="input-label" for="resetNewPasswordInput">新密码</label>
+                <input id="resetNewPasswordInput" type="password" placeholder="输入新密码（至少6位）" autocomplete="new-password" required />
+              </div>
+              <button class="primary-button" type="submit">重置密码</button>
+              <p class="feedback" id="resetFeedback" aria-live="polite"></p>
+              <button class="text-button" id="backToLoginLink" type="button">返回登录</button>
+            </form>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <div class="app-shell" hidden>
+      <div class="app-status" id="appStatus" role="status" aria-live="polite" hidden>
+        <span class="status-spinner" aria-hidden="true"></span>
+        <span id="appStatusText">正在同步学习数据</span>
+      </div>
       <aside class="sidebar" aria-label="主导航">
         <div class="brand">
           <div class="brand-mark" aria-hidden="true">LF</div>
@@ -19,31 +112,70 @@
           </div>
         </div>
         <nav class="side-nav">
-          <button class="nav-item active" data-view="dashboard" type="button">
-            <span class="icon" aria-hidden="true">⌂</span>
-            <span>首页</span>
-          </button>
-          <button class="nav-item" data-view="vocabulary" type="button">
-            <span class="icon" aria-hidden="true">A</span>
-            <span>单词</span>
-          </button>
-          <button class="nav-item" data-view="listening" type="button">
-            <span class="icon" aria-hidden="true">♪</span>
-            <span>听力</span>
-          </button>
-          <button class="nav-item" data-view="reading" type="button">
-            <span class="icon" aria-hidden="true">¶</span>
-            <span>阅读</span>
-          </button>
-          <button class="nav-item" data-view="speaking" type="button">
-            <span class="icon" aria-hidden="true">◉</span>
-            <span>口语</span>
-          </button>
+          <div class="side-nav-main">
+            <button class="nav-item active" data-view="dashboard" type="button">
+              <span class="icon" aria-hidden="true"><img class="nav-icon-image" src="./assets/nav-home-a.svg" alt="" /></span>
+              <span>首页</span>
+            </button>
+            <button class="nav-item" data-view="vocabulary" type="button">
+              <span class="icon" aria-hidden="true"><img class="nav-icon-image" src="./assets/nav-vocab-b.svg" alt="" /></span>
+              <span>单词学习</span>
+            </button>
+            <button class="nav-item" data-view="practice" type="button">
+              <span class="icon" aria-hidden="true"><img class="nav-icon-image" src="./assets/nav-practice-c.svg" alt="" /></span>
+              <span>练习测试</span>
+            </button>
+            <button class="nav-item" data-view="listening" type="button">
+              <span class="icon" aria-hidden="true">听</span>
+              <span>听写训练</span>
+            </button>
+            <button class="nav-item" data-view="reading" type="button">
+              <span class="icon" aria-hidden="true">读</span>
+              <span>阅读训练</span>
+            </button>
+            <button class="nav-item" data-view="speaking" type="button">
+              <span class="icon" aria-hidden="true">说</span>
+              <span>跟读训练</span>
+            </button>
+            <button class="nav-item" data-view="mistakes" type="button">
+              <span class="icon" aria-hidden="true"><img class="nav-icon-image" src="./assets/nav-mistakes-a.svg" alt="" /></span>
+              <span>复习中心</span>
+            </button>
+            <button class="nav-item" data-view="favorites" type="button">
+              <span class="icon" aria-hidden="true">☆</span>
+              <span>收藏夹</span>
+            </button>
+            <button class="nav-item" data-view="library" type="button">
+              <span class="icon" aria-hidden="true">库</span>
+              <span>词库</span>
+            </button>
+            <button class="nav-item admin-entry" id="adminNavButton" data-view="admin" type="button" hidden>
+              <span class="icon" aria-hidden="true">管</span>
+              <span>后台管理</span>
+            </button>
+          </div>
+          <div class="side-nav-bottom">
+            <button class="nav-item" data-view="profile" type="button">
+              <span class="icon" aria-hidden="true"><img class="nav-icon-image" src="./assets/nav-profile-a.svg" alt="" /></span>
+              <span>我的</span>
+            </button>
+            <button class="nav-item" data-view="settings" type="button">
+              <span class="icon" aria-hidden="true">设</span>
+              <span>设置</span>
+            </button>
+          </div>
         </nav>
         <div class="streak-panel">
           <span>连续学习</span>
           <strong id="streakDays">1 天</strong>
           <div class="mini-progress" aria-hidden="true"><span id="streakBar"></span></div>
+          <div class="check-in-popover" aria-label="打卡日历">
+            <div class="check-in-popover-head">
+              <strong>本月打卡</strong>
+              <span id="checkInStatusLabel">今天未打卡</span>
+            </div>
+            <div class="check-in-calendar" id="checkInCalendar"></div>
+          </div>
         </div>
       </aside>
 
@@ -54,96 +186,438 @@
             <h1 id="viewTitle">今日学习</h1>
           </div>
           <div class="top-actions">
-            <button class="icon-button" id="resetDayButton" type="button" title="重置今日进度" aria-label="重置今日进度">
-              ↺
+            <button class="account-button" id="authButton" type="button">
+              <span class="account-avatar" id="authButtonAvatar" aria-hidden="true">LF</span>
+              <span class="account-copy">
+                <span class="account-nickname" id="authButtonNickname">登录/注册</span>
+              </span>
             </button>
-            <button class="primary-button" id="completeTaskButton" type="button">完成一项</button>
+            <button class="icon-button" id="settingsButton" type="button" title="设置" aria-label="设置">⚙</button>
+            <button class="primary-button" id="checkInButton" type="button">每日打卡</button>
+            <span class="check-in-feedback" id="checkInFeedback" role="status" aria-live="polite" hidden>打卡成功</span>
           </div>
         </header>
 
         <section class="view active" id="dashboard" aria-label="今日学习">
-          <div class="metrics-grid">
-            <article class="metric-card">
-              <span>今日分钟</span>
-              <strong id="minutesMetric">0</strong>
-              <small>目标 30 分钟</small>
-            </article>
-            <article class="metric-card">
-              <span>已学单词</span>
-              <strong id="wordsMetric">0</strong>
-              <small>目标 20 个</small>
-            </article>
-            <article class="metric-card">
-              <span>练习正确率</span>
-              <strong id="accuracyMetric">0%</strong>
-              <small>近 10 题</small>
-            </article>
-            <article class="metric-card">
-              <span>当前等级</span>
-              <strong id="levelMetric">A1</strong>
-              <small>入门到进阶</small>
-            </article>
+          <div class="dashboard-layout">
+            <div class="dashboard-main">
+              <section class="hero-panel">
+                <div class="editorial-intro">
+                  <span class="eyebrow">今天的学习场景</span>
+                  <h2>进入今天的英语场景</h2>
+                  <p>从单词、听力到一句对话，完成一个安静的每日学习闭环。</p>
+                </div>
+                <div class="hero-actions">
+                  <form class="home-word-search" id="homeWordSearchForm" role="search">
+                    <input id="homeWordSearchInput" type="search" placeholder="搜索当前词书单词" autocomplete="off" />
+                    <button class="primary-button" id="homeWordSearchButton" type="submit">搜索</button>
+                  </form>
+                  <button class="secondary-button" type="button" data-view="library">进入词库</button>
+                </div>
+                <figure class="hero-illustration" aria-label="Study Café 学习桌面插画">
+                  <img src="./assets/study-cafe-desk.svg" alt="咖啡杯、打开的书本、笔记本和羽毛笔线稿插画" />
+                </figure>
+              </section>
+
+              <section class="dashboard-command-card cafe-line-decor" aria-label="今日继续学习">
+                <div class="command-copy">
+                  <span class="study-cafe-badge">Study Café</span>
+                  <h2>今天从这里继续</h2>
+                  <p id="dashboardTaskSummary">完成 3/4 个任务，再用 10 分钟把错题收尾。</p>
+                </div>
+                <div class="command-progress">
+                  <div class="progress-ring cafe-ring" aria-hidden="true"><strong id="dashboardCommandPercent">0%</strong></div>
+                  <button class="primary-button" id="continueDailyPathButton" data-continue-path type="button">继续学习</button>
+                </div>
+              </section>
+
+              <section class="dashboard-entry-grid" aria-label="主要学习入口">
+                <button class="dashboard-entry-card" data-view="vocabulary" type="button">
+                  <span>Words</span>
+                  <strong>单词学习</strong>
+                  <small>记忆、释义、例句</small>
+                </button>
+                <button class="dashboard-entry-card" data-view="practice" type="button">
+                  <span>Quiz</span>
+                  <strong>练习测试</strong>
+                  <small>选择、拼写、听力</small>
+                </button>
+                <button class="dashboard-entry-card" data-view="listening" type="button">
+                  <span>Dictation</span>
+                  <strong>听写训练</strong>
+                  <small>听句子并写下来</small>
+                </button>
+                <button class="dashboard-entry-card" data-view="mistakes" type="button">
+                  <span>Review</span>
+                  <strong>错题复习</strong>
+                  <small>重新练习薄弱点</small>
+                </button>
+              </section>
+
+              <section class="panel word-book-panel compact-context-panel">
+                <div class="section-heading">
+                  <div>
+                    <span class="section-kicker">当前词书</span>
+                    <h2 id="activeBookLabel">普通学习</h2>
+                  </div>
+                  <span id="activeBookCount">0 个词</span>
+                </div>
+                <div class="word-book-list" id="wordBookList"></div>
+              </section>
+
+              <section class="panel today-plan subtle-path-panel">
+                <div class="section-heading">
+                  <div>
+                    <span class="section-kicker">今日路径</span>
+                    <h2>跟着场景往前走</h2>
+                  </div>
+                  <span id="planDoneLabel">0/4</span>
+                </div>
+                <div class="daily-path-list plan-cards" id="dailyPathList"></div>
+                <div class="task-list" id="taskList" hidden></div>
+              </section>
+
+              <section class="dashboard-insight-grid" aria-label="学习反馈">
+                <article class="panel weekly-trend-card">
+                  <div class="section-heading">
+                    <div>
+                      <span class="section-kicker">本周趋势</span>
+                      <h2>稳定一点点就很好</h2>
+                    </div>
+                    <span id="weeklyHoursMetric">8.5 小时</span>
+                  </div>
+                  <div class="mini-chart weekly-line-chart" id="weeklyChart" role="img" aria-label="最近7天学习时长折线图"></div>
+                </article>
+                <article class="panel dashboard-stats-card">
+                  <div class="section-heading">
+                    <div>
+                      <span class="section-kicker">学习数据</span>
+                      <h2>今天的反馈</h2>
+                    </div>
+                  </div>
+                  <div class="dashboard-learning-stats" id="dashboardLearningStats"></div>
+                </article>
+              </section>
+
+              <section class="dashboard-insight-grid compact" aria-label="最近学习">
+                <article class="panel recent-words-card">
+                  <div class="section-heading">
+                    <div>
+                      <span class="section-kicker">最近学习单词</span>
+                      <h2>刚接触过的词</h2>
+                    </div>
+                  </div>
+                  <div class="recent-words-list" id="recentWordsList"></div>
+                </article>
+              </section>
+
+              <section class="dashboard-support hidden-source" aria-hidden="true">
+                <div class="progress-ring" id="dashboardProgressRing"><strong id="dashboardProgressPercent">60%</strong></div>
+                <strong id="dashboardStreakDays">1 天</strong>
+                <strong id="wordsMetric">0</strong>
+                <strong id="minutesMetric">0</strong>
+                <strong id="accuracyMetric">0%</strong>
+                <strong id="levelMetric">基础阶段</strong>
+              </section>
+
+              <section class="learning-module-grid hidden-source" aria-hidden="true">
+                <article class="module-card blue" data-view="vocabulary">
+                  <span class="icon">A</span>
+                  <strong>单词学习</strong>
+                  <p>学习新单词，掌握发音和释义</p>
+                  <button class="secondary-button compact-button" type="button" data-view="vocabulary">开始学习</button>
+                </article>
+                <article class="module-card green" data-view="practice">
+                  <span class="icon">练</span>
+                  <strong>练习测试</strong>
+                  <p>多种题型，巩固所学知识</p>
+                  <button class="secondary-button compact-button" type="button" data-view="practice">开始练习</button>
+                </article>
+                <article class="module-card amber" data-view="mistakes">
+                  <span class="icon">错</span>
+                  <strong>错题本</strong>
+                  <p>查看错题，查漏补缺</p>
+                  <button class="secondary-button compact-button" type="button" data-view="mistakes">查看错题本</button>
+                </article>
+              </section>
+
+              <section class="recent-panel hidden-source" aria-hidden="true">
+                <span id="quizScoreLabel">0 分</span>
+                <div id="recentLearningList"></div>
+              </section>
+            </div>
+
+            <aside class="dashboard-aside hidden-source" aria-hidden="true">
+              <section class="calendar-panel">
+                <div class="calendar-grid" id="desktopCalendar"></div>
+              </section>
+              <section class="reminder-panel" id="reminderPanel">
+                <div class="reminder-list" id="desktopReminderList"></div>
+              </section>
+              <section class="chart-panel">
+                <strong id="legacyWeeklyHoursMetric">8.5 小时</strong>
+                <div class="mini-chart" id="legacyWeeklyChart"></div>
+              </section>
+              <section class="badges-panel">
+                <div class="badge-row" id="achievementBadges"></div>
+              </section>
+              <section class="sync-panel">
+                <span id="syncStatusLabel">离线可用</span>
+                <p class="sync-copy" id="syncDetailLabel">学习数据已保存在本机，登录后可同步到云端。</p>
+                <div class="sync-conflict-panel" id="syncConflictPanel" hidden>
+                  <strong>发现同步冲突</strong>
+                  <p>本地和云端都有新进度，请选择要保留的版本。</p>
+                  <div class="inline-actions">
+                    <button class="primary-button" data-sync-choice="local" type="button">使用本地</button>
+                    <button class="secondary-button" data-sync-choice="remote" type="button">使用云端</button>
+                    <button class="secondary-button" data-sync-choice="later" type="button">稍后处理</button>
+                  </div>
+                </div>
+              </section>
+            </aside>
           </div>
 
-          <div class="content-grid">
-            <section class="panel today-plan">
-              <div class="section-heading">
-                <h2>今日计划</h2>
-                <span id="planDoneLabel">0/4</span>
-              </div>
-              <div class="task-list" id="taskList"></div>
-            </section>
-
-            <section class="panel">
-              <div class="section-heading">
-                <h2>快速练习</h2>
-                <span id="quizScoreLabel">0 分</span>
-              </div>
-              <div class="quiz-box">
-                <p class="eyebrow">选择正确释义</p>
-                <h3 id="quizWord">focus</h3>
-                <div class="choice-list" id="choiceList"></div>
-                <p class="feedback" id="quizFeedback" aria-live="polite"></p>
-              </div>
-            </section>
+          <div class="quiz-box hidden-source" aria-hidden="true">
+            <span id="reviewQueueLabel">暂无复习</span>
+            <div id="reviewQueueList"></div>
+            <h3 id="quizWord">focus</h3>
+            <div class="choice-list" id="choiceList"></div>
+            <p class="feedback" id="quizFeedback" aria-live="polite"></p>
           </div>
         </section>
 
         <section class="view" id="vocabulary" aria-label="单词学习">
-          <div class="learn-layout">
+          <div class="learn-layout vocabulary-layout">
+            <aside class="vocabulary-atmosphere cafe-line-decor" aria-label="Study Café 单词学习氛围">
+              <img src="./assets/study-cafe-desk.svg" alt="咖啡、书本和笔记本学习桌面插画" />
+              <div>
+                <span class="study-cafe-badge">Word Session</span>
+                <h2>安静记一个词，再进入下一步</h2>
+                <p>读音、释义、例句放在同一张卡里，像翻学习手账一样轻量推进。</p>
+              </div>
+            </aside>
             <section class="flashcard">
               <div class="flashcard-top">
-                <span id="cardLevel">A1</span>
-                <button class="icon-button" id="speakWordButton" type="button" title="朗读单词" aria-label="朗读单词">♪</button>
+                <span id="cardLevel">基础词</span>
+                <div class="word-card-tools" aria-label="单词操作">
+                  <button class="secondary-button compact-button" id="speakCardButton" type="button">发音</button>
+                </div>
               </div>
-              <h2 id="cardWord">focus</h2>
+              <div class="word-display">
+                <h2 id="cardWord" class="clickable-word" role="button" tabindex="0" title="点击朗读" aria-label="点击朗读当前单词">focus</h2>
+              </div>
               <p id="cardPhonetic">/ˈfəʊkəs/</p>
               <p id="cardMeaning">专注；焦点</p>
               <p id="cardExample">I need to focus on my English lesson.</p>
-              <div class="card-actions">
+              <div class="vocab-action-row card-actions">
                 <button class="secondary-button" id="prevCardButton" type="button">上一个</button>
+                <button class="secondary-button confidence-button" id="unknownCardButton" type="button">不认识</button>
+                <button class="secondary-button confidence-button" id="fuzzyCardButton" type="button">模糊</button>
                 <button class="primary-button" id="knowCardButton" type="button">认识</button>
+                <button class="secondary-button favorite-card-button" id="favoriteCardButton" type="button" aria-label="收藏当前单词" title="收藏">☆</button>
                 <button class="secondary-button" id="nextCardButton" type="button">下一个</button>
               </div>
-            </section>
-            <section class="panel word-bank">
-              <div class="section-heading">
-                <h2>词库</h2>
-                <span id="knownWordsLabel">0 已掌握</span>
-              </div>
-              <div id="wordBankList" class="word-bank-list"></div>
             </section>
           </div>
         </section>
 
+        <section class="view" id="practice" aria-label="练习测试">
+          <div class="mobile-page-header">
+            <button class="icon-button" type="button" data-view="dashboard" aria-label="返回">‹</button>
+            <h2>练习测试</h2>
+          </div>
+          <div class="practice-tabs" role="tablist" aria-label="题型">
+            <button class="practice-tab active" type="button" data-practice-tab="choice">选择题</button>
+            <button class="practice-tab" type="button" data-practice-tab="spelling">拼写题</button>
+            <button class="practice-tab" type="button" data-practice-tab="listening">听力题</button>
+          </div>
+          <section class="panel practice-panel">
+            <span class="question-counter" id="practiceCounter">1/10</span>
+            <p class="eyebrow" id="practicePrompt">请选择下列单词的中文意思</p>
+            <div class="word-display practice-word-display">
+              <h2 id="practiceWord" class="clickable-word" role="button" tabindex="0" title="点击朗读" aria-label="点击朗读当前单词">beautiful</h2>
+            </div>
+            <button class="secondary-button practice-audio-button" id="playPracticeAudioButton" type="button" hidden>播放单词</button>
+            <form class="spelling-practice-form" id="spellingPracticeForm" hidden>
+              <label class="input-label" for="spellingAnswerInput">请输入对应英文</label>
+              <input id="spellingAnswerInput" type="text" autocomplete="off" spellcheck="false" placeholder="例如 focus" />
+              <button class="primary-button" id="submitSpellingAnswerButton" type="submit">提交答案</button>
+            </form>
+            <div class="choice-list practice-choice-list" id="practiceChoiceList"></div>
+            <p class="feedback" id="practiceFeedback" aria-live="polite"></p>
+            <div class="answer-explain-card" id="practiceExplainCard">
+              <strong>答题反馈</strong>
+              <p>选择答案后，这里会显示正确答案和复习建议。</p>
+            </div>
+            <button class="primary-button wide-button" id="nextPracticeButton" type="button">下一题</button>
+          </section>
+        </section>
+
+        <section class="view" id="mistakes" aria-label="复习中心">
+          <div class="mobile-page-header">
+            <button class="icon-button" type="button" data-view="dashboard" aria-label="返回">‹</button>
+            <h2>复习中心</h2>
+            <button class="text-button" type="button" id="editMistakesButton">编辑</button>
+          </div>
+          <section class="mistake-hero-panel cafe-line-decor">
+            <div>
+              <span class="study-cafe-badge">Review Center</span>
+              <h2>把错题变成下一次的熟练</h2>
+              <p>优先复习高频错误，完成后再回到今日任务。</p>
+            </div>
+            <button class="primary-button" type="button" data-view="practice">重新练习</button>
+          </section>
+          <div class="mistake-stats-grid" id="mistakeStatsGrid"></div>
+          <div class="practice-tabs" role="tablist" aria-label="错题筛选">
+            <button class="practice-tab active" type="button" data-mistake-filter="all">全部</button>
+            <button class="practice-tab" type="button" data-mistake-filter="word">单词</button>
+            <button class="practice-tab" type="button" data-mistake-filter="choice">选择题</button>
+            <button class="practice-tab" type="button" data-mistake-filter="spelling">拼写题</button>
+            <button class="practice-tab" type="button" data-mistake-filter="listening">听力题</button>
+          </div>
+          <section class="panel mistakes-panel">
+            <div class="mistake-list" id="mistakeList"></div>
+          </section>
+        </section>
+
+        <section class="view" id="profile" aria-label="我的">
+          <section class="profile-summary">
+            <div class="profile-summary-actions">
+              <button class="icon-button profile-back" type="button" data-view="dashboard" aria-label="返回">‹</button>
+              <button class="icon-button profile-edit" type="button" data-view="settings" aria-label="编辑资料">⚙</button>
+            </div>
+            <div class="profile-summary-main">
+              <div class="user-avatar profile-avatar-small" id="profileHeroAvatar" aria-label="学习者头像">LF</div>
+              <div>
+                <span class="section-kicker">学习档案</span>
+                <h2 id="profileHeroName">Language Learner</h2>
+                <p id="profileHeroDetail">登录后可同步学习记录，保留你的每日进度。</p>
+              </div>
+            </div>
+          </section>
+          <section class="panel profile-data-panel">
+            <div class="section-heading">
+              <h2>学习数据</h2>
+              <span id="profileAccuracyMetric">85%</span>
+            </div>
+            <div class="profile-stat-grid" id="profileStats"></div>
+          </section>
+          <section class="panel profile-menu-panel">
+            <div class="profile-section-group">
+              <div class="section-heading">
+                <h2>学习工具</h2>
+                <span>常用入口</span>
+              </div>
+              <div class="profile-menu-list">
+                <button class="profile-menu-item" type="button" data-view="practice"><span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/menu-plan-a.svg" alt="" /></span>学习计划</button>
+                <button class="profile-menu-item" type="button" data-view="library"><span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/menu-vocab-a.svg" alt="" /></span>生词本</button>
+                <button class="profile-menu-item" type="button" data-view="favorites"><span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/menu-favorites-d.svg" alt="" /></span>收藏夹</button>
+                <button class="profile-menu-item" type="button" data-view="mistakes"><span class="menu-icon" aria-hidden="true">错</span>复习提醒</button>
+              </div>
+            </div>
+            <div class="profile-section-group">
+              <div class="section-heading">
+                <h2>系统设置</h2>
+                <span>偏好与账号</span>
+              </div>
+              <div class="profile-menu-list">
+                <button class="profile-menu-item" type="button" data-view="settings"><span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/menu-settings-b.svg" alt="" /></span>每日目标与语言</button>
+                <button class="profile-menu-item admin-entry" id="profileAdminButton" type="button" data-view="admin" hidden><span class="menu-icon" aria-hidden="true">管</span>后台管理</button>
+                <button class="profile-menu-item" type="button" data-view="auth"><span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/menu-about-a.svg" alt="" /></span>关于我们</button>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="favorites" aria-label="收藏夹">
+          <div class="mobile-page-header">
+            <button class="icon-button" type="button" data-view="profile" aria-label="返回">‹</button>
+            <h2>收藏夹</h2>
+          </div>
+          <section class="panel favorites-panel">
+            <div class="section-heading">
+              <div>
+                <span class="section-kicker">收藏单词</span>
+                <h2>常看的单词放在这里</h2>
+              </div>
+              <span id="favoriteCountLabel">0 个</span>
+            </div>
+            <div class="favorite-list" id="favoriteList"></div>
+          </section>
+        </section>
+
+        <section class="view" id="library" aria-label="词库">
+          <div class="library-layout">
+            <section class="panel library-panel">
+              <div class="section-heading">
+                <h2 id="libraryTitle">全部词库</h2>
+                <span id="libraryCountLabel">0 个单词</span>
+                <button class="secondary-button compact-button" id="backToWordBookCatalogButton" type="button" hidden>词书目录</button>
+              </div>
+              <div class="library-toolbar">
+                <input id="librarySearchInput" type="search" placeholder="搜索英文或释义" />
+                <select id="libraryLevelFilter" aria-label="筛选词汇类型">
+                  <option value="all">全部类型</option>
+                  <option value="A1">基础词</option>
+                  <option value="A2">核心词</option>
+                  <option value="B1">进阶词</option>
+                  <option value="B2">高频词</option>
+                </select>
+              </div>
+              <div id="libraryList" class="library-list"></div>
+              <div class="library-pagination" id="libraryPagination">
+                <button class="secondary-button compact-button" id="prevLibraryPageButton" type="button">上一页</button>
+                <span id="libraryPageLabel">1/1</span>
+                <button class="secondary-button compact-button" id="nextLibraryPageButton" type="button">下一页</button>
+              </div>
+            </section>
+
+            <div class="library-side">
+              <section class="panel add-word-panel">
+                <div class="section-heading">
+                  <h2>添加单词</h2>
+                  <span>自定义</span>
+                </div>
+                <form id="addWordForm" class="add-word-form">
+                  <label class="input-label" for="newWordInput">英文单词</label>
+                  <input id="newWordInput" type="text" placeholder="例如：journey" autocomplete="off" required />
+                  <label class="input-label" for="newMeaningInput">中文释义</label>
+                  <input id="newMeaningInput" type="text" placeholder="例如：旅程" autocomplete="off" required />
+                  <label class="input-label" for="newExampleInput">例句</label>
+                  <textarea id="newExampleInput" rows="3" placeholder="例如：Every journey begins with one step."></textarea>
+                  <label class="input-label" for="newLevelSelect">词汇类型</label>
+                  <select id="newLevelSelect">
+                    <option value="A1">基础词</option>
+                    <option value="A2">核心词</option>
+                    <option value="B1">进阶词</option>
+                    <option value="B2">高频词</option>
+                  </select>
+                  <button class="primary-button" type="submit">添加到词库</button>
+                  <p class="feedback" id="addWordFeedback" aria-live="polite"></p>
+                </form>
+                <div class="bulk-import-box">
+                  <label class="input-label" for="bulkWordInput">批量导入当前词书</label>
+                  <textarea id="bulkWordInput" rows="5" placeholder="每行一个：word, 中文释义, example"></textarea>
+                  <button class="secondary-button" id="importWordBookButton" type="button">导入词库</button>
+                  <p class="feedback" id="bulkImportFeedback" aria-live="polite"></p>
+                </div>
+              </section>
+            </div>
+          </div>
+        </section>
         <section class="view" id="listening" aria-label="听力训练">
           <div class="content-grid">
             <section class="panel listening-panel">
               <div class="section-heading">
                 <h2>听写训练</h2>
-                <button class="icon-button" id="playListeningButton" type="button" title="播放句子" aria-label="播放句子">▶</button>
+                <button class="secondary-button compact-button" id="playListeningButton" type="button">播放</button>
               </div>
               <p class="listening-text" id="listeningPrompt">Every small step builds a strong habit.</p>
+              <div class="audio-study-bar" aria-hidden="true">
+                <span></span>
+                <div><i></i></div>
+                <em>短句听写</em>
+              </div>
               <label class="input-label" for="dictationInput">听到的句子</label>
               <textarea id="dictationInput" rows="4" placeholder="输入英文句子"></textarea>
               <div class="inline-actions">
@@ -169,14 +643,14 @@
                 <h2>短文阅读</h2>
                 <span>3 分钟</span>
               </div>
-              <h3>Building an English Habit</h3>
-              <p>
+              <h3 id="readingTitle">Building an English Habit</h3>
+              <p id="readingBody">
                 Learning English becomes easier when practice is small and regular. Read one short
                 text, listen to one clear sentence, and speak for one minute every day. Progress
                 grows from repeatable actions.
               </p>
               <div class="reading-question">
-                <strong>What helps English learning become easier?</strong>
+                <strong id="readingQuestion">What helps English learning become easier?</strong>
                 <div class="choice-list" id="readingChoices"></div>
                 <p class="feedback" id="readingFeedback" aria-live="polite"></p>
               </div>
@@ -200,7 +674,7 @@
             <section class="panel speaking-panel">
               <div class="section-heading">
                 <h2>跟读训练</h2>
-                <button class="icon-button" id="playSpeakingButton" type="button" title="播放示范" aria-label="播放示范">▶</button>
+                <button class="secondary-button compact-button" id="playSpeakingButton" type="button">播放</button>
               </div>
               <p class="speaking-line" id="speakingLine">Could you say that again more slowly?</p>
               <div class="recorder">
@@ -223,17 +697,130 @@
             </section>
           </div>
         </section>
+
+        <section class="view" id="settings" aria-label="设置">
+          <div class="settings-layout">
+            <section class="panel profile-panel">
+              <div class="section-heading">
+                <h2>用户资料</h2>
+                <span id="userStatusLabel">未登录</span>
+              </div>
+              <div class="profile-card">
+                <div class="avatar" id="profileAvatar">LF</div>
+                <div class="profile-card-copy">
+                  <span>昵称</span>
+                  <strong id="profileName">游客</strong>
+                  <p id="profileNicknameLabel">未设置昵称</p>
+                  <p id="profileAccountLabel">登录后同步学习资料</p>
+                </div>
+              </div>
+              <div class="profile-account-grid" aria-label="账号学习概况">
+                <article>
+                  <span>连续学习</span>
+                  <strong id="profileSettingStreak">1 天</strong>
+                </article>
+                <article>
+                  <span>收藏单词</span>
+                  <strong id="profileSettingFavorites">0 个</strong>
+                </article>
+              </div>
+              <div class="inline-actions">
+                <button class="primary-button" id="openAuthButton" type="button">登录 / 注册</button>
+                <button class="secondary-button" id="logoutButton" type="button" hidden>退出登录</button>
+              </div>
+            </section>
+            <section class="panel preferences-panel">
+              <div class="section-heading">
+                <h2>偏好设置</h2>
+                <span>本地设置</span>
+              </div>
+              <div class="settings-list">
+                <label class="setting-row"><span>学习语言</span><select id="targetLanguageSelect"><option value="en">英语</option><option value="ja">日语</option><option value="es">西班牙语</option></select></label>
+                <label class="setting-row"><span>每日目标</span><input id="dailyGoalInput" type="number" min="5" max="180" step="5" value="30" /></label>
+                <label class="setting-row"><span>自动朗读</span><input id="autoSpeakToggle" type="checkbox" /></label>
+                <label class="setting-row"><span>复习提醒</span><input id="reminderToggle" type="checkbox" /></label>
+              </div>
+              <p class="feedback" id="settingsFeedback" aria-live="polite"></p>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="admin" aria-label="后台管理">
+          <div class="settings-layout">
+            <section class="panel profile-panel">
+              <div class="section-heading">
+                <h2>后台概览</h2>
+                <span id="adminRoleLabel">需要管理员</span>
+              </div>
+              <div class="admin-metrics">
+                <article class="metric-card">
+                  <span>当前语言</span>
+                  <strong id="adminLanguageMetric">英语</strong>
+                  <small>课程内容包</small>
+                </article>
+                <article class="metric-card">
+                  <span>词条总数</span>
+                  <strong id="adminWordsMetric">0</strong>
+                  <small>基础 + 自定义</small>
+                </article>
+                <article class="metric-card">
+                  <span>注册用户</span>
+                  <strong id="adminUsersMetric">0</strong>
+                  <small>云端账号</small>
+                </article>
+              </div>
+              <p class="muted-text" id="adminAccessHint">管理员账号登录后可以维护课程内容。测试环境中，用户名包含 admin 的账号会获得管理员角色。</p>
+            </section>
+            <section class="panel preferences-panel">
+              <div class="section-heading">
+                <h2>内容管理</h2>
+                <span>词条</span>
+              </div>
+              <form id="adminWordForm" class="add-word-form">
+                <label class="input-label" for="adminWordInput">词条</label>
+                <input id="adminWordInput" type="text" placeholder="例如：bonjour" autocomplete="off" required />
+                <label class="input-label" for="adminMeaningInput">中文释义</label>
+                <input id="adminMeaningInput" type="text" placeholder="例如：你好" autocomplete="off" required />
+                <label class="input-label" for="adminExampleInput">例句</label>
+                <textarea id="adminExampleInput" rows="3" placeholder="用于课程练习的例句"></textarea>
+                <button class="primary-button" type="submit">添加到当前语言</button>
+                <p class="feedback" id="adminFeedback" aria-live="polite"></p>
+              </form>
+              <div class="admin-word-list" id="adminWordList"></div>
+            </section>
+            <section class="panel preferences-panel">
+              <div class="section-heading">
+                <h2>用户数据</h2>
+                <button class="secondary-button" id="refreshAdminUsersButton" type="button">刷新</button>
+              </div>
+              <div class="admin-user-list" id="adminUserList"></div>
+              <p class="feedback" id="adminUsersFeedback" aria-live="polite"></p>
+            </section>
+          </div>
+        </section>
+
       </main>
 
       <nav class="mobile-nav" aria-label="底部导航">
-        <button class="mobile-nav-item active" data-view="dashboard" type="button">⌂<span>首页</span></button>
-        <button class="mobile-nav-item" data-view="vocabulary" type="button">A<span>单词</span></button>
-        <button class="mobile-nav-item" data-view="listening" type="button">♪<span>听力</span></button>
-        <button class="mobile-nav-item" data-view="reading" type="button">¶<span>阅读</span></button>
-        <button class="mobile-nav-item" data-view="speaking" type="button">◉<span>口语</span></button>
+        <button class="mobile-nav-item active" data-view="dashboard" type="button"><img class="mobile-nav-icon" src="./assets/nav-home-a.svg" alt="" aria-hidden="true" /><span>首页</span></button>
+        <button class="mobile-nav-item" data-view="vocabulary" type="button"><img class="mobile-nav-icon" src="./assets/nav-vocab-b.svg" alt="" aria-hidden="true" /><span>单词</span></button>
+        <button class="mobile-nav-item" data-view="practice" type="button"><img class="mobile-nav-icon" src="./assets/nav-practice-c.svg" alt="" aria-hidden="true" /><span>练习</span></button>
+        <button class="mobile-nav-item" data-view="mistakes" type="button"><img class="mobile-nav-icon" src="./assets/nav-mistakes-a.svg" alt="" aria-hidden="true" /><span>错题本</span></button>
+        <button class="mobile-nav-item" data-view="profile" type="button"><img class="mobile-nav-icon" src="./assets/nav-profile-a.svg" alt="" aria-hidden="true" /><span>我的</span></button>
       </nav>
+
+      <div class="dialog-backdrop" id="confirmDialog" hidden>
+        <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="confirmDialogTitle">
+          <h2 id="confirmDialogTitle">确认操作</h2>
+          <p id="confirmDialogMessage">这项操作需要确认。</p>
+          <div class="dialog-actions">
+            <button class="secondary-button" id="cancelDialogButton" type="button">取消</button>
+            <button class="primary-button danger-action" id="confirmDialogButton" type="button">确认</button>
+          </div>
+        </section>
+      </div>
     </div>
 
-    <script src="./app.js" type="module"></script>
+    <script type="module" src="./app-entry.js?v=20260605-admin-entry"></script>
   </body>
 </html>

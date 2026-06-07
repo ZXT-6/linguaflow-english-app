@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Learning profile avatar">
+  <rect width="160" height="160" rx="44" fill="#fffdf8"/>
+  <circle cx="118" cy="34" r="30" fill="#b8764d" opacity=".16"/>
+  <circle cx="42" cy="126" r="38" fill="#181512" opacity=".08"/>
+  <rect x="32" y="34" width="96" height="96" rx="32" fill="#181512"/>
+  <path d="M55 53h18v48h28v15H55V53z" fill="#fffdf8"/>
+  <path d="M91 53h28v15h-10v48H91V53z" fill="#fffdf8"/>
+  <path d="M46 119c22-8 45-8 68 0" fill="none" stroke="#d8b58e" stroke-width="7" stroke-linecap="round"/>
+</svg>
