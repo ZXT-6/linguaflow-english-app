@@ -3845,10 +3845,13 @@ function renderDailyPath() {
 }
 
 function continueDailyPath() {
+  state.dailyPath = ensureDailyPath(state.dailyPath, new Date().toISOString().slice(0, 10));
   const active = getActivePathStep(state.dailyPath);
   const step = DAILY_PATH_STEPS.find((item) => item.id === active?.id);
   if (step?.view) {
     setView(step.view);
+  } else {
+    setView("dashboard");
   }
 }
 
@@ -5836,6 +5839,12 @@ function bindEvents() {
       if (step?.view) {
         setView(step.view);
       }
+      return;
+    }
+
+    const continuePathBtn = event.target.closest("[data-continue-path]");
+    if (continuePathBtn) {
+      continueDailyPath();
       return;
     }
 
