@@ -992,7 +992,6 @@ function updateMetrics() {
       .map((item) => `<article><strong>${item[1]}</strong><span>${item[0]}</span></article>`)
       .join("");
   }
-  setTextIfPresent("#weeklyHoursMetric", `${Math.max(1, (state.minutes / 60 + 8.5).toFixed(1))} 小时`);
 }
 
 function renderWordBooks() {
@@ -1622,126 +1621,6 @@ function nextPracticeQuestion() {
   renderPracticeQuiz();
 }
 
-function weeklyTrendData() {
-  const mock = [20, 35, 42, 30, 55, 68, 50];
-  const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  const logs = Array.isArray(state.studyLogs) ? state.studyLogs : [];
-  if (!logs.length) {
-    return labels.map((label, index) => ({ label, minutes: mock[index] }));
-  }
-  const today = new Date();
-  return labels.map((label, index) => {
-    const day = new Date(today);
-    day.setDate(today.getDate() - (6 - index));
-    const dayKey = day.toISOString().slice(0, 10);
-    const minutes = logs
-      .filter((item) => String(item.createdAt || item.date || "").slice(0, 10) === dayKey)
-      .reduce((sum, item) => sum + Number(item.duration_minutes || item.minutes || 0), 0);
-    return { label, minutes: minutes || mock[index] };
-  });
-}
-
-function renderWeeklyTrendChart() {
-  const data = weeklyTrendData();
-  const width = 360;
-  const height = 150;
-  const padding = 28;
-  const max = Math.max(...data.map((item) => item.minutes), 1);
-  const points = data
-    .map((item, index) => {
-      const x = padding + (index * (width - padding * 2)) / Math.max(1, data.length - 1);
-      const y = height - padding - (item.minutes / max) * (height - padding * 2);
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    })
-    .join(" ");
-  $("#weeklyChart").innerHTML = `
-    <svg class="weekly-chart-svg" viewBox="0 0 ${width} ${height}" aria-hidden="true">
-      <polyline points="${points}" fill="none" stroke="var(--coffee)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>
-      ${data
-        .map((item, index) => {
-          const [x, y] = points.split(" ")[index].split(",");
-          return `<circle cx="${x}" cy="${y}" r="4.5"></circle>`;
-        })
-        .join("")}
-    </svg>
-    <div class="weekly-chart-labels">
-      ${data.map((item) => `<span><strong>${item.minutes}</strong><small>${item.label}</small></span>`).join("")}
-    </div>
-  `;
-  setTextIfPresent("#weeklyHoursMetric", `${(data.reduce((sum, item) => sum + item.minutes, 0) / 60).toFixed(1)} 小时`);
-}
-
-function mistakeItems() {
-  const fromProgress = Object.values(state.wordProgress || {})
-    .filter((item) => Number(item.wrong || 0) > 0)
-    .map((item) => {
-      const word = allWords().find((entry) => normalizeWord(entry.word) === normalizeWord(item.word)) || {};
-      const lastMistake = item.lastMistake || {};
-      const wrongCount = Number(item.wrong || 0);
-      return {
-        type: lastMistake.type || "word",
-        title: item.word,
-        phonetic: word.phonetic || "",
-        meaning: word.meaning || "待复习单词",
-        correct: lastMistake.correct || word.meaning || "正确答案",
-        wrong: lastMistake.wrong || "上次答错",
-        date: item.lastStudiedAt?.slice(0, 10) || "2026-06-06",
-        wrongCount,
-        reviewLevel: item.reviewLevel || (wrongCount >= 3 ? "high" : wrongCount >= 2 ? "medium" : "normal"),
-        mastered: Boolean(item.mastered || item.mastery >= 4),
-      };
-    });
-  const fallback = [
-    { type: "word", title: "abandon", phonetic: "/əˈbændən/", meaning: "v. 放弃；抛弃", correct: "放弃", wrong: "保留", date: "2026-06-01", wrongCount: 3, reviewLevel: "high", mastered: false },
-    { type: "choice", title: "convenient", phonetic: "/kənˈviːniənt/", meaning: "adj. 方便的；便利的", correct: "方便的", wrong: "复杂的", date: "2026-06-02", wrongCount: 2, reviewLevel: "medium", mastered: false },
-    { type: "spelling", title: "happy", phonetic: "/ˈhæpi/", meaning: "adj. 快乐的", correct: "happy", wrong: "hapy", date: "2026-06-03", wrongCount: 1, reviewLevel: "normal", mastered: true },
-    { type: "listening", title: "environment", phonetic: "/ɪnˈvaɪrənmənt/", meaning: "n. 环境；周围的事物", correct: "环境", wrong: "设备", date: "2026-06-04", wrongCount: 2, reviewLevel: "medium", mastered: false },
-  ];
-  return fromProgress.length ? fromProgress : fallback;
-}
-
-function renderMistakes() {
-  const filter = state.mistakeFilter || "all";
-  $$("[data-mistake-filter]").forEach((button) => button.classList.toggle("active", button.dataset.mistakeFilter === filter));
-  const allItems = mistakeItems();
-  const items = allItems.filter((item) => filter === "all" || item.type === filter);
-  const stats = calculateLearningStats(allWords(), state.wordProgress || {}, state.answers || []);
-  const highFrequency = allItems.filter((item) => item.wrongCount >= 2).length;
-  if ($("#mistakeStatsGrid")) {
-    $("#mistakeStatsGrid").innerHTML = [
-      ["今日建议复习", `${Math.min(5, allItems.filter((item) => !item.mastered).length)}`],
-      ["高频错误词", `${highFrequency}`],
-      ["本周复习次数", `${Math.max(7, allItems.reduce((sum, item) => sum + item.wrongCount, 0))}`],
-      ["正确率", `${stats.accuracy || 85}%`],
-    ]
-      .map((item) => `<article><strong>${item[1]}</strong><span>${item[0]}</span></article>`)
-      .join("");
-  }
-  $("#mistakeList").innerHTML = items.length
-    ? items
-        .map(
-          (item) => `
-        <article class="mistake-item">
-          <button class="star-button" type="button" aria-label="收藏">☆</button>
-          <strong class="clickable-word" role="button" tabindex="0" data-speak-text="${escapeHtml(item.title)}" title="点击朗读" aria-label="点击朗读 ${escapeHtml(item.title)}">${escapeHtml(item.title)}</strong>
-          <span>${escapeHtml(item.phonetic)}</span>
-          <p>${escapeHtml(item.meaning)}</p>
-          <small>错误次数：${item.wrongCount}</small>
-          <small>最近错误时间：${escapeHtml(item.date)}</small>
-          <small>建议复习等级：${item.reviewLevel === "high" ? "重点复习" : item.reviewLevel === "medium" ? "加强复习" : "常规复习"}</small>
-          <small>掌握状态：${item.mastered ? "已掌握" : "未掌握"}</small>
-          <small>你的答案：${escapeHtml(item.wrong)}</small>
-          <em>正确答案：${escapeHtml(item.correct)}</em>
-          <div class="mistake-actions">
-            <button class="secondary-button compact-button" type="button" data-review-word="${escapeHtml(item.title)}">重新复习</button>
-            <button class="secondary-button compact-button" type="button" data-master-mistake="${escapeHtml(item.title)}">标记已掌握</button>
-          </div>
-        </article>
-      `,
-        )
-        .join("")
-    : illustratedEmptyState("当前筛选下暂无错题。", "empty-review.svg", "复习笔记线稿插画");
-}
 
 function renderDesktopDashboard() {
   const stats = calculateLearningStats(allWords(), state.wordProgress || {}, state.answers || []);
@@ -1756,7 +1635,6 @@ function renderDesktopDashboard() {
   ]
     .map((item, index) => `<label class="reminder-row"><span><strong>${item[0]}</strong><small>${item[1]}</small></span><em>${item[2]}</em><input type="checkbox" ${index < 2 || state.preferences?.reminder ? "checked" : ""} /></label>`)
     .join("");
-  renderWeeklyTrendChart();
   $("#achievementBadges").innerHTML = [
     ["坚持学习", `${state.streak}天`],
     ["单词达人", `${stats.studiedWords}词`],

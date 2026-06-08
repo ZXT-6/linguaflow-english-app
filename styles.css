@@ -2705,44 +2705,6 @@ select:focus {
   border-top: 1px solid rgba(111, 78, 55, 0.12);
 }
 
-.weekly-line-chart {
-  min-height: 190px;
-  display: grid;
-  align-items: stretch;
-  gap: 10px;
-}
-
-.weekly-chart-svg {
-  width: 100%;
-  min-height: 150px;
-  display: block;
-}
-
-.weekly-chart-svg circle {
-  fill: #fffdf8;
-  stroke: var(--coffee);
-  stroke-width: 3;
-}
-
-.weekly-chart-labels {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 6px;
-}
-
-.weekly-chart-labels span {
-  display: grid;
-  gap: 2px;
-  justify-items: center;
-  color: var(--muted);
-  font-size: 11px;
-}
-
-.weekly-chart-labels strong {
-  color: var(--ink);
-  font-size: 13px;
-}
-
 .spelling-practice-form {
   display: grid;
   gap: 12px;
@@ -2834,14 +2796,6 @@ select:focus {
 }
 
 @media (max-width: 640px) {
-  .weekly-chart-labels {
-    gap: 3px;
-  }
-
-  .weekly-chart-labels strong {
-    font-size: 12px;
-  }
-
   .spelling-practice-form {
     padding: 14px;
   }
