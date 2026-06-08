@@ -2578,26 +2578,6 @@ const extraMockWords = [
 words.push(...extraMockWords);
 
 
-function createMockWordProgress() {
-  const now = new Date();
-  return Object.fromEntries(
-    words.slice(0, 60).map((item, index) => {
-      const mastery = index % 6 === 0 ? 1 : index % 5 === 0 ? 2 : index % 4 === 0 ? 4 : 3;
-      return [
-        normalizeWord(item.word),
-        {
-          word: normalizeWord(item.word),
-          correct: 2 + (index % 4),
-          wrong: index % 7 === 0 ? 1 : 0,
-          mastery,
-          lastStudiedAt: new Date(now.getTime() - index * 36 * 60 * 60 * 1000).toISOString(),
-          nextReviewAt: new Date(now.getTime() + (index % 5) * 8 * 60 * 60 * 1000).toISOString(),
-        },
-      ];
-    }),
-  );
-}
-
 const wordBooks = [
   {
     id: "general",
@@ -3481,10 +3461,6 @@ function illustratedEmptyState(message, illustration = "empty-notebook.svg", alt
 
 function isValidEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-}
-
-function isValidPhone(value) {
-  return /^1\d{10}$/.test(value);
 }
 
 function localPasswordHash(password) {
@@ -4623,17 +4599,9 @@ function renderLibrary() {
   }
 
   ensureRemoteBookWords().catch(() => {});
-  const search = $("#librarySearchInput")?.value.trim().toLowerCase() || "";
-  const level = $("#libraryLevelFilter")?.value || "all";
   const wordList = allWords();
   const scopeTitle = currentLanguageKey() === "en" ? activeWordBook().title : activePack().label;
-  const filtered = wordList
-    .map((item, index) => ({ item, index }))
-    .filter(({ item }) => {
-      const matchesSearch = !search || item.word.toLowerCase().includes(search) || item.meaning.toLowerCase().includes(search);
-      const matchesLevel = level === "all" || item.level === level;
-      return matchesSearch && matchesLevel;
-    });
+  const filtered = getFilteredLibraryWords();
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / LIBRARY_PAGE_SIZE));
   state.libraryPage = Math.min(Math.max(Number(state.libraryPage) || 0, 0), totalPages - 1);
@@ -4708,15 +4676,21 @@ function renderLibraryCatalog() {
   $("#libraryPagination").hidden = true;
 }
 
-function changeLibraryPage(delta) {
+function getFilteredLibraryWords() {
   const search = $("#librarySearchInput")?.value.trim().toLowerCase() || "";
   const level = $("#libraryLevelFilter")?.value || "all";
-  const filteredLength = allWords().filter((item) => {
-    const matchesSearch = !search || item.word.toLowerCase().includes(search) || item.meaning.toLowerCase().includes(search);
-    const matchesLevel = level === "all" || item.level === level;
-    return matchesSearch && matchesLevel;
-  }).length;
-  const totalPages = Math.max(1, Math.ceil(filteredLength / LIBRARY_PAGE_SIZE));
+  return allWords()
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => {
+      const matchesSearch = !search || item.word.toLowerCase().includes(search) || item.meaning.toLowerCase().includes(search);
+      const matchesLevel = level === "all" || item.level === level;
+      return matchesSearch && matchesLevel;
+    });
+}
+
+function changeLibraryPage(delta) {
+  const filtered = getFilteredLibraryWords();
+  const totalPages = Math.max(1, Math.ceil(filtered.length / LIBRARY_PAGE_SIZE));
   state.libraryPage = Math.min(Math.max((Number(state.libraryPage) || 0) + delta, 0), totalPages - 1);
   saveState({ remote: false });
   renderLibrary();
@@ -5377,30 +5351,30 @@ async function submitAuth(event) {
 }
 
 async function onSupabaseLogin(supabaseUser) {
-  const profile = await getProfile(supabaseUser.id);
-  const userRole = profile?.role || "learner";
-  state.authUser = normalizeAuthUser({
-    id: supabaseUser.id,
-    username: profile?.username || supabaseUser.email || "",
-    name: profile?.nickname || profile?.username || supabaseUser.email || "",
-    email: supabaseUser.email || "",
-    role: userRole,
-  });
-  saveState({ touch: false, remote: false });
-  renderUser();
   try {
+    const profile = await getProfile(supabaseUser.id).catch(() => null);
+    const userRole = profile?.role || "learner";
+    state.authUser = normalizeAuthUser({
+      id: supabaseUser.id,
+      username: profile?.username || supabaseUser.email || "",
+      name: profile?.nickname || profile?.username || supabaseUser.email || "",
+      email: supabaseUser.email || "",
+      role: userRole,
+    });
+    saveState({ touch: false, remote: false });
+    renderUser();
     await loadUserDataFromSupabase(supabaseUser.id);
   } catch (e) {
-    console.warn("加载云端数据失败:", e.message);
+    console.warn("登录数据加载失败:", e.message);
   }
 }
 
 async function loadUserDataFromSupabase(userId) {
   const [progressRows, favorites, checkins, stats] = await Promise.all([
-    loadUserProgress(userId),
-    loadUserFavorites(userId),
-    loadUserCheckins(userId),
-    loadUserStats(userId),
+    loadUserProgress(userId).catch(() => []),
+    loadUserFavorites(userId).catch(() => []),
+    loadUserCheckins(userId).catch(() => []),
+    loadUserStats(userId).catch(() => null),
   ]);
 
   const wordProgress = {};
@@ -5790,7 +5764,7 @@ function addAdminWord(event) {
   event.currentTarget.reset();
   feedback.textContent = "已添加到当前语言内容库。";
   feedback.className = "feedback good";
-  renderAll();
+  renderView("admin");
 }
 
 function completeNextTask() {
@@ -6136,6 +6110,54 @@ function bindCheckInPopover() {
   ["mouseleave", "pointerleave", "mouseout", "focusout"].forEach((eventName) => {
     panel.addEventListener(eventName, hide);
   });
+}
+
+function renderView(viewId) {
+  updateMetrics();
+  switch (viewId) {
+    case "dashboard":
+      renderWordBooks();
+      renderDailyPath();
+      renderReviewQueue();
+      renderSyncStatus();
+      break;
+    case "vocabulary":
+      renderFlashcard();
+      break;
+    case "practice":
+      renderPracticeQuiz();
+      break;
+    case "mistakes":
+      renderMistakes();
+      break;
+    case "profile":
+      renderUser();
+      renderProfileDashboard();
+      break;
+    case "favorites":
+      renderFavorites();
+      break;
+    case "library":
+      renderLibrary();
+      break;
+    case "listening":
+      renderListening();
+      break;
+    case "reading":
+      renderReading();
+      break;
+    case "speaking":
+      renderSpeaking();
+      break;
+    case "settings":
+      applyPreferences();
+      break;
+    case "admin":
+      renderAdmin();
+      break;
+    default:
+      break;
+  }
 }
 
 function renderAll() {
