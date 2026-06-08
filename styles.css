@@ -2893,3 +2893,35 @@ select:focus {
 #resetPasswordForm .section-heading {
   margin-bottom: 0;
 }
+
+.admin-user-list {
+  max-height: 420px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.15) transparent;
+}
+
+.admin-user-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.admin-user-list::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 3px;
+}
+
+.admin-word-list {
+  max-height: 360px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.15) transparent;
+}
+
+.admin-word-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.admin-word-list::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 3px;
+}

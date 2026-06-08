@@ -2849,7 +2849,11 @@ function renderAdminUsers() {
 }
 
 async function deleteAdminUser(userId) {
-  if (!isAdminUser()) return;
+  if (!userId) {
+    const fb = $("#adminUsersFeedback");
+    if (fb) { fb.textContent = "用户 ID 无效。"; fb.className = "feedback bad"; }
+    return;
+  }
 
   if (USE_NETLIFY_BACKEND) {
     try {
