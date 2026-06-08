@@ -2245,7 +2245,15 @@ select:focus {
 }
 
 .stat-icon {
-  font-size: 22px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--cafe);
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(184, 118, 77, 0.1);
   flex-shrink: 0;
 }
 
@@ -2301,8 +2309,17 @@ select:focus {
 }
 
 .dashboard-entry-card .entry-icon {
-  font-size: 28px;
-  line-height: 1;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 4px;
+}
+
+.dashboard-entry-card .entry-icon img {
+  width: 28px;
+  height: 28px;
+  opacity: 0.85;
 }
 
 .dashboard-entry-card span {
