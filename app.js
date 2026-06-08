@@ -2849,11 +2849,7 @@ function renderAdminUsers() {
 }
 
 async function deleteAdminUser(userId) {
-  if (!userId) {
-    const fb = $("#adminUsersFeedback");
-    if (fb) { fb.textContent = "用户 ID 无效。"; fb.className = "feedback bad"; }
-    return;
-  }
+  const fb = $("#adminUsersFeedback");
 
   if (USE_NETLIFY_BACKEND) {
     try {
@@ -2867,32 +2863,27 @@ async function deleteAdminUser(userId) {
       }
       adminUsers = adminUsers.filter((u) => (u.id || u.username) !== userId);
       renderAdminUsers();
+      if (fb) { fb.textContent = "已删除用户。"; fb.className = "feedback good"; }
     } catch (err) {
-      const fb = $("#adminUsersFeedback");
-      if (fb) {
-        fb.textContent = err.message;
-        fb.className = "feedback bad";
-      }
+      if (fb) { fb.textContent = err.message; fb.className = "feedback bad"; }
     }
     return;
   }
 
-  if (USE_SUPABASE && isAdminUser()) {
-    const fb = $("#adminUsersFeedback");
-    if (fb) {
-      fb.textContent = "Supabase 模式下请在 Supabase Dashboard 中管理用户。";
-      fb.className = "feedback";
-    }
+  if (USE_SUPABASE) {
+    if (fb) { fb.textContent = "Supabase 模式请在 Dashboard 管理用户。"; fb.className = "feedback"; }
     return;
   }
 
+  const before = (state.registeredUsers || []).length;
   state.registeredUsers = (state.registeredUsers || []).filter((u) => (u.id || u.username) !== userId);
+  const after = state.registeredUsers.length;
   saveState();
   renderAdminUserList();
-  const fb = $("#adminUsersFeedback");
-  if (fb) {
-    fb.textContent = "已删除本地用户。";
-    fb.className = "feedback good";
+  if (after < before) {
+    if (fb) { fb.textContent = `已删除用户 ${userId}。`; fb.className = "feedback good"; }
+  } else {
+    if (fb) { fb.textContent = `未找到匹配的用户（ID: ${userId}）。`; fb.className = "feedback bad"; }
   }
 }
 
@@ -3258,17 +3249,6 @@ function bindEvents() {
         renderDesktopDashboard();
       }
     }
-
-    const deleteUserButton = event.target.closest("[data-delete-user]");
-    if (deleteUserButton) {
-      const userId = deleteUserButton.dataset.deleteUser;
-      openConfirmDialog({
-        title: "删除用户",
-        message: "确认删除该用户吗？此操作不可撤销，用户的所有学习数据将一并删除。",
-        action: () => deleteAdminUser(userId),
-      });
-      return;
-    }
   });
 
   document.addEventListener("keydown", (event) => {
@@ -3348,6 +3328,15 @@ function bindEvents() {
   });
   on("#adminWordForm", "submit", addAdminWord);
   on("#refreshAdminUsersButton", "click", loadAdminUsers);
+  on("#adminUserList", "click", (event) => {
+    const btn = event.target.closest("[data-delete-user]");
+    if (!btn) return;
+    const userId = btn.dataset.deleteUser;
+    if (!userId) return;
+    if (confirm("确认删除该用户？此操作不可撤销。")) {
+      deleteAdminUser(userId);
+    }
+  });
   on("#addNoteButton", "click", addNote);
   on("#noteInput", "keydown", (event) => {
     if (event.key === "Enter") {
