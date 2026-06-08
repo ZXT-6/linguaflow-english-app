@@ -3854,6 +3854,7 @@ function continueDailyPath() {
     setView("dashboard");
   }
 }
+window.continueDailyPath = continueDailyPath;
 
 function searchHomeWord(event) {
   event.preventDefault();
