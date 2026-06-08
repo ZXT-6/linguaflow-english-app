@@ -29,14 +29,14 @@ export async function getSupabase() {
 }
 
 export async function supabaseLogin(email, password) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) throw error;
   return data;
 }
 
 export async function supabaseRegister(email, password, username) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -49,19 +49,19 @@ export async function supabaseRegister(email, password, username) {
 }
 
 export async function supabaseLogout() {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
 }
 
 export async function getCurrentUser() {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { data: { user } } = await supabase.auth.getUser();
   return user;
 }
 
 export async function getProfile(userId) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { data } = await supabase
     .from("profiles")
     .select("*")
@@ -71,7 +71,7 @@ export async function getProfile(userId) {
 }
 
 export async function updateProfile(userId, updates) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { error } = await supabase
     .from("profiles")
     .update({ ...updates, updated_at: new Date().toISOString() })
@@ -80,7 +80,7 @@ export async function updateProfile(userId, updates) {
 }
 
 export async function loadUserProgress(userId) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { data, error } = await supabase
     .from("user_progress")
     .select("*")
@@ -90,7 +90,7 @@ export async function loadUserProgress(userId) {
 }
 
 export async function saveUserProgress(userId, word, progress) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { error } = await supabase
     .from("user_progress")
     .upsert({
@@ -107,7 +107,7 @@ export async function saveUserProgress(userId, word, progress) {
 }
 
 export async function loadUserFavorites(userId) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { data, error } = await supabase
     .from("user_favorites")
     .select("word")
@@ -117,7 +117,7 @@ export async function loadUserFavorites(userId) {
 }
 
 export async function addUserFavorite(userId, word) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { error } = await supabase
     .from("user_favorites")
     .upsert({ user_id: userId, word }, { onConflict: "user_id, word" });
@@ -125,7 +125,7 @@ export async function addUserFavorite(userId, word) {
 }
 
 export async function removeUserFavorite(userId, word) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { error } = await supabase
     .from("user_favorites")
     .delete()
@@ -135,7 +135,7 @@ export async function removeUserFavorite(userId, word) {
 }
 
 export async function loadUserCheckins(userId) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { data, error } = await supabase
     .from("user_checkins")
     .select("checkin_date")
@@ -145,7 +145,7 @@ export async function loadUserCheckins(userId) {
 }
 
 export async function addUserCheckin(userId, date) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { error } = await supabase
     .from("user_checkins")
     .upsert({ user_id: userId, checkin_date: date }, { onConflict: "user_id, checkin_date" });
@@ -153,7 +153,7 @@ export async function addUserCheckin(userId, date) {
 }
 
 export async function loadUserStats(userId) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { data } = await supabase
     .from("user_stats")
     .select("*")
@@ -163,7 +163,7 @@ export async function loadUserStats(userId) {
 }
 
 export async function saveUserStats(userId, stats) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { error } = await supabase
     .from("user_stats")
     .upsert({
@@ -175,7 +175,7 @@ export async function saveUserStats(userId, stats) {
 }
 
 export async function searchVocabulary(query, options = {}) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { level, bookId, limit = 50, offset = 0 } = options;
   let q = supabase.from("vocabulary").select("*", { count: "exact" });
 
@@ -195,7 +195,7 @@ export async function searchVocabulary(query, options = {}) {
 }
 
 export async function getVocabularyByBookId(bookId) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { data, error } = await supabase
     .from("book_words")
     .select("word, vocabulary(*)")
@@ -206,7 +206,7 @@ export async function getVocabularyByBookId(bookId) {
 }
 
 export async function getAllBooks() {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { data, error } = await supabase
     .from("word_books")
     .select("*")
