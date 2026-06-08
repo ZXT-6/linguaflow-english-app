@@ -199,6 +199,191 @@ const extraMockWords = [
 
 words.push(...extraMockWords);
 
+const moreWords = [
+  // A1 基础词 - 日常生活
+  { word: "cat", phonetic: "/kæt/", meaning: "猫", example: "The cat is sleeping on the sofa.", level: "A1" },
+  { word: "dog", phonetic: "/dɒɡ/", meaning: "狗", example: "I walk my dog every morning.", level: "A1" },
+  { word: "fish", phonetic: "/fɪʃ/", meaning: "鱼", example: "There is a fish in the pond.", level: "A1" },
+  { word: "bird", phonetic: "/bɜːrd/", meaning: "鸟", example: "A bird is singing in the tree.", level: "A1" },
+  { word: "tree", phonetic: "/triː/", meaning: "树", example: "There is a big tree in the park.", level: "A1" },
+  { word: "flower", phonetic: "/ˈflaʊər/", meaning: "花", example: "She gave me a flower.", level: "A1" },
+  { word: "house", phonetic: "/haʊs/", meaning: "房子", example: "My house is near the school.", level: "A1" },
+  { word: "room", phonetic: "/ruːm/", meaning: "房间", example: "My room is clean and tidy.", level: "A1" },
+  { word: "door", phonetic: "/dɔːr/", meaning: "门", example: "Please close the door.", level: "A1" },
+  { word: "window", phonetic: "/ˈwɪndoʊ/", meaning: "窗户", example: "Open the window, please.", level: "A1" },
+  { word: "table", phonetic: "/ˈteɪbl/", meaning: "桌子", example: "The book is on the table.", level: "A1" },
+  { word: "bed", phonetic: "/bed/", meaning: "床", example: "I go to bed at ten.", level: "A1" },
+  { word: "food", phonetic: "/fuːd/", meaning: "食物", example: "The food is very delicious.", level: "A1" },
+  { word: "milk", phonetic: "/mɪlk/", meaning: "牛奶", example: "I drink milk every day.", level: "A1" },
+  { word: "rice", phonetic: "/raɪs/", meaning: "米饭", example: "We eat rice for lunch.", level: "A1" },
+  { word: "egg", phonetic: "/eɡ/", meaning: "鸡蛋", example: "I had an egg for breakfast.", level: "A1" },
+  { word: "cake", phonetic: "/keɪk/", meaning: "蛋糕", example: "She made a chocolate cake.", level: "A1" },
+  { word: "tea", phonetic: "/tiː/", meaning: "茶", example: "Would you like some tea?", level: "A1" },
+  { word: "juice", phonetic: "/dʒuːs/", meaning: "果汁", example: "I want orange juice.", level: "A1" },
+  { word: "bread", phonetic: "/bred/", meaning: "面包", example: "I eat bread with butter.", level: "A1" },
+  { word: "pen", phonetic: "/pen/", meaning: "笔", example: "Can I borrow your pen?", level: "A1" },
+  { word: "desk", phonetic: "/desk/", meaning: "书桌", example: "My books are on the desk.", level: "A1" },
+  { word: "map", phonetic: "/mæp/", meaning: "地图", example: "Look at the map on the wall.", level: "A1" },
+  { word: "clock", phonetic: "/klɒk/", meaning: "钟", example: "The clock shows eight o'clock.", level: "A1" },
+  { word: "photo", phonetic: "/ˈfoʊtoʊ/", meaning: "照片", example: "This is a photo of my family.", level: "A1" },
+  { word: "game", phonetic: "/ɡeɪm/", meaning: "游戏", example: "Let's play a game.", level: "A1" },
+  { word: "song", phonetic: "/sɒŋ/", meaning: "歌", example: "This song is very nice.", level: "A1" },
+  { word: "ball", phonetic: "/bɔːl/", meaning: "球", example: "The boy is playing with a ball.", level: "A1" },
+  { word: "car", phonetic: "/kɑːr/", meaning: "汽车", example: "My father drives a car to work.", level: "A1" },
+  { word: "bus", phonetic: "/bʌs/", meaning: "公交车", example: "I take the bus to school.", level: "A1" },
+  { word: "bike", phonetic: "/baɪk/", meaning: "自行车", example: "He rides a bike to the park.", level: "A1" },
+  { word: "train", phonetic: "/treɪn/", meaning: "火车", example: "The train is very fast.", level: "A1" },
+  { word: "plane", phonetic: "/pleɪn/", meaning: "飞机", example: "The plane is in the sky.", level: "A1" },
+  { word: "park", phonetic: "/pɑːrk/", meaning: "公园", example: "We play in the park.", level: "A1" },
+  { word: "shop", phonetic: "/ʃɒp/", meaning: "商店", example: "Let's go to the shop.", level: "A1" },
+  { word: "street", phonetic: "/striːt/", meaning: "街道", example: "The street is very long.", level: "A1" },
+  { word: "city", phonetic: "/ˈsɪti/", meaning: "城市", example: "This is a big city.", level: "A1" },
+  { word: "country", phonetic: "/ˈkʌntri/", meaning: "国家", example: "China is a great country.", level: "A1" },
+  { word: "world", phonetic: "/wɜːrld/", meaning: "世界", example: "The world is very big.", level: "A1" },
+  { word: "sun", phonetic: "/sʌn/", meaning: "太阳", example: "The sun is bright today.", level: "A1" },
+  { word: "moon", phonetic: "/muːn/", meaning: "月亮", example: "The moon is beautiful tonight.", level: "A1" },
+  { word: "star", phonetic: "/stɑːr/", meaning: "星星", example: "I can see many stars.", level: "A1" },
+  { word: "rain", phonetic: "/reɪn/", meaning: "雨", example: "It is raining outside.", level: "A1" },
+  { word: "snow", phonetic: "/snoʊ/", meaning: "雪", example: "Snow is white and cold.", level: "A1" },
+  { word: "wind", phonetic: "/wɪnd/", meaning: "风", example: "The wind is strong today.", level: "A1" },
+  { word: "sky", phonetic: "/skaɪ/", meaning: "天空", example: "The sky is blue.", level: "A1" },
+  { word: "sea", phonetic: "/siː/", meaning: "大海", example: "I like to swim in the sea.", level: "A1" },
+  { word: "river", phonetic: "/ˈrɪvər/", meaning: "河", example: "There is a river near the village.", level: "A1" },
+  { word: "mountain", phonetic: "/ˈmaʊntən/", meaning: "山", example: "The mountain is very high.", level: "A1" },
+  { word: "grass", phonetic: "/ɡræs/", meaning: "草", example: "The children play on the grass.", level: "A1" },
+  // A2 核心词 - 日常交流
+  { word: "breakfast", phonetic: "/ˈbrekfəst/", meaning: "早餐", example: "I have breakfast at seven.", level: "A2" },
+  { word: "lunch", phonetic: "/lʌntʃ/", meaning: "午餐", example: "Let's have lunch together.", level: "A2" },
+  { word: "dinner", phonetic: "/ˈdɪnər/", meaning: "晚餐", example: "Dinner is ready.", level: "A2" },
+  { word: "holiday", phonetic: "/ˈhɒlɪdeɪ/", meaning: "假期", example: "We go on holiday in summer.", level: "A2" },
+  { word: "weather", phonetic: "/ˈweðər/", meaning: "天气", example: "The weather is nice today.", level: "A2" },
+  { word: "season", phonetic: "/ˈsiːzn/", meaning: "季节", example: "Spring is my favorite season.", level: "A2" },
+  { word: "spring", phonetic: "/sprɪŋ/", meaning: "春天", example: "Flowers bloom in spring.", level: "A2" },
+  { word: "summer", phonetic: "/ˈsʌmər/", meaning: "夏天", example: "Summer is hot.", level: "A2" },
+  { word: "autumn", phonetic: "/ˈɔːtəm/", meaning: "秋天", example: "Leaves fall in autumn.", level: "A2" },
+  { word: "winter", phonetic: "/ˈwɪntər/", meaning: "冬天", example: "Winter is cold.", level: "A2" },
+  { word: "birthday", phonetic: "/ˈbɜːrθdeɪ/", meaning: "生日", example: "Happy birthday to you!", level: "A2" },
+  { word: "present", phonetic: "/ˈpreznt/", meaning: "礼物", example: "I got a present for my birthday.", level: "A2" },
+  { word: "party", phonetic: "/ˈpɑːrti/", meaning: "派对", example: "We had a great party.", level: "A2" },
+  { word: "visit", phonetic: "/ˈvɪzɪt/", meaning: "拜访", example: "I visit my grandparents on weekends.", level: "A2" },
+  { word: "travel", phonetic: "/ˈtrævl/", meaning: "旅行", example: "I like to travel around the world.", level: "A2" },
+  { word: "ticket", phonetic: "/ˈtɪkɪt/", meaning: "票", example: "I bought a train ticket.", level: "A2" },
+  { word: "hotel", phonetic: "/hoʊˈtel/", meaning: "酒店", example: "We stayed at a nice hotel.", level: "A2" },
+  { word: "passport", phonetic: "/ˈpæspɔːrt/", meaning: "护照", example: "Don't forget your passport.", level: "A2" },
+  { word: "medicine", phonetic: "/ˈmedsn/", meaning: "药", example: "Take your medicine on time.", level: "A2" },
+  { word: "hospital", phonetic: "/ˈhɒspɪtl/", meaning: "医院", example: "She works at a hospital.", level: "A2" },
+  { word: "doctor", phonetic: "/ˈdɒktər/", meaning: "医生", example: "The doctor is very kind.", level: "A2" },
+  { word: "nurse", phonetic: "/nɜːrs/", meaning: "护士", example: "The nurse takes care of patients.", level: "A2" },
+  { word: "exercise", phonetic: "/ˈeksərsaɪz/", meaning: "锻炼", example: "Exercise is good for your health.", level: "A2" },
+  { word: "healthy", phonetic: "/ˈhelθi/", meaning: "健康的", example: "Eat healthy food every day.", level: "A2" },
+  { word: "tired", phonetic: "/ˈtaɪərd/", meaning: "累的", example: "I am tired after work.", level: "A2" },
+  { word: "hungry", phonetic: "/ˈhʌŋɡri/", meaning: "饿的", example: "I am hungry.", level: "A2" },
+  { word: "thirsty", phonetic: "/ˈθɜːrsti/", meaning: "渴的", example: "I am thirsty.", level: "A2" },
+  { word: "busy", phonetic: "/ˈbɪzi/", meaning: "忙的", example: "I am very busy today.", level: "A2" },
+  { word: "free", phonetic: "/friː/", meaning: "空闲的", example: "Are you free tomorrow?", level: "A2" },
+  { word: "important", phonetic: "/ɪmˈpɔːrtnt/", meaning: "重要的", example: "This is very important.", level: "A2" },
+  { word: "different", phonetic: "/ˈdɪfrənt/", meaning: "不同的", example: "We have different hobbies.", level: "A2" },
+  { word: "similar", phonetic: "/ˈsɪmɪlər/", meaning: "相似的", example: "Your idea is similar to mine.", level: "A2" },
+  { word: "possible", phonetic: "/ˈpɒsəbl/", meaning: "可能的", example: "Everything is possible.", level: "A2" },
+  { word: "impossible", phonetic: "/ɪmˈpɒsəbl/", meaning: "不可能的", example: "That is impossible.", level: "A2" },
+  { word: "dangerous", phonetic: "/ˈdeɪndʒərəs/", meaning: "危险的", example: "Swimming here is dangerous.", level: "A2" },
+  { word: "safe", phonetic: "/seɪf/", meaning: "安全的", example: "This place is safe.", level: "A2" },
+  { word: "cheap", phonetic: "/tʃiːp/", meaning: "便宜的", example: "This shirt is cheap.", level: "A2" },
+  { word: "expensive", phonetic: "/ɪkˈspensɪv/", meaning: "贵的", example: "This car is expensive.", level: "A2" },
+  { word: "modern", phonetic: "/ˈmɒdərn/", meaning: "现代的", example: "This is a modern city.", level: "A2" },
+  { word: "traditional", phonetic: "/trəˈdɪʃənl/", meaning: "传统的", example: "This is a traditional festival.", level: "A2" },
+  // B1 进阶词 - 学术与工作
+  { word: "experience", phonetic: "/ɪkˈspɪəriəns/", meaning: "经验；经历", example: "Work experience is important.", level: "B1" },
+  { word: "education", phonetic: "/ˌedʒuˈkeɪʃn/", meaning: "教育", example: "Education changes your life.", level: "B1" },
+  { word: "technology", phonetic: "/tekˈnɒlədʒi/", meaning: "技术", example: "Technology helps us learn.", level: "B1" },
+  { word: "information", phonetic: "/ˌɪnfərˈmeɪʃn/", meaning: "信息", example: "You can find information online.", level: "B1" },
+  { word: "communication", phonetic: "/kəˌmjuːnɪˈkeɪʃn/", meaning: "沟通", example: "Good communication is key.", level: "B1" },
+  { word: "relationship", phonetic: "/rɪˈleɪʃnʃɪp/", meaning: "关系", example: "Build good relationships.", level: "B1" },
+  { word: "situation", phonetic: "/ˌsɪtʃuˈeɪʃn/", meaning: "情况", example: "The situation is getting better.", level: "B1" },
+  { word: "opportunity", phonetic: "/ˌɒpərˈtjuːnɪti/", meaning: "机会", example: "Don't miss this opportunity.", level: "B1" },
+  { word: "responsibility", phonetic: "/rɪˌspɒnsəˈbɪlɪti/", meaning: "责任", example: "Take responsibility for your actions.", level: "B1" },
+  { word: "competition", phonetic: "/ˌkɒmpɪˈtɪʃn/", meaning: "竞争；比赛", example: "There is a lot of competition.", level: "B1" },
+  { word: "population", phonetic: "/ˌpɒpjuˈleɪʃn/", meaning: "人口", example: "The population is growing.", level: "B1" },
+  { word: "government", phonetic: "/ˈɡʌvərnmənt/", meaning: "政府", example: "The government made a new rule.", level: "B1" },
+  { word: "environment", phonetic: "/ɪnˈvaɪrənmənt/", meaning: "环境", example: "Protect the environment.", level: "B1" },
+  { word: "advertisement", phonetic: "/ədˈvɜːrtɪsmənt/", meaning: "广告", example: "I saw an advertisement on TV.", level: "B1" },
+  { word: "agreement", phonetic: "/əˈɡriːmənt/", meaning: "协议", example: "We reached an agreement.", level: "B1" },
+  { word: "development", phonetic: "/dɪˈveləpmənt/", meaning: "发展", example: "The city is under development.", level: "B1" },
+  { word: "management", phonetic: "/ˈmænɪdʒmənt/", meaning: "管理", example: "Time management is a skill.", level: "B1" },
+  { word: "performance", phonetic: "/pərˈfɔːrməns/", meaning: "表现；演出", example: "Her performance was great.", level: "B1" },
+  { word: "advantage", phonetic: "/ədˈvæntɪdʒ/", meaning: "优势", example: "This has many advantages.", level: "B1" },
+  { word: "disadvantage", phonetic: "/ˌdɪsədˈvæntɪdʒ/", meaning: "劣势", example: "There are some disadvantages.", level: "B1" },
+  { word: "argument", phonetic: "/ˈɑːrɡjumənt/", meaning: "论点；争论", example: "Make a strong argument.", level: "B1" },
+  { word: "solution", phonetic: "/səˈluːʃn/", meaning: "解决方案", example: "We found a solution.", level: "B1" },
+  { word: "decision", phonetic: "/dɪˈsɪʒn/", meaning: "决定", example: "Make a wise decision.", level: "B1" },
+  { word: "attention", phonetic: "/əˈtenʃn/", meaning: "注意力", example: "Pay attention to the teacher.", level: "B1" },
+  { word: "direction", phonetic: "/dəˈrekʃn/", meaning: "方向", example: "Which direction should we go?", level: "B1" },
+  { word: "suggestion", phonetic: "/səˈdʒestʃən/", meaning: "建议", example: "Do you have any suggestions?", level: "B1" },
+  { word: "condition", phonetic: "/kənˈdɪʃn/", meaning: "条件；状况", example: "The car is in good condition.", level: "B1" },
+  { word: "organization", phonetic: "/ˌɔːrɡənəˈzeɪʃn/", meaning: "组织", example: "She works for an organization.", level: "B1" },
+  { word: "product", phonetic: "/ˈprɒdʌkt/", meaning: "产品", example: "This product is very popular.", level: "B1" },
+  { word: "customer", phonetic: "/ˈkʌstəmər/", meaning: "顾客", example: "The customer is always right.", level: "B1" },
+  { word: "profit", phonetic: "/ˈprɒfɪt/", meaning: "利润", example: "The company made a profit.", level: "B1" },
+  { word: "quality", phonetic: "/ˈkwɒlɪti/", meaning: "质量", example: "Quality is more important than speed.", level: "B1" },
+  { word: "quantity", phonetic: "/ˈkwɒntɪti/", meaning: "数量", example: "We need a large quantity.", level: "B1" },
+  { word: "industry", phonetic: "/ˈɪndəstri/", meaning: "工业；行业", example: "The tech industry is growing.", level: "B1" },
+  { word: "material", phonetic: "/məˈtɪəriəl/", meaning: "材料", example: "This material is very strong.", level: "B1" },
+  { word: "temperature", phonetic: "/ˈtemprətʃər/", meaning: "温度", example: "The temperature is rising.", level: "B1" },
+  { word: "experiment", phonetic: "/ɪkˈsperɪmənt/", meaning: "实验", example: "We did an experiment in class.", level: "B1" },
+  { word: "instrument", phonetic: "/ˈɪnstrəmənt/", meaning: "乐器；工具", example: "She can play several instruments.", level: "B1" },
+  { word: "document", phonetic: "/ˈdɒkjumənt/", meaning: "文件", example: "Please sign this document.", level: "B1" },
+  { word: "equipment", phonetic: "/ɪˈkwɪpmənt/", meaning: "设备", example: "We need new equipment.", level: "B1" },
+  // B2 高频词 - 学术与抽象
+  { word: "analysis", phonetic: "/əˈnæləsɪs/", meaning: "分析", example: "Your analysis is correct.", level: "B2" },
+  { word: "approach", phonetic: "/əˈproʊtʃ/", meaning: "方法；接近", example: "Try a different approach.", level: "B2" },
+  { word: "concept", phonetic: "/ˈkɒnsept/", meaning: "概念", example: "This concept is hard to understand.", level: "B2" },
+  { word: "conclusion", phonetic: "/kənˈkluːʒn/", meaning: "结论", example: "What is your conclusion?", level: "B2" },
+  { word: "consequence", phonetic: "/ˈkɒnsɪkwens/", meaning: "后果", example: "Think about the consequences.", level: "B2" },
+  { word: "contribution", phonetic: "/ˌkɒntrɪˈbjuːʃn/", meaning: "贡献", example: "Make a contribution to society.", level: "B2" },
+  { word: "controversy", phonetic: "/ˈkɒntrəvɜːrsi/", meaning: "争议", example: "This topic causes controversy.", level: "B2" },
+  { word: "credibility", phonetic: "/ˌkredəˈbɪlɪti/", meaning: "可信度", example: "Build your credibility.", level: "B2" },
+  { word: "criterion", phonetic: "/kraɪˈtɪəriən/", meaning: "标准", example: "What are the criteria?", level: "B2" },
+  { word: "democracy", phonetic: "/dɪˈmɒkrəsi/", meaning: "民主", example: "Democracy is important.", level: "B2" },
+  { word: "discrimination", phonetic: "/dɪˌskrɪmɪˈneɪʃn/", meaning: "歧视", example: "Discrimination is wrong.", level: "B2" },
+  { word: "diversity", phonetic: "/daɪˈvɜːrsɪti/", meaning: "多样性", example: "We value diversity.", level: "B2" },
+  { word: "economy", phonetic: "/ɪˈkɒnəmi/", meaning: "经济", example: "The economy is growing.", level: "B2" },
+  { word: "emphasis", phonetic: "/ˈemfəsɪs/", meaning: "强调", example: "The emphasis is on quality.", level: "B2" },
+  { word: "establishment", phonetic: "/ɪˈstæblɪʃmənt/", meaning: "建立；机构", example: "The establishment of the rule.", level: "B2" },
+  { word: "evidence", phonetic: "/ˈevɪdəns/", meaning: "证据", example: "There is no evidence.", level: "B2" },
+  { word: "evolution", phonetic: "/ˌiːvəˈluːʃn/", meaning: "进化；演变", example: "The evolution of technology.", level: "B2" },
+  { word: "framework", phonetic: "/ˈfreɪmwɜːrk/", meaning: "框架", example: "Set up a framework.", level: "B2" },
+  { word: "fundamental", phonetic: "/ˌfʌndəˈmentl/", meaning: "基本的", example: "This is a fundamental rule.", level: "B2" },
+  { word: "global", phonetic: "/ˈɡloʊbl/", meaning: "全球的", example: "This is a global issue.", level: "B2" },
+  { word: "guarantee", phonetic: "/ˌɡærənˈtiː/", meaning: "保证", example: "I guarantee you will like it.", level: "B2" },
+  { word: "hypothesis", phonetic: "/haɪˈpɒθəsɪs/", meaning: "假设", example: "Test your hypothesis.", level: "B2" },
+  { word: "identity", phonetic: "/aɪˈdentɪti/", meaning: "身份", example: "Protect your identity.", level: "B2" },
+  { word: "ideology", phonetic: "/ˌaɪdiˈɒlədʒi/", meaning: "意识形态", example: "Different ideologies.", level: "B2" },
+  { word: "illustration", phonetic: "/ˌɪləˈstreɪʃn/", meaning: "插图；例证", example: "This is a good illustration.", level: "B2" },
+  { word: "implementation", phonetic: "/ˌɪmplɪmenˈteɪʃn/", meaning: "实施", example: "The implementation of the plan.", level: "B2" },
+  { word: "implication", phonetic: "/ˌɪmplɪˈkeɪʃn/", meaning: "含义；影响", example: "Consider the implications.", level: "B2" },
+  { word: "incentive", phonetic: "/ɪnˈsentɪv/", meaning: "激励", example: "Money is a strong incentive.", level: "B2" },
+  { word: "innovation", phonetic: "/ˌɪnəˈveɪʃn/", meaning: "创新", example: "Innovation drives progress.", level: "B2" },
+  { word: "integrity", phonetic: "/ɪnˈteɡrɪti/", meaning: "正直", example: "Act with integrity.", level: "B2" },
+  { word: "interpretation", phonetic: "/ɪnˌtɜːrprɪˈteɪʃn/", meaning: "解释", example: "What is your interpretation?", level: "B2" },
+  { word: "investigation", phonetic: "/ɪnˌvestɪˈɡeɪʃn/", meaning: "调查", example: "The investigation is ongoing.", level: "B2" },
+  { word: "mechanism", phonetic: "/ˈmekənɪzəm/", meaning: "机制", example: "A new mechanism was introduced.", level: "B2" },
+  { word: "obstacle", phonetic: "/ˈɒbstəkl/", meaning: "障碍", example: "Overcome every obstacle.", level: "B2" },
+  { word: "paradox", phonetic: "/ˈpærədɒks/", meaning: "悖论", example: "This is an interesting paradox.", level: "B2" },
+  { word: "perspective", phonetic: "/pərˈspektɪv/", meaning: "视角", example: "From my perspective.", level: "B2" },
+  { word: "phenomenon", phonetic: "/fɪˈnɒmɪnən/", meaning: "现象", example: "This is a common phenomenon.", level: "B2" },
+  { word: "philosophy", phonetic: "/fɪˈlɒsəfi/", meaning: "哲学", example: "My philosophy is simple.", level: "B2" },
+  { word: "potential", phonetic: "/pəˈtenʃl/", meaning: "潜力", example: "You have great potential.", level: "B2" },
+  { word: "principle", phonetic: "/ˈprɪnsəpl/", meaning: "原则", example: "Stick to your principles.", level: "B2" },
+  { word: "priority", phonetic: "/praɪˈɒrɪti/", meaning: "优先", example: "Safety is our priority.", level: "B2" },
+  { word: "proportion", phonetic: "/prəˈpɔːrʃn/", meaning: "比例", example: "A large proportion agreed.", level: "B2" },
+  { word: "revolution", phonetic: "/ˌrevəˈluːʃn/", meaning: "革命", example: "The industrial revolution.", level: "B2" },
+  { word: "significance", phonetic: "/sɪɡˈnɪfɪkəns/", meaning: "重要性", example: "The significance is clear.", level: "B2" },
+  { word: "sustainability", phonetic: "/səˌsteɪnəˈbɪlɪti/", meaning: "可持续性", example: "Focus on sustainability.", level: "B2" },
+  { word: "transformation", phonetic: "/ˌtrænsfərˈmeɪʃn/", meaning: "转变", example: "A digital transformation.", level: "B2" },
+  { word: "uncertainty", phonetic: "/ʌnˈsɜːrtnti/", meaning: "不确定性", example: "Face uncertainty with courage.", level: "B2" },
+];
+words.push(...moreWords);
+
 function createMockWordProgress() {
   const now = new Date();
   return Object.fromEntries(
@@ -232,35 +417,98 @@ const wordBooks = [
     title: "中考词汇",
     tag: "中考",
     description: "覆盖初中阶段常见生活、校园和基础表达。",
-    wordNames: ["apple", "book", "chair", "water", "family", "friend", "school", "teacher", "listen", "speak", "read", "write", "learn", "study", "happy", "small", "large", "early", "daily", "answer"],
+    wordNames: [
+      "apple", "book", "chair", "water", "family", "friend", "school", "teacher",
+      "listen", "speak", "read", "write", "learn", "study", "happy", "small",
+      "large", "early", "daily", "answer", "cat", "dog", "fish", "bird", "tree",
+      "flower", "house", "room", "door", "window", "table", "bed", "food", "milk",
+      "rice", "egg", "cake", "tea", "juice", "bread", "pen", "desk", "map", "clock",
+      "photo", "game", "song", "ball", "car", "bus", "bike", "train", "park",
+      "shop", "street", "city", "country", "world", "sun", "moon", "star", "rain",
+      "snow", "wind", "sky", "sea", "river", "mountain", "grass", "clear", "calm",
+      "deep", "fresh", "repeat", "complete"
+    ],
   },
   {
     id: "gaokao",
     title: "高考词汇",
     tag: "高考",
     description: "面向高中阅读、写作和完形常见核心词。",
-    wordNames: ["focus", "habit", "practice", "review", "remember", "forget", "improve", "mistake", "correct", "question", "meaning", "sentence", "grammar", "voice", "slowly", "quickly", "confident", "useful", "common", "simple"],
+    wordNames: [
+      "focus", "habit", "practice", "review", "remember", "forget", "improve",
+      "mistake", "correct", "question", "meaning", "sentence", "grammar", "voice",
+      "slowly", "quickly", "confident", "useful", "common", "simple", "breakfast",
+      "lunch", "dinner", "holiday", "weather", "season", "spring", "summer",
+      "autumn", "winter", "birthday", "present", "party", "visit", "travel",
+      "ticket", "hotel", "passport", "medicine", "hospital", "doctor", "nurse",
+      "exercise", "healthy", "tired", "hungry", "thirsty", "busy", "free",
+      "important", "different", "similar", "possible", "impossible", "dangerous",
+      "safe", "cheap", "expensive", "modern", "traditional", "prefer", "effort",
+      "energy", "future", "guide", "include", "memory", "skill", "task", "notice",
+      "prepare", "connect", "discover", "express", "manage", "reduce", "increase"
+    ],
   },
   {
     id: "cet4",
     title: "四级词汇",
     tag: "CET-4",
     description: "适合四级基础阅读、听力和写作的高频词。",
-    wordNames: ["context", "accurate", "fluent", "pronounce", "pronunciation", "conversation", "expression", "describe", "compare", "choose", "explain", "example", "native", "natural", "topic", "opinion", "reason", "result", "goal", "progress"],
+    wordNames: [
+      "context", "accurate", "fluent", "pronounce", "pronunciation", "conversation",
+      "expression", "describe", "compare", "choose", "explain", "example", "native",
+      "natural", "topic", "opinion", "reason", "result", "goal", "progress",
+      "experience", "education", "technology", "information", "communication",
+      "relationship", "situation", "opportunity", "responsibility", "competition",
+      "population", "government", "environment", "advertisement", "agreement",
+      "development", "management", "performance", "advantage", "disadvantage",
+      "argument", "solution", "decision", "attention", "direction", "suggestion",
+      "condition", "organization", "product", "customer", "profit", "quality",
+      "quantity", "industry", "material", "temperature", "experiment", "instrument",
+      "document", "equipment", "challenge", "schedule", "available", "avoid",
+      "create", "method", "support", "record", "translate", "understand",
+      "recognize", "communicate", "effective", "efficient", "essential"
+    ],
   },
   {
     id: "cet6",
     title: "六级词汇",
     tag: "CET-6",
     description: "偏抽象表达、学术阅读和观点论证词。",
-    wordNames: ["challenge", "schedule", "available", "avoid", "create", "develop", "method", "support", "record", "translate", "understand", "recognize", "communicate", "effective", "efficient", "essential", "confidence", "strategy", "specific", "consistent"],
+    wordNames: [
+      "challenge", "schedule", "available", "avoid", "create", "develop", "method",
+      "support", "record", "translate", "understand", "recognize", "communicate",
+      "effective", "efficient", "essential", "confidence", "strategy", "specific",
+      "consistent", "analysis", "approach", "concept", "conclusion", "consequence",
+      "contribution", "controversy", "credibility", "criterion", "democracy",
+      "discrimination", "diversity", "economy", "emphasis", "establishment",
+      "evidence", "evolution", "framework", "fundamental", "global", "guarantee",
+      "hypothesis", "identity", "ideology", "illustration", "implementation",
+      "implication", "incentive", "innovation", "integrity", "interpretation",
+      "investigation", "mechanism", "obstacle", "paradox", "perspective",
+      "phenomenon", "philosophy", "potential", "principle", "priority", "proportion",
+      "revolution", "significance", "sustainability", "transformation", "uncertainty",
+      "opportunity", "achievement", "independent", "recommend", "summarize",
+      "evaluate", "interrupt", "maintain", "achieve"
+    ],
   },
   {
     id: "upgrade",
     title: "专升本词汇",
     tag: "专升本",
     description: "强调考试常见动词、抽象名词和应用表达。",
-    wordNames: ["opportunity", "achievement", "environment", "motivation", "independent", "recommend", "summarize", "evaluate", "interrupt", "maintain", "achieve", "develop", "method", "support", "translate", "understand", "reason", "result", "goal", "progress"],
+    wordNames: [
+      "opportunity", "achievement", "environment", "motivation", "independent",
+      "recommend", "summarize", "evaluate", "interrupt", "maintain", "achieve",
+      "develop", "method", "support", "translate", "understand", "reason", "result",
+      "goal", "progress", "experience", "knowledge", "limit", "observe", "purpose",
+      "reflect", "resource", "routine", "value", "visual", "steady", "research",
+      "require", "imagine", "organize", "decision", "define", "apply", "attend",
+      "balance", "benefit", "detail", "identify", "explain", "compare", "describe",
+      "express", "notify", "enable", "indicate", "involve", "anticipate", "confirm",
+      "divide", "estimate", "generate", "highlight", "illustrate", "incorporate",
+      "investigate", "justify", "negotiate", "participate", "predict", "regulate",
+      "simplify", "specify", "transform", "undertake"
+    ],
   },
 ];
 
@@ -481,7 +729,28 @@ function isAdminUser() {
   if (USE_SUPABASE && state.authUser) {
     return state.authUser.role === "admin";
   }
+  if (state.authUser?.username === "admin") return true;
   return state.authUser?.role === "admin";
+}
+
+function isSuperAdmin() {
+  return state.authUser?.username === "admin";
+}
+
+function ensureSuperAdmin() {
+  const users = state.registeredUsers || [];
+  if (!users.find((u) => u.username === "admin")) {
+    const admin = {
+      id: "super-admin-001",
+      username: "admin",
+      email: "admin@linguaflow.local",
+      passwordHash: localPasswordHash("123456"),
+      role: "admin",
+      createdAt: new Date().toISOString(),
+    };
+    state.registeredUsers = [admin, ...users];
+    saveState({ remote: false });
+  }
 }
 
 function isAuthenticated() {
@@ -3206,6 +3475,7 @@ function bindEvents() {
   });
   on("#adminWordForm", "submit", addAdminWord);
   on("#refreshAdminUsersButton", "click", loadAdminUsers);
+  on("#generateTestDataButton", "click", generateTestData);
   on("#adminUserList", "click", (event) => {
     const btn = event.target.closest("[data-delete-user]");
     if (!btn) return;
@@ -3372,6 +3642,7 @@ function generateTestData() {
 
 bindEvents();
 bindCheckInPopover();
+ensureSuperAdmin();
 renderAll();
 
 if (USE_SUPABASE) {
