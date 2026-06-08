@@ -1,5 +1,5 @@
 export const DAILY_PATH_STEPS = [
-  { id: "review", title: "到期复习", target: 8, view: "dashboard" },
+  { id: "review", title: "到期复习", target: 8, view: "practice" },
   { id: "newWords", title: "新词学习", target: 10, view: "vocabulary" },
   { id: "dictation", title: "听写训练", target: 4, view: "listening" },
   { id: "speaking", title: "口语跟读", target: 4, view: "speaking" },
