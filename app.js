@@ -3297,6 +3297,79 @@ if ("serviceWorker" in navigator && location.protocol !== "file:") {
   }
 }
 
+function generateTestData() {
+  const wordList = allWords();
+  const now = Date.now();
+  const day = 24 * 60 * 60 * 1000;
+
+  const testUsers = [
+    { username: "admin", email: "admin@test.com", role: "admin" },
+    { username: "zhangsan", email: "zhangsan@test.com", role: "learner" },
+    { username: "lisi", email: "lisi@test.com", role: "learner" },
+    { username: "wangwu", email: "wangwu@test.com", role: "learner" },
+  ];
+
+  testUsers.forEach((u, idx) => {
+    if (!(state.registeredUsers || []).find((r) => r.username === u.username)) {
+      const account = {
+        id: `test-${u.username}-${now}`,
+        username: u.username,
+        email: u.email,
+        passwordHash: localPasswordHash("123456"),
+        role: u.role,
+        createdAt: new Date(now - (30 - idx * 5) * day).toISOString(),
+      };
+      state.registeredUsers = [account, ...(state.registeredUsers || [])];
+    }
+  });
+
+  const progressLevels = [45, 28, 15, 6];
+  const myProgress = {};
+  const myFavorites = [];
+  const myCheckins = [];
+  const limit = progressLevels[0];
+  for (let i = 0; i < Math.min(limit, wordList.length); i++) {
+    const w = wordList[i];
+    const key = normalizeWord(w.word);
+    const correct = 2 + Math.floor(Math.random() * 8);
+    const wrong = Math.floor(Math.random() * 3);
+    const mastery = Math.min(5, Math.floor(correct / 3));
+    myProgress[key] = {
+      word: key,
+      correct,
+      wrong,
+      mastery,
+      lastStudiedAt: new Date(now - Math.random() * 7 * day).toISOString(),
+      nextReviewAt: new Date(now + Math.random() * 3 * day).toISOString(),
+    };
+    if (i < 5) myFavorites.push(w.word);
+  }
+  for (let d = 0; d < 14; d++) {
+    if (Math.random() > 0.3) {
+      const date = new Date(now - d * day).toISOString().slice(0, 10);
+      myCheckins.push(date);
+    }
+  }
+
+  state.wordProgress = { ...state.wordProgress, ...myProgress };
+  state.favoriteWords = [...new Set([...(state.favoriteWords || []), ...myFavorites])];
+  state.checkInDates = [...new Set([...(state.checkInDates || []), ...myCheckins])];
+  state.minutes = 420 + Math.floor(Math.random() * 200);
+  state.wordsLearned = limit;
+  state.quizScore = limit * 10;
+  state.streak = countCurrentStreak(state.checkInDates);
+  state.answers = Array.from({ length: 20 }, () => Math.random() > 0.2);
+  state.knownWords = wordList.slice(0, limit).map((w) => w.word);
+
+  saveState();
+  renderAll();
+  const fb = $("#adminUsersFeedback");
+  if (fb) {
+    fb.textContent = `已生成 ${testUsers.length} 个测试账号（密码均为 123456），当前用户已填充 ${limit} 个单词学习进度。`;
+    fb.className = "feedback good";
+  }
+}
+
 bindEvents();
 bindCheckInPopover();
 renderAll();
