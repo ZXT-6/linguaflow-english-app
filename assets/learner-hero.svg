@@ -1,28 +1,77 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 280" role="img" aria-label="Language learner reading">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" aria-hidden="true">
   <defs>
-    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0" stop-color="#eef2ff"/>
-      <stop offset="1" stop-color="#dbeafe"/>
+    <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8c9a0"/>
+      <stop offset="100%" stop-color="#d4b088"/>
     </linearGradient>
-    <linearGradient id="hoodie" x1="0" x2="1">
-      <stop offset="0" stop-color="#315cf6"/>
-      <stop offset="1" stop-color="#4f46e5"/>
+    <linearGradient id="hair" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a251a"/>
+      <stop offset="100%" stop-color="#2a1a0e"/>
+    </linearGradient>
+    <linearGradient id="shirt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f5f0e8"/>
+      <stop offset="100%" stop-color="#ece6db"/>
+    </linearGradient>
+    <linearGradient id="vest" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5c3d2e"/>
+      <stop offset="100%" stop-color="#3a251a"/>
     </linearGradient>
   </defs>
-  <rect width="520" height="280" rx="28" fill="url(#bg)"/>
-  <circle cx="408" cy="88" r="60" fill="#c7d2fe" opacity=".75"/>
-  <circle cx="105" cy="205" r="42" fill="#bfdbfe" opacity=".55"/>
-  <path d="M356 226h100" stroke="#93c5fd" stroke-width="14" stroke-linecap="round"/>
-  <path d="M383 223c-6-28 3-58 28-76 26 20 36 48 31 76z" fill="url(#hoodie)"/>
-  <path d="M387 141c2-24 17-43 39-43 20 0 34 16 34 36 0 15-7 29-21 39-18 13-45-4-52-32z" fill="#172554"/>
-  <circle cx="419" cy="132" r="31" fill="#ffd8bd"/>
-  <path d="M391 122c30 3 50-7 58-23 14 12 18 31 5 48-7-22-27-19-63-25z" fill="#1e1b4b"/>
-  <path d="M410 140c8 7 18 7 26 0" fill="none" stroke="#8b5e4a" stroke-width="3" stroke-linecap="round"/>
-  <path d="M360 174c-45-20-90-18-132 5v62c43-20 88-22 132-5z" fill="#fff" stroke="#bfdbfe" stroke-width="4"/>
-  <path d="M360 174c39-24 81-27 126-8v62c-44-16-86-14-126 8z" fill="#f8fafc" stroke="#bfdbfe" stroke-width="4"/>
-  <path d="M247 195c24-9 53-10 85-2M247 216c27-8 56-9 86-1M384 190c27-8 54-8 80 0M384 211c25-7 50-8 75-2" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>
-  <rect x="48" y="56" width="236" height="118" rx="18" fill="#fff" opacity=".9"/>
-  <text x="72" y="101" fill="#111827" font-family="Arial, sans-serif" font-size="28" font-weight="700">每天进步一点点</text>
-  <text x="72" y="132" fill="#475569" font-family="Arial, sans-serif" font-size="17">Learning is a journey</text>
-  <path d="M74 154h104" stroke="#315cf6" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- 身体 -->
+  <ellipse cx="100" cy="175" rx="45" ry="25" fill="#2a1a0e"/>
+  
+  <!-- 衬衫 -->
+  <path d="M60 130 Q60 100 100 95 Q140 100 140 130 L140 175 Q100 180 60 175Z" fill="url(#shirt)"/>
+  
+  <!-- 马甲 -->
+  <path d="M70 125 Q70 105 100 100 Q130 105 130 125 L128 170 Q100 175 72 170Z" fill="url(#vest)" opacity=".9"/>
+  <line x1="100" y1="105" x2="100" y2="170" stroke="#b8965a" stroke-width="1.5"/>
+  
+  <!-- 领结 -->
+  <path d="M90 108 L100 115 L110 108 L100 112Z" fill="#6b2d3e"/>
+  <circle cx="100" cy="112" r="2.5" fill="#b8965a"/>
+  
+  <!-- 脖子 -->
+  <rect x="92" y="85" width="16" height="15" rx="8" fill="url(#skin)"/>
+  
+  <!-- 头 -->
+  <ellipse cx="100" cy="65" rx="30" ry="35" fill="url(#skin)"/>
+  
+  <!-- 头发 -->
+  <path d="M70 55 Q70 25 100 20 Q130 25 130 55 Q130 40 115 35 Q100 30 85 35 Q70 40 70 55Z" fill="url(#hair)"/>
+  <path d="M72 58 Q75 50 82 48" fill="none" stroke="#2a1a0e" stroke-width="2" opacity=".5"/>
+  
+  <!-- 眉毛 -->
+  <path d="M85 52 Q90 48 96 50" fill="none" stroke="#3a251a" stroke-width="2" stroke-linecap="round"/>
+  <path d="M104 50 Q110 48 115 52" fill="none" stroke="#3a251a" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- 眼睛 -->
+  <ellipse cx="90" cy="58" rx="4" ry="4.5" fill="#1c1916"/>
+  <ellipse cx="110" cy="58" rx="4" ry="4.5" fill="#1c1916"/>
+  <circle cx="91.5" cy="57" r="1.5" fill="#fff"/>
+  <circle cx="111.5" cy="57" r="1.5" fill="#fff"/>
+  
+  <!-- 鼻子 -->
+  <path d="M98 64 Q100 68 102 64" fill="none" stroke="#c4956a" stroke-width="1.5" stroke-linecap="round"/>
+  
+  <!-- 嘴 -->
+  <path d="M92 74 Q100 78 108 74" fill="none" stroke="#c4956a" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- 眼镜 -->
+  <circle cx="90" cy="58" r="10" fill="none" stroke="#5c3d2e" stroke-width="1.5"/>
+  <circle cx="110" cy="58" r="10" fill="none" stroke="#5c3d2e" stroke-width="1.5"/>
+  <line x1="100" y1="58" x2="100" y2="58" stroke="#5c3d2e" stroke-width="1.5"/>
+  <line x1="80" y1="58" x2="75" y2="55" stroke="#5c3d2e" stroke-width="1.5"/>
+  <line x1="120" y1="58" x2="125" y2="55" stroke="#5c3d2e" stroke-width="1.5"/>
+  
+  <!-- 左手拿书 -->
+  <path d="M55 140 Q50 150 55 160 L65 165 Q60 155 65 145Z" fill="url(#skin)"/>
+  <rect x="40" y="120" width="30" height="40" rx="2" fill="#2d4a3a" transform="rotate(-10 55 140)"/>
+  <rect x="42" y="122" width="26" height="36" rx="1" fill="#3d6b4f" transform="rotate(-10 55 140)"/>
+  
+  <!-- 右手拿笔 -->
+  <path d="M140 135 Q150 140 148 155 L138 158 Q140 145 135 140Z" fill="url(#skin)"/>
+  <rect x="148" y="130" width="20" height="3" rx="1.5" fill="#5c3d2e" transform="rotate(20 158 131)"/>
+  <polygon points="148,131.5 144,132.5 148,133.5" fill="#b8965a" transform="rotate(20 146 132)"/>
 </svg>
