@@ -4366,11 +4366,14 @@ select:focus {
    ============================================ */
 
 #profile {
-  display: grid;
   gap: 16px;
   max-width: 640px;
   margin: 0 auto;
   padding-bottom: 24px;
+}
+
+#profile.view.active {
+  display: grid;
 }
 
 /* Hero Card */
