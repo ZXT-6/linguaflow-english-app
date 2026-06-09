@@ -673,6 +673,12 @@ body,
   color: #25211D !important;
 }
 
+.theme-warm-dark .mistake-stats-grid article {
+  background: #7f7666 !important;
+  border-color: #4A4038;
+  color: #F6EFE7;
+}
+
 * {
   box-sizing: border-box;
 }
