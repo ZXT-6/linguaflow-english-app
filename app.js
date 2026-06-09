@@ -3070,7 +3070,7 @@ const defaultState = {
   pendingCode: null,
   authMode: "login",
   preferences: {
-    theme: "light",
+    theme: "latte",
     dailyGoal: 30,
     targetLanguage: "en",
     wordBookId: "general",
@@ -5609,20 +5609,24 @@ function applyPreferences() {
 
 function applyTheme(theme) {
   const root = document.documentElement;
-  root.classList.remove("theme-dark", "theme-coffee");
-  document.body.classList.remove("theme-dark", "theme-coffee");
-  if (theme === "dark") {
-    root.classList.add("theme-dark");
-    document.body.classList.add("theme-dark");
-  } else if (theme === "coffee") {
-    root.classList.add("theme-coffee");
-    document.body.classList.add("theme-coffee");
+  root.classList.remove("theme-warm-light", "theme-warm-dark", "theme-latte");
+  document.body.classList.remove("theme-warm-light", "theme-warm-dark", "theme-latte");
+  if (theme === "warm-light") {
+    root.classList.add("theme-warm-light");
+    document.body.classList.add("theme-warm-light");
+  } else if (theme === "warm-dark") {
+    root.classList.add("theme-warm-dark");
+    document.body.classList.add("theme-warm-dark");
   } else if (theme === "system") {
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      root.classList.add("theme-dark");
-      document.body.classList.add("theme-dark");
+      root.classList.add("theme-warm-dark");
+      document.body.classList.add("theme-warm-dark");
+    } else {
+      root.classList.add("theme-warm-light");
+      document.body.classList.add("theme-warm-light");
     }
   }
+  // "latte" = default, no class needed
   document.body.dataset.theme = theme;
 }
 
