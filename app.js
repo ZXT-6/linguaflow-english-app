@@ -5424,6 +5424,7 @@ function renderUser() {
   renderUserAvatar("#profileAvatar", user);
   $("#openAuthButton")?.toggleAttribute("hidden", Boolean(user));
   $("#logoutButton")?.toggleAttribute("hidden", !user);
+  $("#logoutButtonSettings")?.toggleAttribute("hidden", !user);
   renderProfileDashboard();
   $("#adminNavButton")?.toggleAttribute("hidden", !isAdminUser());
   $("#profileAdminButton")?.toggleAttribute("hidden", !isAdminUser());
@@ -6036,6 +6037,7 @@ function bindEvents() {
   on("#settingsButton", "click", () => setView("settings"));
   on("#openAuthButton", "click", () => setView("auth"));
   on("#logoutButton", "click", logout);
+  on("#logoutButtonSettings", "click", logout);
 ["#targetLanguageSelect", "#dailyGoalInput", "#autoSpeakToggle", "#reminderToggle"].forEach((selector) => {
   on(selector, "change", savePreferences);
 });
