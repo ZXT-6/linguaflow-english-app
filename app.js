@@ -5647,6 +5647,13 @@ async function logout() {
   state.authUser = null;
   state.authToken = null;
   saveState({ remote: false });
+  // 清空登录表单
+  const authForm = $("#authForm");
+  if (authForm) authForm.reset();
+  const resetForm = $("#resetPasswordForm");
+  if (resetForm) resetForm.reset();
+  const feedback = $("#authFeedback");
+  if (feedback) { feedback.textContent = ""; feedback.className = "feedback"; }
   renderUser();
   setView("auth");
 }
