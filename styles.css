@@ -79,68 +79,6 @@ body,
   transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* === 晨光模式 (Warm Light) === */
-.theme-warm-light {
-  --bg: #faf6f0;
-  --surface: #fffdf9;
-  --surface-soft: #f2ece3;
-  --surface-strong: #e8e0d4;
-  --ink: #2a2420;
-  --muted: #7a6e63;
-  --line: #e4dcd0;
-  --primary: #2a2420;
-  --primary-dark: #1a1612;
-  --accent: #c4956a;
-  --cafe: #c4956a;
-  --coffee: #5c3d2e;
-  --scene: #2a1f18;
-  --gold: #b8965a;
-  --shadow: 0 22px 60px rgba(40, 30, 20, 0.1);
-  --soft-shadow: 0 12px 34px rgba(40, 30, 20, 0.07);
-}
-
-.theme-warm-light,
-.theme-warm-light body {
-  background: #faf6f0;
-  color: #2a2420;
-}
-
-.theme-warm-light .panel,
-.theme-warm-light .flashcard,
-.theme-warm-light .practice-panel,
-.theme-warm-light .profile-data-panel,
-.theme-warm-light .profile-menu-panel,
-.theme-warm-light .library-panel {
-  background: rgba(255, 253, 249, 0.75);
-  border-color: rgba(228, 220, 208, 0.6);
-}
-
-.theme-warm-light .hero-panel {
-  background: linear-gradient(135deg, rgba(196, 149, 106, 0.06) 0%, rgba(255, 253, 249, 0.8) 100%);
-}
-
-.theme-warm-light .dashboard-command-card {
-  background: rgba(255, 253, 249, 0.75);
-}
-
-.theme-warm-light .dashboard-entry-card,
-.theme-warm-light .library-book-card,
-.theme-warm-light .stat-chip,
-.theme-warm-light .settings-stat-item,
-.theme-warm-light .profile-stat-card,
-.theme-warm-light .profile-quick-card,
-.theme-warm-light .achievement-badge,
-.theme-warm-light .profile-review-item {
-  background: rgba(255, 253, 249, 0.7);
-  border-color: rgba(228, 220, 208, 0.5);
-}
-
-.theme-warm-light input,
-.theme-warm-light select,
-.theme-warm-light textarea {
-  background: rgba(255, 253, 249, 0.85);
-  border-color: rgba(228, 220, 208, 0.5);
-}
 
 /* === 夜读模式 (Warm Dark) — Coffee Learning Theme === */
 .theme-warm-dark {
@@ -4480,14 +4418,6 @@ select:focus {
 .theme-preview-dark span:nth-child(1) { background: #2F2924; }
 .theme-preview-dark span:nth-child(2) { background: #352F29; }
 .theme-preview-dark span:nth-child(3) { background: #4A4038; }
-
-.theme-preview-latte {
-  background: #f5f0e8;
-}
-
-.theme-preview-latte span:nth-child(1) { background: #faf8f4; }
-.theme-preview-latte span:nth-child(2) { background: #ece6db; }
-.theme-preview-latte span:nth-child(3) { background: #ddd5c7; }
 
 .theme-preview-system {
   background: linear-gradient(135deg, #faf6f0 50%, #1e1a16 50%);
