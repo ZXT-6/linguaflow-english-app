@@ -51,23 +51,28 @@
 
 /* === 深色主题 === */
 .theme-dark {
-  --bg: var(--dark-bg);
-  --surface: var(--dark-surface);
-  --surface-soft: var(--dark-surface-soft);
-  --surface-strong: var(--dark-surface-strong);
-  --ink: var(--dark-ink);
-  --muted: var(--dark-muted);
-  --line: var(--dark-line);
-  --primary: var(--dark-ink);
+  --bg: #141210;
+  --surface: #1e1c18;
+  --surface-soft: #282520;
+  --surface-strong: #33302a;
+  --ink: #f0ebe3;
+  --muted: #a89e92;
+  --line: #3a3530;
+  --primary: #f0ebe3;
   --primary-dark: #f0ebe3;
-  --accent: var(--cafe);
+  --accent: #c4956a;
+  --cafe: #c4956a;
+  --coffee: #8b6e5a;
+  --scene: #1e1c18;
+  --gold: #d4b87a;
   --shadow: 0 22px 60px rgba(0, 0, 0, 0.4);
   --soft-shadow: 0 12px 34px rgba(0, 0, 0, 0.3);
 }
 
-.theme-dark html,
+.theme-dark,
 .theme-dark body {
-  background: var(--dark-bg);
+  background: #141210;
+  color: #f0ebe3;
 }
 
 .theme-dark .panel,
@@ -82,9 +87,10 @@
 .theme-dark .settings-prefs-card,
 .theme-dark .settings-theme-card,
 .theme-dark .settings-about-card {
-  background: rgba(30, 28, 24, 0.8);
+  background: rgba(30, 28, 24, 0.85);
   border-color: rgba(58, 53, 48, 0.6);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  color: #f0ebe3;
 }
 
 .theme-dark .segment-btn,
@@ -96,14 +102,14 @@
 .theme-dark .toggle-row {
   background: rgba(40, 37, 32, 0.7);
   border-color: rgba(58, 53, 48, 0.5);
-  color: var(--dark-ink);
+  color: #f0ebe3;
 }
 
 .theme-dark .segment-btn.active,
 .theme-dark .chip-btn.active {
   background: rgba(196, 149, 106, 0.15);
   border-color: var(--cafe);
-  color: var(--cafe);
+  color: #c4956a;
 }
 
 .theme-dark .stat-chip,
@@ -113,23 +119,25 @@
 }
 
 .theme-dark .hero-panel {
-  background: linear-gradient(135deg, rgba(196, 149, 106, 0.06) 0%, rgba(30, 28, 24, 0.8) 100%);
+  background: linear-gradient(135deg, rgba(196, 149, 106, 0.06) 0%, rgba(30, 28, 24, 0.85) 100%);
   border-color: rgba(58, 53, 48, 0.4);
 }
 
 .theme-dark .dashboard-command-card {
-  background: rgba(30, 28, 24, 0.7);
+  background: rgba(30, 28, 24, 0.75);
   border-color: rgba(58, 53, 48, 0.5);
 }
 
 .theme-dark .dashboard-entry-card {
-  background: rgba(30, 28, 24, 0.7);
+  background: rgba(30, 28, 24, 0.75);
   border-color: rgba(58, 53, 48, 0.5);
+  color: #f0ebe3;
 }
 
 .theme-dark .library-book-card {
-  background: rgba(30, 28, 24, 0.7);
+  background: rgba(30, 28, 24, 0.75);
   border-color: rgba(58, 53, 48, 0.5);
+  color: #f0ebe3;
 }
 
 .theme-dark input,
@@ -137,7 +145,7 @@
 .theme-dark textarea {
   background: rgba(40, 37, 32, 0.8);
   border-color: rgba(58, 53, 48, 0.5);
-  color: var(--dark-ink);
+  color: #f0ebe3;
 }
 
 .theme-dark .toggle-row input[type="checkbox"] {
@@ -156,27 +164,74 @@
   border-color: var(--cafe);
 }
 
+.theme-dark h1,
+.theme-dark h2,
+.theme-dark h3,
+.theme-dark h4,
+.theme-dark strong {
+  color: #f0ebe3;
+}
+
+.theme-dark small,
+.theme-dark span {
+  color: inherit;
+}
+
+.theme-dark .muted-text,
+.theme-dark .section-kicker,
+.theme-dark .eyebrow {
+  color: #a89e92;
+}
+
+.theme-dark .primary-button {
+  background: linear-gradient(135deg, #5c3d2e 0%, #2a1f18 100%);
+  color: #f0ebe3;
+}
+
+.theme-dark .secondary-button {
+  background: rgba(40, 37, 32, 0.7);
+  border-color: rgba(58, 53, 48, 0.5);
+  color: #f0ebe3;
+}
+
+.theme-dark .study-cafe-badge {
+  background: rgba(196, 149, 106, 0.1);
+  border-color: rgba(196, 149, 106, 0.2);
+  color: #c4956a;
+}
+
+.theme-dark ::-webkit-scrollbar {
+  background: #1e1c18;
+}
+
+.theme-dark ::-webkit-scrollbar-thumb {
+  background: #3a3530;
+}
+
 /* === 咖啡深色主题 === */
 .theme-coffee {
-  --bg: var(--coffee-bg);
-  --surface: var(--coffee-surface);
-  --surface-soft: var(--coffee-surface-soft);
-  --surface-strong: var(--coffee-surface-strong);
-  --ink: var(--coffee-ink);
-  --muted: var(--coffee-muted);
-  --line: var(--coffee-line);
-  --primary: var(--coffee-ink);
+  --bg: #1a140f;
+  --surface: #241c14;
+  --surface-soft: #2e231a;
+  --surface-strong: #3a2e22;
+  --ink: #f0e6d8;
+  --muted: #b8a690;
+  --line: #3a2e22;
+  --primary: #f0e6d8;
   --primary-dark: #f0e6d8;
-  --accent: var(--coffee-accent);
-  --cafe: var(--coffee-cafe);
-  --gold: var(--coffee-gold);
+  --accent: #d4a57a;
+  --cafe: #d4a57a;
+  --coffee: #d4a57a;
+  --gold: #d4b87a;
+  --scene: #1a140f;
   --shadow: 0 22px 60px rgba(0, 0, 0, 0.5);
   --soft-shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
 }
 
-.theme-coffee html,
+.theme-coffee,
 .theme-coffee body {
-  background: var(--coffee-bg);
+  background: #1a140f;
+  color: #f0e6d8;
 }
 
 .theme-coffee .panel,
@@ -194,6 +249,7 @@
   background: rgba(36, 28, 20, 0.85);
   border-color: rgba(58, 46, 34, 0.6);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(212, 165, 122, 0.05);
+  color: #f0e6d8;
 }
 
 .theme-coffee .segment-btn,
@@ -205,14 +261,14 @@
 .theme-coffee .toggle-row {
   background: rgba(46, 35, 26, 0.7);
   border-color: rgba(58, 46, 34, 0.5);
-  color: var(--coffee-ink);
+  color: #f0e6d8;
 }
 
 .theme-coffee .segment-btn.active,
 .theme-coffee .chip-btn.active {
   background: rgba(212, 165, 122, 0.12);
-  border-color: var(--coffee-accent);
-  color: var(--coffee-accent);
+  border-color: #d4a57a;
+  color: #d4a57a;
 }
 
 .theme-coffee .stat-chip,
@@ -234,11 +290,13 @@
 .theme-coffee .dashboard-entry-card {
   background: rgba(36, 28, 20, 0.75);
   border-color: rgba(58, 46, 34, 0.5);
+  color: #f0e6d8;
 }
 
 .theme-coffee .library-book-card {
   background: rgba(36, 28, 20, 0.75);
   border-color: rgba(58, 46, 34, 0.5);
+  color: #f0e6d8;
 }
 
 .theme-coffee input,
@@ -246,7 +304,7 @@
 .theme-coffee textarea {
   background: rgba(46, 35, 26, 0.8);
   border-color: rgba(58, 46, 34, 0.5);
-  color: var(--coffee-ink);
+  color: #f0e6d8;
 }
 
 .theme-coffee .toggle-row input[type="checkbox"] {
@@ -254,21 +312,60 @@
 }
 
 .theme-coffee .toggle-row input[type="checkbox"]:checked {
-  background: var(--coffee-accent);
+  background: #d4a57a;
 }
 
 .theme-coffee .primary-button {
-  background: linear-gradient(135deg, var(--coffee-accent) 0%, var(--gold) 100%);
+  background: linear-gradient(135deg, #d4a57a 0%, #d4b87a 100%);
   color: #1a140f;
+}
+
+.theme-coffee .secondary-button {
+  background: rgba(46, 35, 26, 0.7);
+  border-color: rgba(58, 46, 34, 0.5);
+  color: #f0e6d8;
 }
 
 .theme-coffee .theme-option.active {
-  border-color: var(--coffee-accent);
+  border-color: #d4a57a;
 }
 
 .theme-coffee .about-logo {
-  background: linear-gradient(135deg, var(--coffee-accent) 0%, var(--gold) 100%);
+  background: linear-gradient(135deg, #d4a57a 0%, #d4b87a 100%);
   color: #1a140f;
+}
+
+.theme-coffee h1,
+.theme-coffee h2,
+.theme-coffee h3,
+.theme-coffee h4,
+.theme-coffee strong {
+  color: #f0e6d8;
+}
+
+.theme-coffee small,
+.theme-coffee span {
+  color: inherit;
+}
+
+.theme-coffee .muted-text,
+.theme-coffee .section-kicker,
+.theme-coffee .eyebrow {
+  color: #b8a690;
+}
+
+.theme-coffee .study-cafe-badge {
+  background: rgba(212, 165, 122, 0.1);
+  border-color: rgba(212, 165, 122, 0.2);
+  color: #d4a57a;
+}
+
+.theme-coffee ::-webkit-scrollbar {
+  background: #241c14;
+}
+
+.theme-coffee ::-webkit-scrollbar-thumb {
+  background: #3a2e22;
 }
 
 * {
@@ -281,7 +378,7 @@
 
 html {
   min-height: 100%;
-  background: #f2ece3;
+  background: var(--bg);
 }
 
 body {
@@ -294,7 +391,7 @@ body {
   background:
     radial-gradient(ellipse at 30% 20%, rgba(196, 149, 106, 0.08) 0%, transparent 50%),
     radial-gradient(circle at 70% 80%, rgba(92, 61, 46, 0.05) 0%, transparent 40%),
-    linear-gradient(180deg, #faf8f4 0%, #f5f0e8 40%, #ece6db 100%);
+    linear-gradient(180deg, var(--surface) 0%, var(--bg) 40%, var(--surface-soft) 100%);
 }
 
 body::before {
