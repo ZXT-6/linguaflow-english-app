@@ -5091,6 +5091,8 @@ function setAuthMode(mode, { persist = true } = {}) {
   const isReset = mode === "reset";
   $("#authForm").hidden = isReset;
   $("#resetPasswordForm").hidden = !isReset;
+  const submitBtn = $("#authSubmitButton");
+  if (submitBtn) submitBtn.textContent = mode === "register" ? "注册" : "登录";
   $$("[data-auth-mode]").forEach((button) => {
     if (!isReset) button.classList.toggle("active", button.dataset.authMode === mode);
   });
