@@ -4,7 +4,7 @@
    ============================================ */
 
 :root {
-  /* 拿铁模式 — 默认推荐主题 */
+  /* === Theme Tokens === */
   --bg: #f5f0e8;
   --surface: #faf8f4;
   --surface-soft: #ece6db;
@@ -28,6 +28,28 @@
   --soft-shadow: 0 12px 34px rgba(40, 30, 20, 0.09);
   --radius: 12px;
   --radius-lg: 16px;
+
+  /* 组件 Token（亮色默认） */
+  --card-bg: rgba(255, 253, 248, 0.65);
+  --card-border: rgba(217, 208, 194, 0.5);
+  --card-shadow: 0 4px 12px rgba(40, 30, 20, 0.04);
+  --card-glow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --input-bg: rgba(255, 253, 248, 0.8);
+  --input-border: rgba(217, 208, 194, 0.6);
+  --input-focus: var(--accent);
+  --btn-primary-bg: linear-gradient(135deg, var(--coffee) 0%, var(--scene) 100%);
+  --btn-primary-color: #faf8f4;
+  --btn-secondary-bg: rgba(255, 253, 248, 0.7);
+  --btn-secondary-border: rgba(217, 208, 194, 0.5);
+  --btn-secondary-color: var(--ink);
+  --toggle-bg: #d9d0c2;
+  --toggle-checked: var(--accent);
+  --scrollbar-bg: transparent;
+  --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+  --text-bright: var(--ink);
+  --text-body: var(--ink);
+  --text-subtle: var(--muted);
+
   font-family:
     "Georgia", "Times New Roman", "Noto Serif SC", serif;
 }
@@ -351,159 +373,217 @@ body,
   background: #352F29;
   border-color: #4A4038;
 }
-  --surface-soft: #282520;
-  --surface-strong: #33302a;
-  --ink: #f0ebe3;
-  --muted: #a89e92;
-  --line: #3a3530;
-  --primary: #f0ebe3;
-  --primary-dark: #f0ebe3;
-  --accent: #c4956a;
-  --cafe: #c4956a;
-  --coffee: #8b6e5a;
-  --scene: #1e1c18;
-  --gold: #d4b87a;
-  --shadow: 0 22px 60px rgba(0, 0, 0, 0.4);
-  --soft-shadow: 0 12px 34px rgba(0, 0, 0, 0.3);
+
+/* ===== 全组件深色适配 ===== */
+
+/* 所有输入框 */
+.theme-warm-dark input[type="text"],
+.theme-warm-dark input[type="email"],
+.theme-warm-dark input[type="password"],
+.theme-warm-dark input[type="search"],
+.theme-warm-dark input[type="number"],
+.theme-warm-dark input[type="tel"],
+.theme-warm-dark textarea,
+.theme-warm-dark select {
+  background: #433A33 !important;
+  border-color: #5B4E44 !important;
+  color: #F6EFE7 !important;
 }
 
-.theme-dark,
-.theme-dark body {
-  background: #141210;
-  color: #f0ebe3;
+.theme-warm-dark input:focus,
+.theme-warm-dark textarea:focus,
+.theme-warm-dark select:focus {
+  border-color: #D8A36A !important;
+  box-shadow: 0 0 0 3px rgba(216, 163, 106, 0.15) !important;
+  background: #433A33 !important;
 }
 
-.theme-dark .panel,
-.theme-dark .flashcard,
-.theme-dark .practice-panel,
-.theme-dark .profile-data-panel,
-.theme-dark .profile-menu-panel,
-.theme-dark .library-panel,
-.theme-dark .settings-profile-card,
-.theme-dark .settings-stats-card,
-.theme-dark .settings-data-card,
-.theme-dark .settings-prefs-card,
-.theme-dark .settings-theme-card,
-.theme-dark .settings-about-card {
-  background: rgba(30, 28, 24, 0.85);
-  border-color: rgba(58, 53, 48, 0.6);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  color: #f0ebe3;
+.theme-warm-dark input::placeholder,
+.theme-warm-dark textarea::placeholder {
+  color: #8B7C6D !important;
 }
 
-.theme-dark .segment-btn,
-.theme-dark .chip-btn,
-.theme-dark .setting-row,
-.theme-dark .profile-menu-item,
-.theme-dark .settings-stat-item,
-.theme-dark .settings-action-row,
-.theme-dark .toggle-row {
-  background: rgba(40, 37, 32, 0.7);
-  border-color: rgba(58, 53, 48, 0.5);
-  color: #f0ebe3;
+/* 选择题按钮 */
+.theme-warm-dark .choice-button {
+  background: #2F2924 !important;
+  border-color: #4A4038 !important;
+  color: #F6EFE7 !important;
 }
 
-.theme-dark .segment-btn.active,
-.theme-dark .chip-btn.active {
-  background: rgba(196, 149, 106, 0.15);
-  border-color: var(--cafe);
-  color: #c4956a;
+.theme-warm-dark .choice-button:hover {
+  background: #51453C !important;
+  border-color: #D8A36A !important;
 }
 
-.theme-dark .stat-chip,
-.theme-dark .settings-stat-item {
-  background: rgba(40, 37, 32, 0.7);
-  border-color: rgba(58, 53, 48, 0.4);
+.theme-warm-dark .choice-button.correct {
+  background: rgba(106, 154, 122, 0.15) !important;
+  border-color: #6a9a7a !important;
+  color: #6a9a7a !important;
 }
 
-.theme-dark .hero-panel {
-  background: linear-gradient(135deg, rgba(196, 149, 106, 0.06) 0%, rgba(30, 28, 24, 0.85) 100%);
-  border-color: rgba(58, 53, 48, 0.4);
+.theme-warm-dark .choice-button.wrong {
+  background: rgba(216, 117, 106, 0.15) !important;
+  border-color: #D8756A !important;
+  color: #D8756A !important;
 }
 
-.theme-dark .dashboard-command-card {
-  background: rgba(30, 28, 24, 0.75);
-  border-color: rgba(58, 53, 48, 0.5);
+.theme-warm-dark .choice-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-.theme-dark .dashboard-entry-card {
-  background: rgba(30, 28, 24, 0.75);
-  border-color: rgba(58, 53, 48, 0.5);
-  color: #f0ebe3;
+/* 闪卡 */
+.theme-warm-dark .flashcard {
+  background: #352F29 !important;
+  border-color: #4A4038 !important;
+  color: #F6EFE7 !important;
 }
 
-.theme-dark .library-book-card {
-  background: rgba(30, 28, 24, 0.75);
-  border-color: rgba(58, 53, 48, 0.5);
-  color: #f0ebe3;
+.theme-warm-dark .flashcard .card-meaning,
+.theme-warm-dark .flashcard .card-example {
+  color: #D3C6B8;
 }
 
-.theme-dark input,
-.theme-dark select,
-.theme-dark textarea {
-  background: rgba(40, 37, 32, 0.8);
-  border-color: rgba(58, 53, 48, 0.5);
-  color: #f0ebe3;
+/* 练习面板 */
+.theme-warm-dark .practice-panel {
+  background: #352F29 !important;
+  color: #F6EFE7 !important;
 }
 
-.theme-dark .toggle-row input[type="checkbox"] {
-  background: #3a3530;
+/* 搜索框 */
+.theme-warm-dark input[type="search"] {
+  background: #433A33 !important;
+  border-color: #5B4E44 !important;
+  color: #F6EFE7 !important;
 }
 
-.theme-dark .toggle-row input[type="checkbox"]:checked {
-  background: var(--cafe);
+/* 空状态 */
+.theme-warm-dark .empty-state,
+.theme-warm-dark .illustrated-empty {
+  color: #8B7C6D;
 }
 
-.theme-dark .theme-preview-light {
-  opacity: 0.5;
+.theme-warm-dark .empty-state p,
+.theme-warm-dark .illustrated-empty p {
+  color: #8B7C6D;
 }
 
-.theme-dark .theme-option.active {
-  border-color: var(--cafe);
+/* 模态框 */
+.theme-warm-dark .dialog-backdrop {
+  background: rgba(37, 33, 29, 0.85) !important;
 }
 
-.theme-dark h1,
-.theme-dark h2,
-.theme-dark h3,
-.theme-dark h4,
-.theme-dark strong {
-  color: #f0ebe3;
+.theme-warm-dark .dialog {
+  background: #352F29 !important;
+  border-color: #4A4038 !important;
+  color: #F6EFE7 !important;
 }
 
-.theme-dark small,
-.theme-dark span {
-  color: inherit;
+.theme-warm-dark .dialog h2 {
+  color: #F6EFE7;
 }
 
-.theme-dark .muted-text,
-.theme-dark .section-kicker,
-.theme-dark .eyebrow {
-  color: #a89e92;
+.theme-warm-dark .dialog p {
+  color: #D3C6B8;
 }
 
-.theme-dark .primary-button {
-  background: linear-gradient(135deg, #5c3d2e 0%, #2a1f18 100%);
-  color: #f0ebe3;
+/* 下拉菜单 */
+.theme-warm-dark select {
+  background: #433A33 !important;
+  color: #F6EFE7 !important;
 }
 
-.theme-dark .secondary-button {
-  background: rgba(40, 37, 32, 0.7);
-  border-color: rgba(58, 53, 48, 0.5);
-  color: #f0ebe3;
+.theme-warm-dark select option {
+  background: #352F29;
+  color: #F6EFE7;
 }
 
-.theme-dark .study-cafe-badge {
-  background: rgba(196, 149, 106, 0.1);
-  border-color: rgba(196, 149, 106, 0.2);
-  color: #c4956a;
+/* 列表/表格 */
+.theme-warm-dark .library-list,
+.theme-warm-dark .mistake-list,
+.theme-warm-dark .admin-user-list,
+.theme-warm-dark .admin-word-list,
+.theme-warm-dark .favorite-list,
+.theme-warm-dark .listening-list,
+.theme-warm-dark .note-list,
+.theme-warm-detail-list,
+.theme-warm-dark .phrase-list {
+  color: #F6EFE7;
 }
 
-.theme-dark ::-webkit-scrollbar {
-  background: #1e1c18;
+/* 复选框/单选框 */
+.theme-warm-dark input[type="checkbox"],
+.theme-warm-dark input[type="radio"] {
+  accent-color: #D8A36A;
 }
 
-.theme-dark ::-webkit-scrollbar-thumb {
-  background: #3a3530;
+/* 进度条 */
+.theme-warm-dark progress {
+  accent-color: #D8A36A;
+}
+
+/* 标签/徽章 */
+.theme-warm-dark .level-pill,
+.theme-warm-dark .mastery-pill,
+.theme-warm-dark .source-pill {
+  background: #2F2924;
+  border-color: #4A4038;
+  color: #D3C6B8;
+}
+
+/* 工具栏 */
+.theme-warm-dark .library-toolbar {
+  background: #2F2924;
+  border-color: #4A4038;
+}
+
+/* 分页 */
+.theme-warm-dark .library-pagination {
+  color: #D3C6B8;
+}
+
+/* 反馈信息 */
+.theme-warm-dark .feedback {
+  color: #D3C6B8;
+}
+
+.theme-warm-dark .feedback.good {
+  color: #6a9a7a;
+}
+
+.theme-warm-dark .feedback.bad {
+  color: #D8756A;
+}
+
+/* 链接 */
+.theme-warm-dark a {
+  color: #D8A36A;
+}
+
+.theme-warm-dark a:hover {
+  color: #E8B47B;
+}
+
+/* 顶部栏 */
+.theme-warm-dark .topbar {
+  background: #25211D;
+  border-color: #4A4038;
+}
+
+/* 打卡按钮 */
+.theme-warm-dark #checkInButton {
+  background: linear-gradient(135deg, #D8A36A 0%, #E8B47B 100%);
+  color: #25211D;
+}
+
+/* 字母高亮（拼写练习） */
+.theme-warm-dark .clickable-word {
+  color: #D8A36A;
+}
+
+/* 笔记本图标 */
+.theme-warm-dark .empty-illustration {
+  opacity: 0.3;
 }
 
 * {
