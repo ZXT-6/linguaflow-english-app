@@ -656,6 +656,23 @@ body,
   color: #F6EFE7;
 }
 
+.theme-warm-dark .audio-study-bar {
+  background: #7f7666 !important;
+  border-color: #4A4038;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.theme-warm-dark .practice-tabs {
+  background: #7f7666 !important;
+}
+
+.theme-warm-dark .practice-tab.active {
+  background: #D8A36A !important;
+  color: #25211D !important;
+}
+
 * {
   box-sizing: border-box;
 }
