@@ -5358,10 +5358,9 @@ async function submitAuth(event) {
         feedback.className = "feedback bad";
         return;
       }
-      await onSupabaseLogin(user);
-      feedback.textContent = "注册成功，已登录。";
+      feedback.textContent = "注册成功，请登录。";
       feedback.className = "feedback good";
-      setView("dashboard");
+      setAuthMode("login");
     } catch (err) {
       feedback.textContent = `注册失败：${err.message}`;
       feedback.className = "feedback bad";
@@ -5465,23 +5464,11 @@ async function submitAuth(event) {
     createdAt: new Date().toISOString(),
   };
   state.registeredUsers = [localAccount, ...(state.registeredUsers || [])];
-  state.authUser = normalizeAuthUser({
-    id: localAccount.id,
-    name: localAccount.username,
-    username: localAccount.username,
-    email: localAccount.email,
-    role: localAccount.role,
-    createdAt: localAccount.createdAt,
-  });
   state.pendingCode = null;
-  // 注册新用户时清空学习数据，保留用户列表
-  resetLearningData();
   saveState();
-  renderUser();
-  renderAll();
-  feedback.textContent = "注册成功，已登录。";
+  feedback.textContent = "注册成功，请登录。";
   feedback.className = "feedback good";
-  setView("dashboard");
+  setAuthMode("login");
 }
 
 async function onSupabaseLogin(supabaseUser) {
