@@ -4543,20 +4543,89 @@ function renderProfileDashboard() {
   const stats = calculateLearningStats(allWords(), state.wordProgress || {}, state.answers || []);
   const user = normalizeAuthUser(state.authUser);
   const nickname = getUserNickname(user);
-  const syncLabel = user ? (state.sync?.lastSyncedAt ? "云端已同步" : state.sync?.status === "syncing" ? "云端同步中" : "等待云端同步") : "未登录";
-  $("#profileHeroName").textContent = user ? nickname : "Language Learner";
-  $("#profileHeroDetail").textContent = user
-    ? `账号：${user.username || user.name}${user.phone ? ` · 手机号：${user.phone}` : " · 本地账号"} · ${syncLabel} · 连续学习 ${state.streak} 天 · 收藏 ${state.favoriteWords?.length || 0} 个单词`
-    : "登录后可同步学习记录，保留你的每日进度。";
-  $("#profileAccuracyMetric").textContent = `${stats.accuracy || 85}%`;
-  $("#profileStats").innerHTML = [
-    ["学习天数", `${state.streak}`],
-    ["累计单词", `${stats.studiedWords}`],
-    ["累计小时", `${Math.max(1, (state.minutes / 60 + 12.5).toFixed(1))}`],
-    ["正确率", `${stats.accuracy || 85}%`],
-  ]
-    .map((item) => `<article><strong>${item[1]}</strong><span>${item[0]}</span></article>`)
-    .join("");
+
+  // Hero Card
+  setTextIfPresent("#profileHeroName", user ? nickname : "Language Learner");
+  const levelNum = stats.masteredWords >= 45 ? 3 : stats.masteredWords >= 20 ? 2 : 1;
+  const levelName = levelNum === 3 ? "进阶学习者" : levelNum === 2 ? "中级学习者" : "英语学习者";
+  setTextIfPresent("#profileHeroLevel", `Lv.${levelNum} ${levelName}`);
+  setTextIfPresent("#profileHeroStreak", `🔥 连续学习 ${state.streak} 天`);
+  setTextIfPresent("#profileGoalProgress", `${stats.studiedWords} / 100 单词`);
+  const goalPercent = Math.min(100, Math.round((stats.studiedWords / 100) * 100));
+  const goalFill = $("#profileGoalFill");
+  if (goalFill) goalFill.style.width = `${goalPercent}%`;
+
+  // 6 Stats Cards
+  setTextIfPresent("#profileStatMastered", String(stats.masteredWords));
+  setTextIfPresent("#profileStatMinutes", String(state.minutes));
+  setTextIfPresent("#profileStatStreak", String(state.streak));
+  setTextIfPresent("#profileStatAccuracy", `${stats.accuracy || 0}%`);
+  setTextIfPresent("#profileStatLevel", getStudyStageLabel(stats));
+  const weeklyRate = (state.checkInDates || []).length
+    ? Math.min(100, Math.round((new Set((state.checkInDates || []).slice(-7)).size / 7) * 100))
+    : 0;
+  setTextIfPresent("#profileStatWeekly", `${weeklyRate}%`);
+
+  // Weekly Goal
+  const weeklyTarget = 100;
+  const weeklyDone = stats.studiedWords;
+  const weeklyRemain = Math.max(0, weeklyTarget - weeklyDone);
+  const weeklyPercent = Math.min(100, Math.round((weeklyDone / weeklyTarget) * 100));
+  setTextIfPresent("#profileWeeklyTarget", `${weeklyTarget} 个单词`);
+  setTextIfPresent("#profileWeeklyDone", String(weeklyDone));
+  setTextIfPresent("#profileWeeklyRemain", String(weeklyRemain));
+  setTextIfPresent("#profileWeeklyPercent", `${weeklyPercent}%`);
+  const weeklyFill = $("#profileWeeklyFill");
+  if (weeklyFill) weeklyFill.style.width = `${weeklyPercent}%`;
+
+  // Timeline
+  renderTimeline();
+
+  // Achievements
+  renderAchievements(stats);
+
+  // Review Stats
+  const dueReviews = buildReviewQueue(allWords(), state.wordProgress || {}, new Date(), 100).length;
+  setTextIfPresent("#profileReviewFavorites", String((state.favoriteWords || []).length));
+  setTextIfPresent("#profileReviewDue", String(dueReviews));
+  setTextIfPresent("#profileReviewToday", String(Math.min(12, dueReviews)));
+}
+
+function renderTimeline() {
+  const container = $("#profileTimeline");
+  if (!container) return;
+  const checkins = (state.checkInDates || []).slice(-7).reverse();
+  if (!checkins.length) {
+    container.innerHTML = '<div class="timeline-empty">还没有学习记录，开始今天的学习吧！</div>';
+    return;
+  }
+  const today = new Date().toISOString().slice(0, 10);
+  const labels = { 0: "单词学习", 1: "练习测试", 2: "听写训练", 3: "阅读理解", 4: "口语跟读" };
+  container.innerHTML = checkins.map((date, i) => {
+    const label = date === today ? "今天" : new Date(date + "T00:00:00").toLocaleDateString("zh-CN", { month: "long", day: "numeric" });
+    const activity = labels[i % 5] || "学习";
+    return `<div class="timeline-item"><span class="timeline-date">${label}</span><span class="timeline-content">✔ 完成${activity}</span></div>`;
+  }).join("");
+}
+
+function renderAchievements(stats) {
+  const container = $("#profileAchievements");
+  if (!container) return;
+  const achievements = [
+    { icon: "🏅", title: "首次学习", desc: "开始你的第一次学习", check: stats.studiedWords > 0 },
+    { icon: "🔥", title: "连续7天", desc: "连续学习7天", check: state.streak >= 7 },
+    { icon: "📚", title: "掌握100词", desc: "掌握100个单词", check: stats.masteredWords >= 100 },
+    { icon: "⭐", title: "首次测试", desc: "完成第一次测试", check: (state.answers || []).length > 0 },
+    { icon: "🎯", title: "正确率90%", desc: "正确率达到90%", check: (stats.accuracy || 0) >= 90 },
+    { icon: "💎", title: "连续30天", desc: "连续学习30天", check: state.streak >= 30 },
+  ];
+  container.innerHTML = achievements.map((a) => `
+    <div class="achievement-badge ${a.check ? "earned" : "locked"}">
+      <span class="achievement-icon">${a.icon}</span>
+      <strong>${a.title}</strong>
+      <small>${a.desc}</small>
+    </div>
+  `).join("");
 }
 
 function renderFlashcard() {

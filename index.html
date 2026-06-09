@@ -492,85 +492,162 @@
         </section>
 
         <section class="view" id="profile" aria-label="我的">
-          <section class="profile-summary">
-            <div class="profile-summary-actions">
-              <button class="icon-button profile-back" type="button" data-view="dashboard" aria-label="返回">
-                <img class="nav-icon-image" src="./assets/nav-home-a.svg" alt="" />
-              </button>
-              <button class="icon-button profile-edit" type="button" data-view="settings" aria-label="设置">
-                <img class="nav-icon-image" src="./assets/nav-settings-a.svg" alt="" />
-              </button>
-            </div>
-            <div class="profile-summary-main">
-              <div class="user-avatar profile-avatar-small" id="profileHeroAvatar" aria-label="学习者头像">LF</div>
-              <div>
-                <span class="section-kicker">学习档案</span>
+
+          <!-- Hero Card -->
+          <section class="profile-hero-card">
+            <div class="profile-hero-top">
+              <div class="user-avatar profile-hero-avatar" id="profileHeroAvatar">LF</div>
+              <div class="profile-hero-info">
                 <h2 id="profileHeroName">Language Learner</h2>
-                <p id="profileHeroDetail">登录后可同步学习记录，保留你的每日进度。</p>
+                <p class="profile-hero-level" id="profileHeroLevel">Lv.1 英语学习者</p>
+                <p class="profile-hero-streak" id="profileHeroStreak">🔥 连续学习 1 天</p>
               </div>
             </div>
-          </section>
-
-          <section class="panel profile-data-panel">
-            <div class="section-heading">
-              <h2>学习数据</h2>
-              <span id="profileAccuracyMetric">85%</span>
-            </div>
-            <div class="profile-stat-grid" id="profileStats"></div>
-          </section>
-
-          <section class="panel profile-menu-panel">
-            <div class="section-heading">
-              <h2>学习工具</h2>
-              <span>常用入口</span>
-            </div>
-            <div class="profile-menu-list">
-              <button class="profile-menu-item" type="button" data-view="practice">
-                <span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/nav-practice-c.svg" alt="" /></span>
-                <span>学习计划</span>
-                <span class="menu-arrow" aria-hidden="true">›</span>
-              </button>
-              <button class="profile-menu-item" type="button" data-view="library">
-                <span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/nav-library-a.svg" alt="" /></span>
-                <span>词库管理</span>
-                <span class="menu-arrow" aria-hidden="true">›</span>
-              </button>
-              <button class="profile-menu-item" type="button" data-view="favorites">
-                <span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/nav-favorites-a.svg" alt="" /></span>
-                <span>收藏夹</span>
-                <span class="menu-arrow" aria-hidden="true">›</span>
-              </button>
-              <button class="profile-menu-item" type="button" data-view="mistakes">
-                <span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/nav-mistakes-a.svg" alt="" /></span>
-                <span>复习中心</span>
-                <span class="menu-arrow" aria-hidden="true">›</span>
-              </button>
+            <div class="profile-hero-goal">
+              <div class="profile-goal-header">
+                <span>本周学习目标</span>
+                <strong id="profileGoalProgress">0 / 100 单词</strong>
+              </div>
+              <div class="profile-goal-bar">
+                <div class="profile-goal-fill" id="profileGoalFill"></div>
+              </div>
+              <p class="profile-hero-quote">坚持学习，你正在变得更优秀。</p>
             </div>
           </section>
 
-          <section class="panel profile-menu-panel">
-            <div class="section-heading">
-              <h2>系统设置</h2>
-              <span>账号与偏好</span>
-            </div>
-            <div class="profile-menu-list">
-              <button class="profile-menu-item" type="button" data-view="settings">
-                <span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/nav-settings-a.svg" alt="" /></span>
-                <span>偏好设置</span>
-                <span class="menu-arrow" aria-hidden="true">›</span>
-              </button>
-              <button class="profile-menu-item admin-entry" id="profileAdminButton" type="button" data-view="admin" hidden>
-                <span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/nav-admin-a.svg" alt="" /></span>
-                <span>后台管理</span>
-                <span class="menu-arrow" aria-hidden="true">›</span>
-              </button>
-              <button class="profile-menu-item" type="button" id="logoutButton" hidden>
-                <span class="menu-icon logout-icon" aria-hidden="true">↩</span>
-                <span>退出登录</span>
-                <span class="menu-arrow" aria-hidden="true"></span>
-              </button>
+          <!-- 6 Stats Cards -->
+          <section class="profile-stats-grid">
+            <article class="profile-stat-card">
+              <span class="profile-stat-icon">📚</span>
+              <strong id="profileStatMastered">0</strong>
+              <small>已掌握单词</small>
+            </article>
+            <article class="profile-stat-card">
+              <span class="profile-stat-icon">⏱</span>
+              <strong id="profileStatMinutes">0</strong>
+              <small>学习总时长(分)</small>
+            </article>
+            <article class="profile-stat-card">
+              <span class="profile-stat-icon">🔥</span>
+              <strong id="profileStatStreak">0</strong>
+              <small>连续学习天数</small>
+            </article>
+            <article class="profile-stat-card">
+              <span class="profile-stat-icon">🎯</span>
+              <strong id="profileStatAccuracy">0%</strong>
+              <small>平均正确率</small>
+            </article>
+            <article class="profile-stat-card">
+              <span class="profile-stat-icon">🏆</span>
+              <strong id="profileStatLevel">基础</strong>
+              <small>当前等级</small>
+            </article>
+            <article class="profile-stat-card">
+              <span class="profile-stat-icon">⭐</span>
+              <strong id="profileStatWeekly">0%</strong>
+              <small>本周完成率</small>
+            </article>
+          </section>
+
+          <!-- 本周学习目标 -->
+          <section class="panel profile-goal-card">
+            <h3>本周学习目标</h3>
+            <div class="profile-weekly-goal">
+              <div class="profile-weekly-info">
+                <div>
+                  <span>本周目标</span>
+                  <strong id="profileWeeklyTarget">100 个单词</strong>
+                </div>
+                <div>
+                  <span>当前完成</span>
+                  <strong id="profileWeeklyDone">0</strong>
+                </div>
+                <div>
+                  <span>剩余</span>
+                  <strong id="profileWeeklyRemain">100</strong>
+                </div>
+              </div>
+              <div class="profile-weekly-bar">
+                <div class="profile-weekly-fill" id="profileWeeklyFill"></div>
+              </div>
+              <span class="profile-weekly-percent" id="profileWeeklyPercent">0%</span>
             </div>
           </section>
+
+          <!-- 快捷学习入口 2x2 -->
+          <section class="profile-quick-grid">
+            <button class="profile-quick-card" data-view="vocabulary" type="button">
+              <span class="quick-icon">📖</span>
+              <strong>单词学习</strong>
+              <small>记忆新单词</small>
+            </button>
+            <button class="profile-quick-card" data-view="practice" type="button">
+              <span class="quick-icon">📝</span>
+              <strong>练习测试</strong>
+              <small>选择拼写听力</small>
+            </button>
+            <button class="profile-quick-card" data-view="mistakes" type="button">
+              <span class="quick-icon">🔥</span>
+              <strong>今日复习</strong>
+              <small>巩固薄弱词</small>
+            </button>
+            <button class="profile-quick-card" data-view="favorites" type="button">
+              <span class="quick-icon">⭐</span>
+              <strong>收藏夹</strong>
+              <small>常看的单词</small>
+            </button>
+          </section>
+
+          <!-- 最近学习时间线 -->
+          <section class="panel profile-timeline-card">
+            <h3>最近学习记录</h3>
+            <div class="profile-timeline" id="profileTimeline"></div>
+          </section>
+
+          <!-- 学习成就 -->
+          <section class="panel profile-achievements-card">
+            <h3>学习成就</h3>
+            <div class="profile-achievements-grid" id="profileAchievements"></div>
+          </section>
+
+          <!-- 收藏与复习统计 -->
+          <section class="panel profile-review-card">
+            <h3>收藏与复习</h3>
+            <div class="profile-review-grid">
+              <article class="profile-review-item">
+                <span>⭐</span>
+                <strong id="profileReviewFavorites">0</strong>
+                <small>收藏单词</small>
+              </article>
+              <article class="profile-review-item">
+                <span>🔄</span>
+                <strong id="profileReviewDue">0</strong>
+                <small>待复习</small>
+              </article>
+              <article class="profile-review-item">
+                <span>📋</span>
+                <strong id="profileReviewToday">0</strong>
+                <small>今日推荐</small>
+              </article>
+            </div>
+          </section>
+
+          <!-- 账号与设置（底部） -->
+          <section class="profile-bottom-actions">
+            <button class="profile-action-btn" data-view="settings" type="button">
+              <span>⚙️</span> 偏好设置
+            </button>
+            <button class="profile-action-btn" id="profileAdminButton" data-view="admin" type="button" hidden>
+              <span>🛡️</span> 后台管理
+            </button>
+            <button class="profile-action-btn" id="logoutButton" type="button" hidden>
+              <span>🚪</span> 退出登录
+            </button>
+            <button class="profile-action-btn danger" id="openAuthButton" type="button">
+              <span>👤</span> 登录 / 注册
+            </button>
+          </section>
+
         </section>
 
         <section class="view" id="favorites" aria-label="收藏夹">
