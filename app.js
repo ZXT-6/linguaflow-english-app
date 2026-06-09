@@ -5093,31 +5093,46 @@ function setAuthMode(mode, { persist = true } = {}) {
   authPanel?.classList.remove("auth-mode-entering");
   $$("[data-auth-field]").forEach((field) => {
     const scope = field.dataset.authField;
-    field.hidden = !(scope === "both" || scope === mode);
+    const visible = scope === "both" || scope === mode;
+    field.hidden = !visible;
     field.classList.remove("auth-mode-entering");
     if (!field.hidden) {
       void field.offsetWidth;
       field.classList.add("auth-mode-entering");
     }
+    // 隐藏的字段禁用 + 移除 required，显示时恢复
+    const input = field.querySelector("input");
+    if (input) {
+      input.disabled = !visible;
+      if (!visible) input.required = false;
+    }
   });
+  // 动态设置 required
   if (USE_SUPABASE || USE_NETLIFY_BACKEND) {
     $("#authUsernameInput").required = true;
+    $("#authUsernameInput").disabled = false;
     const emailInput = $("#authEmailInput");
-    if (emailInput) emailInput.required = mode === "register";
+    if (emailInput) {
+      emailInput.required = mode === "register";
+      emailInput.disabled = mode !== "register";
+    }
     $("#authCodeInput").required = false;
-    $$("[data-auth-field='register']").forEach((field) => {
-      if (field.querySelector("#authCodeInput")) {
-        field.hidden = true;
-      }
-    });
   } else {
     $("#authUsernameInput").required = true;
-    const phoneInput = $("#authPhoneInput");
-    if (phoneInput) phoneInput.required = mode === "register";
+    $("#authUsernameInput").disabled = false;
+    const emailInput = $("#authEmailInput");
+    if (emailInput) {
+      emailInput.required = mode === "register";
+      emailInput.disabled = mode !== "register";
+    }
     const codeInput = $("#authCodeInput");
-    if (codeInput) codeInput.required = mode === "register";
+    if (codeInput) {
+      codeInput.required = mode === "register";
+      codeInput.disabled = mode !== "register";
+    }
   }
   $("#authPasswordInput").required = true;
+  $("#authPasswordInput").disabled = false;
   $("#authPasswordInput").placeholder = mode === "register" ? "设置至少 6 位密码" : "输入密码";
   $("#authPasswordInput").autocomplete = mode === "register" ? "new-password" : "current-password";
   if (authPanel) {

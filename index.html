@@ -43,23 +43,23 @@
               <button class="segment-button" data-auth-mode="login" type="button">登录</button>
               <button class="segment-button active" data-auth-mode="register" type="button">注册</button>
             </div>
-            <form id="authForm" class="auth-form">
+            <form id="authForm" class="auth-form" novalidate>
               <div class="auth-field" data-auth-field="register" hidden>
                 <label class="input-label" for="authEmailInput">邮箱</label>
-                <input id="authEmailInput" type="email" placeholder="输入邮箱" autocomplete="email" required />
+                <input id="authEmailInput" type="email" name="email" placeholder="输入邮箱" autocomplete="email" disabled />
               </div>
               <div class="auth-field" data-auth-field="both">
                 <label class="input-label" for="authUsernameInput">用户名</label>
-                <input id="authUsernameInput" type="text" placeholder="输入用户名" autocomplete="username" required />
+                <input id="authUsernameInput" type="text" name="username" placeholder="输入用户名" autocomplete="username" required />
               </div>
               <div class="auth-field" data-auth-field="both">
                 <label class="input-label" for="authPasswordInput">密码</label>
-                <input id="authPasswordInput" type="password" placeholder="输入密码" autocomplete="current-password" required />
+                <input id="authPasswordInput" type="password" name="password" placeholder="输入密码" autocomplete="current-password" required />
               </div>
               <div class="auth-field" data-auth-field="register" hidden>
                 <label class="input-label" for="authCodeInput">验证码</label>
                 <div class="code-row">
-                  <input id="authCodeInput" type="text" inputmode="numeric" maxlength="6" placeholder="邮箱验证码" />
+                  <input id="authCodeInput" type="text" name="code" inputmode="numeric" maxlength="6" placeholder="邮箱验证码" disabled />
                   <button class="secondary-button" id="sendCodeButton" type="button">发送验证码</button>
                 </div>
               </div>
@@ -69,25 +69,25 @@
                 <button class="text-button" id="forgotPasswordLink" type="button">忘记密码？</button>
               </div>
             </form>
-            <form id="resetPasswordForm" class="auth-form" hidden>
+            <form id="resetPasswordForm" class="auth-form" novalidate hidden>
               <div class="section-heading">
                 <h3>重置密码</h3>
                 <span id="resetModeLabel">输入邮箱获取验证码</span>
               </div>
               <div class="auth-field">
                 <label class="input-label" for="resetEmailInput">邮箱</label>
-                <input id="resetEmailInput" type="email" placeholder="输入注册邮箱" autocomplete="email" required />
+                <input id="resetEmailInput" type="email" name="resetEmail" placeholder="输入注册邮箱" autocomplete="email" required />
               </div>
               <div class="auth-field" id="resetCodeField">
                 <label class="input-label" for="resetCodeInput">验证码</label>
                 <div class="code-row">
-                  <input id="resetCodeInput" type="text" inputmode="numeric" maxlength="6" placeholder="6位验证码" />
+                  <input id="resetCodeInput" type="text" name="resetCode" inputmode="numeric" maxlength="6" placeholder="6位验证码" />
                   <button class="secondary-button" id="sendResetCodeButton" type="button">发送验证码</button>
                 </div>
               </div>
               <div class="auth-field" id="resetPasswordField">
                 <label class="input-label" for="resetNewPasswordInput">新密码</label>
-                <input id="resetNewPasswordInput" type="password" placeholder="输入新密码（至少6位）" autocomplete="new-password" required />
+                <input id="resetNewPasswordInput" type="password" name="newPassword" placeholder="输入新密码（至少6位）" autocomplete="new-password" required />
               </div>
               <button class="primary-button" type="submit">重置密码</button>
               <p class="feedback" id="resetFeedback" aria-live="polite"></p>
