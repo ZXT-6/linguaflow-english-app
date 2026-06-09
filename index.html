@@ -494,9 +494,11 @@
         <section class="view" id="profile" aria-label="我的">
           <section class="profile-summary">
             <div class="profile-summary-actions">
-              <button class="icon-button profile-back" type="button" data-view="dashboard" aria-label="返回">‹</button>
-              <button class="icon-button profile-edit" type="button" data-view="settings" aria-label="编辑资料">
-                <img class="nav-icon-image" src="./assets/menu-settings-b.svg" alt="" />
+              <button class="icon-button profile-back" type="button" data-view="dashboard" aria-label="返回">
+                <img class="nav-icon-image" src="./assets/nav-home-a.svg" alt="" />
+              </button>
+              <button class="icon-button profile-edit" type="button" data-view="settings" aria-label="设置">
+                <img class="nav-icon-image" src="./assets/nav-settings-a.svg" alt="" />
               </button>
             </div>
             <div class="profile-summary-main">
@@ -508,6 +510,7 @@
               </div>
             </div>
           </section>
+
           <section class="panel profile-data-panel">
             <div class="section-heading">
               <h2>学习数据</h2>
@@ -515,29 +518,57 @@
             </div>
             <div class="profile-stat-grid" id="profileStats"></div>
           </section>
+
           <section class="panel profile-menu-panel">
-            <div class="profile-section-group">
-              <div class="section-heading">
-                <h2>学习工具</h2>
-                <span>常用入口</span>
-              </div>
-              <div class="profile-menu-list">
-                <button class="profile-menu-item" type="button" data-view="practice"><span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/menu-plan-a.svg" alt="" /></span>学习计划</button>
-                <button class="profile-menu-item" type="button" data-view="library"><span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/menu-vocab-a.svg" alt="" /></span>生词本</button>
-                <button class="profile-menu-item" type="button" data-view="favorites"><span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/menu-favorites-d.svg" alt="" /></span>收藏夹</button>
-                <button class="profile-menu-item" type="button" data-view="mistakes"><span class="menu-icon" aria-hidden="true">错</span>复习提醒</button>
-              </div>
+            <div class="section-heading">
+              <h2>学习工具</h2>
+              <span>常用入口</span>
             </div>
-            <div class="profile-section-group">
-              <div class="section-heading">
-                <h2>系统设置</h2>
-                <span>偏好与账号</span>
-              </div>
-              <div class="profile-menu-list">
-                <button class="profile-menu-item" type="button" data-view="settings"><span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/menu-settings-b.svg" alt="" /></span>每日目标与语言</button>
-                <button class="profile-menu-item admin-entry" id="profileAdminButton" type="button" data-view="admin" hidden><span class="menu-icon" aria-hidden="true">管</span>后台管理</button>
-                <button class="profile-menu-item" type="button" data-view="auth"><span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/menu-about-a.svg" alt="" /></span>关于我们</button>
-              </div>
+            <div class="profile-menu-list">
+              <button class="profile-menu-item" type="button" data-view="practice">
+                <span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/nav-practice-c.svg" alt="" /></span>
+                <span>学习计划</span>
+                <span class="menu-arrow" aria-hidden="true">›</span>
+              </button>
+              <button class="profile-menu-item" type="button" data-view="library">
+                <span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/nav-library-a.svg" alt="" /></span>
+                <span>词库管理</span>
+                <span class="menu-arrow" aria-hidden="true">›</span>
+              </button>
+              <button class="profile-menu-item" type="button" data-view="favorites">
+                <span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/nav-favorites-a.svg" alt="" /></span>
+                <span>收藏夹</span>
+                <span class="menu-arrow" aria-hidden="true">›</span>
+              </button>
+              <button class="profile-menu-item" type="button" data-view="mistakes">
+                <span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/nav-mistakes-a.svg" alt="" /></span>
+                <span>复习中心</span>
+                <span class="menu-arrow" aria-hidden="true">›</span>
+              </button>
+            </div>
+          </section>
+
+          <section class="panel profile-menu-panel">
+            <div class="section-heading">
+              <h2>系统设置</h2>
+              <span>账号与偏好</span>
+            </div>
+            <div class="profile-menu-list">
+              <button class="profile-menu-item" type="button" data-view="settings">
+                <span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/nav-settings-a.svg" alt="" /></span>
+                <span>偏好设置</span>
+                <span class="menu-arrow" aria-hidden="true">›</span>
+              </button>
+              <button class="profile-menu-item admin-entry" id="profileAdminButton" type="button" data-view="admin" hidden>
+                <span class="menu-icon" aria-hidden="true"><img class="menu-icon-image" src="./assets/nav-admin-a.svg" alt="" /></span>
+                <span>后台管理</span>
+                <span class="menu-arrow" aria-hidden="true">›</span>
+              </button>
+              <button class="profile-menu-item" type="button" id="logoutButton" hidden>
+                <span class="menu-icon logout-icon" aria-hidden="true">↩</span>
+                <span>退出登录</span>
+                <span class="menu-arrow" aria-hidden="true"></span>
+              </button>
             </div>
           </section>
         </section>
@@ -739,21 +770,57 @@
               </div>
               <div class="inline-actions">
                 <button class="primary-button" id="openAuthButton" type="button">登录 / 注册</button>
-                <button class="secondary-button" id="logoutButton" type="button" hidden>退出登录</button>
               </div>
             </section>
+
             <section class="panel preferences-panel">
               <div class="section-heading">
-                <h2>偏好设置</h2>
-                <span>本地设置</span>
+                <h2>学习偏好</h2>
+                <span>个性化设置</span>
               </div>
               <div class="settings-list">
-                <label class="setting-row"><span>学习语言</span><select id="targetLanguageSelect"><option value="en">英语</option></select></label>
-                <label class="setting-row"><span>每日目标</span><input id="dailyGoalInput" type="number" min="5" max="180" step="5" value="30" /></label>
-                <label class="setting-row"><span>自动朗读</span><input id="autoSpeakToggle" type="checkbox" /></label>
-                <label class="setting-row"><span>复习提醒</span><input id="reminderToggle" type="checkbox" /></label>
+                <label class="setting-row">
+                  <span>
+                    <strong>学习语言</strong>
+                    <small>选择目标语言</small>
+                  </span>
+                  <select id="targetLanguageSelect"><option value="en">英语</option></select>
+                </label>
+                <label class="setting-row">
+                  <span>
+                    <strong>每日目标</strong>
+                    <small>每天学习时长（分钟）</small>
+                  </span>
+                  <input id="dailyGoalInput" type="number" min="5" max="180" step="5" value="30" />
+                </label>
+                <label class="setting-row">
+                  <span>
+                    <strong>自动朗读</strong>
+                    <small>切换卡片时自动播放发音</small>
+                  </span>
+                  <input id="autoSpeakToggle" type="checkbox" />
+                </label>
+                <label class="setting-row">
+                  <span>
+                    <strong>复习提醒</strong>
+                    <small>到期复习时推送通知</small>
+                  </span>
+                  <input id="reminderToggle" type="checkbox" />
+                </label>
               </div>
               <p class="feedback" id="settingsFeedback" aria-live="polite"></p>
+            </section>
+
+            <section class="panel preferences-panel">
+              <div class="section-heading">
+                <h2>关于</h2>
+                <span>LinguaFlow</span>
+              </div>
+              <div class="about-content">
+                <p><strong>LinguaFlow</strong> — 你的英语学习伙伴</p>
+                <p>每日单词、练习、听写、口语、阅读，一个安静的学习闭环。</p>
+                <p class="muted-text">版本 0.2.0 · Supabase 后端</p>
+              </div>
             </section>
           </div>
         </section>
