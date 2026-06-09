@@ -5541,13 +5541,20 @@ function applyPreferences() {
 function applyTheme(theme) {
   const root = document.documentElement;
   root.classList.remove("theme-dark", "theme-coffee");
-  if (theme === "dark") root.classList.add("theme-dark");
-  else if (theme === "coffee") root.classList.add("theme-coffee");
-  else if (theme === "system") {
+  document.body.classList.remove("theme-dark", "theme-coffee");
+  if (theme === "dark") {
+    root.classList.add("theme-dark");
+    document.body.classList.add("theme-dark");
+  } else if (theme === "coffee") {
+    root.classList.add("theme-coffee");
+    document.body.classList.add("theme-coffee");
+  } else if (theme === "system") {
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
       root.classList.add("theme-dark");
+      document.body.classList.add("theme-dark");
     }
   }
+  document.body.dataset.theme = theme;
 }
 
 function renderSegmentButtons() {
@@ -6363,6 +6370,7 @@ function renderAll() {
   renderAdmin();
   setAuthMode(state.authMode || "login", { persist: false });
   applyPreferences();
+  applyTheme(state.preferences?.theme || "light");
   if (!isAuthenticated()) {
     setView("auth");
   }

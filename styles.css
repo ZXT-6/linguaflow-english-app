@@ -1,5 +1,5 @@
 :root {
-  /* 咖啡绅士配色 */
+  /* 咖啡绅士配色 — 默认浅色 */
   --bg: #f5f0e8;
   --surface: #faf8f4;
   --surface-soft: #ece6db;
@@ -23,8 +23,252 @@
   --soft-shadow: 0 12px 34px rgba(40, 30, 20, 0.09);
   --radius: 12px;
   --radius-lg: 16px;
+
+  /* 深色模式 */
+  --dark-bg: #141210;
+  --dark-surface: #1e1c18;
+  --dark-surface-soft: #282520;
+  --dark-surface-strong: #33302a;
+  --dark-ink: #f0ebe3;
+  --dark-muted: #a89e92;
+  --dark-line: #3a3530;
+
+  /* 咖啡深色模式 */
+  --coffee-bg: #1a140f;
+  --coffee-surface: #241c14;
+  --coffee-surface-soft: #2e231a;
+  --coffee-surface-strong: #3a2e22;
+  --coffee-ink: #f0e6d8;
+  --coffee-muted: #b8a690;
+  --coffee-line: #3a2e22;
+  --coffee-accent: #d4a57a;
+  --coffee-cafe: #d4a57a;
+  --coffee-gold: #d4b87a;
+}
   font-family:
     "Georgia", "Times New Roman", "Noto Serif SC", serif;
+}
+
+/* === 深色主题 === */
+.theme-dark {
+  --bg: var(--dark-bg);
+  --surface: var(--dark-surface);
+  --surface-soft: var(--dark-surface-soft);
+  --surface-strong: var(--dark-surface-strong);
+  --ink: var(--dark-ink);
+  --muted: var(--dark-muted);
+  --line: var(--dark-line);
+  --primary: var(--dark-ink);
+  --primary-dark: #f0ebe3;
+  --accent: var(--cafe);
+  --shadow: 0 22px 60px rgba(0, 0, 0, 0.4);
+  --soft-shadow: 0 12px 34px rgba(0, 0, 0, 0.3);
+}
+
+.theme-dark html,
+.theme-dark body {
+  background: var(--dark-bg);
+}
+
+.theme-dark .panel,
+.theme-dark .flashcard,
+.theme-dark .practice-panel,
+.theme-dark .profile-data-panel,
+.theme-dark .profile-menu-panel,
+.theme-dark .library-panel,
+.theme-dark .settings-profile-card,
+.theme-dark .settings-stats-card,
+.theme-dark .settings-data-card,
+.theme-dark .settings-prefs-card,
+.theme-dark .settings-theme-card,
+.theme-dark .settings-about-card {
+  background: rgba(30, 28, 24, 0.8);
+  border-color: rgba(58, 53, 48, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.theme-dark .segment-btn,
+.theme-dark .chip-btn,
+.theme-dark .setting-row,
+.theme-dark .profile-menu-item,
+.theme-dark .settings-stat-item,
+.theme-dark .settings-action-row,
+.theme-dark .toggle-row {
+  background: rgba(40, 37, 32, 0.7);
+  border-color: rgba(58, 53, 48, 0.5);
+  color: var(--dark-ink);
+}
+
+.theme-dark .segment-btn.active,
+.theme-dark .chip-btn.active {
+  background: rgba(196, 149, 106, 0.15);
+  border-color: var(--cafe);
+  color: var(--cafe);
+}
+
+.theme-dark .stat-chip,
+.theme-dark .settings-stat-item {
+  background: rgba(40, 37, 32, 0.7);
+  border-color: rgba(58, 53, 48, 0.4);
+}
+
+.theme-dark .hero-panel {
+  background: linear-gradient(135deg, rgba(196, 149, 106, 0.06) 0%, rgba(30, 28, 24, 0.8) 100%);
+  border-color: rgba(58, 53, 48, 0.4);
+}
+
+.theme-dark .dashboard-command-card {
+  background: rgba(30, 28, 24, 0.7);
+  border-color: rgba(58, 53, 48, 0.5);
+}
+
+.theme-dark .dashboard-entry-card {
+  background: rgba(30, 28, 24, 0.7);
+  border-color: rgba(58, 53, 48, 0.5);
+}
+
+.theme-dark .library-book-card {
+  background: rgba(30, 28, 24, 0.7);
+  border-color: rgba(58, 53, 48, 0.5);
+}
+
+.theme-dark input,
+.theme-dark select,
+.theme-dark textarea {
+  background: rgba(40, 37, 32, 0.8);
+  border-color: rgba(58, 53, 48, 0.5);
+  color: var(--dark-ink);
+}
+
+.theme-dark .toggle-row input[type="checkbox"] {
+  background: #3a3530;
+}
+
+.theme-dark .toggle-row input[type="checkbox"]:checked {
+  background: var(--cafe);
+}
+
+.theme-dark .theme-preview-light {
+  opacity: 0.5;
+}
+
+.theme-dark .theme-option.active {
+  border-color: var(--cafe);
+}
+
+/* === 咖啡深色主题 === */
+.theme-coffee {
+  --bg: var(--coffee-bg);
+  --surface: var(--coffee-surface);
+  --surface-soft: var(--coffee-surface-soft);
+  --surface-strong: var(--coffee-surface-strong);
+  --ink: var(--coffee-ink);
+  --muted: var(--coffee-muted);
+  --line: var(--coffee-line);
+  --primary: var(--coffee-ink);
+  --primary-dark: #f0e6d8;
+  --accent: var(--coffee-accent);
+  --cafe: var(--coffee-cafe);
+  --gold: var(--coffee-gold);
+  --shadow: 0 22px 60px rgba(0, 0, 0, 0.5);
+  --soft-shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
+}
+
+.theme-coffee html,
+.theme-coffee body {
+  background: var(--coffee-bg);
+}
+
+.theme-coffee .panel,
+.theme-coffee .flashcard,
+.theme-coffee .practice-panel,
+.theme-coffee .profile-data-panel,
+.theme-coffee .profile-menu-panel,
+.theme-coffee .library-panel,
+.theme-coffee .settings-profile-card,
+.theme-coffee .settings-stats-card,
+.theme-coffee .settings-data-card,
+.theme-coffee .settings-prefs-card,
+.theme-coffee .settings-theme-card,
+.theme-coffee .settings-about-card {
+  background: rgba(36, 28, 20, 0.85);
+  border-color: rgba(58, 46, 34, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(212, 165, 122, 0.05);
+}
+
+.theme-coffee .segment-btn,
+.theme-coffee .chip-btn,
+.theme-coffee .setting-row,
+.theme-coffee .profile-menu-item,
+.theme-coffee .settings-stat-item,
+.theme-coffee .settings-action-row,
+.theme-coffee .toggle-row {
+  background: rgba(46, 35, 26, 0.7);
+  border-color: rgba(58, 46, 34, 0.5);
+  color: var(--coffee-ink);
+}
+
+.theme-coffee .segment-btn.active,
+.theme-coffee .chip-btn.active {
+  background: rgba(212, 165, 122, 0.12);
+  border-color: var(--coffee-accent);
+  color: var(--coffee-accent);
+}
+
+.theme-coffee .stat-chip,
+.theme-coffee .settings-stat-item {
+  background: rgba(46, 35, 26, 0.7);
+  border-color: rgba(58, 46, 34, 0.4);
+}
+
+.theme-coffee .hero-panel {
+  background: linear-gradient(135deg, rgba(212, 165, 122, 0.08) 0%, rgba(36, 28, 20, 0.85) 100%);
+  border-color: rgba(58, 46, 34, 0.4);
+}
+
+.theme-coffee .dashboard-command-card {
+  background: rgba(36, 28, 20, 0.75);
+  border-color: rgba(58, 46, 34, 0.5);
+}
+
+.theme-coffee .dashboard-entry-card {
+  background: rgba(36, 28, 20, 0.75);
+  border-color: rgba(58, 46, 34, 0.5);
+}
+
+.theme-coffee .library-book-card {
+  background: rgba(36, 28, 20, 0.75);
+  border-color: rgba(58, 46, 34, 0.5);
+}
+
+.theme-coffee input,
+.theme-coffee select,
+.theme-coffee textarea {
+  background: rgba(46, 35, 26, 0.8);
+  border-color: rgba(58, 46, 34, 0.5);
+  color: var(--coffee-ink);
+}
+
+.theme-coffee .toggle-row input[type="checkbox"] {
+  background: #3a2e22;
+}
+
+.theme-coffee .toggle-row input[type="checkbox"]:checked {
+  background: var(--coffee-accent);
+}
+
+.theme-coffee .primary-button {
+  background: linear-gradient(135deg, var(--coffee-accent) 0%, var(--gold) 100%);
+  color: #1a140f;
+}
+
+.theme-coffee .theme-option.active {
+  border-color: var(--coffee-accent);
+}
+
+.theme-coffee .about-logo {
+  background: linear-gradient(135deg, var(--coffee-accent) 0%, var(--gold) 100%);
+  color: #1a140f;
 }
 
 * {
