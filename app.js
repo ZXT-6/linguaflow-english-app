@@ -3076,6 +3076,11 @@ const defaultState = {
     wordBookId: "general",
     autoSpeak: false,
     reminder: false,
+    learningGoal: "daily",
+    currentLevel: "A1",
+    dailyDuration: 30,
+    intensity: "standard",
+    contentPrefs: ["vocab", "listening", "reading", "speaking", "grammar"],
   },
   doneTasks: [],
   dailyPath: createDailyPath(),
@@ -5479,21 +5484,31 @@ function renderUser() {
   $("#authButton")?.classList.toggle("is-guest", !user);
   setTextIfPresent("#userStatusLabel", user ? "已登录" : "未登录");
   setTextIfPresent("#profileName", nickname);
-  setTextIfPresent("#profileNicknameLabel", user ? `昵称：${nickname}` : "未设置昵称");
   setTextIfPresent("#profileAccountLabel", account);
   setTextIfPresent("#profileSettingStreak", `${state.streak} 天`);
-  setTextIfPresent("#profileSettingFavorites", `${state.favoriteWords?.length || 0} 个`);
   renderUserAvatar("#profileAvatar", user);
   $("#openAuthButton")?.toggleAttribute("hidden", Boolean(user));
   $("#logoutButton")?.toggleAttribute("hidden", !user);
   $("#logoutButtonSettings")?.toggleAttribute("hidden", !user);
   renderProfileDashboard();
+  renderSettingsStats();
   $("#adminNavButton")?.toggleAttribute("hidden", !isAdminUser());
   $("#profileAdminButton")?.toggleAttribute("hidden", !isAdminUser());
   $$("[data-view='admin']").forEach((button) => {
     button.disabled = Boolean(user) && !isAdminUser();
     button.title = Boolean(user) && !isAdminUser() ? "仅管理员可进入后台" : "";
   });
+}
+
+function renderSettingsStats() {
+  const stats = calculateLearningStats(allWords(), state.wordProgress || {}, state.answers || []);
+  setTextIfPresent("#settingsMasteredWords", String(stats.masteredWords));
+  setTextIfPresent("#profileSettingStreak", `${state.streak} 天`);
+  setTextIfPresent("#settingsCurrentLevel", getStudyStageLabel(stats));
+  const weeklyRate = state.checkInDates?.length
+    ? Math.min(100, Math.round((new Set(state.checkInDates.slice(-7)).size / 7) * 100))
+    : 0;
+  setTextIfPresent("#settingsWeeklyRate", `${weeklyRate}%`);
 }
 
 async function logout() {
@@ -5510,35 +5525,69 @@ async function logout() {
 function applyPreferences() {
   state.preferences = { ...defaultState.preferences, ...(state.preferences || {}) };
   const prefs = state.preferences;
-  document.body.dataset.theme = "light";
-  $("#targetLanguageSelect").value = currentLanguageKey();
-  $("#dailyGoalInput").value = prefs.dailyGoal || 30;
-  $("#autoSpeakToggle").checked = Boolean(prefs.autoSpeak);
-  $("#reminderToggle").checked = Boolean(prefs.reminder);
+  document.body.dataset.theme = prefs.theme || "light";
+  applyTheme(prefs.theme || "light");
+
+  const autoSpeakEl = $("#autoSpeakToggle");
+  if (autoSpeakEl) autoSpeakEl.checked = Boolean(prefs.autoSpeak);
+  const reminderEl = $("#reminderToggle");
+  if (reminderEl) reminderEl.checked = Boolean(prefs.reminder);
+
+  renderSegmentButtons();
+  renderChipButtons();
+  renderThemeOptions();
+}
+
+function applyTheme(theme) {
+  const root = document.documentElement;
+  root.classList.remove("theme-dark", "theme-coffee");
+  if (theme === "dark") root.classList.add("theme-dark");
+  else if (theme === "coffee") root.classList.add("theme-coffee");
+  else if (theme === "system") {
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      root.classList.add("theme-dark");
+    }
+  }
+}
+
+function renderSegmentButtons() {
+  const prefs = state.preferences;
+  $$(".segment-group").forEach((group) => {
+    const key = group.dataset.pref;
+    const val = prefs[key];
+    group.querySelectorAll(".segment-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.value === String(val));
+    });
+  });
+}
+
+function renderChipButtons() {
+  const prefs = state.preferences;
+  $$(".chip-group").forEach((group) => {
+    const key = group.dataset.pref;
+    const selected = Array.isArray(prefs[key]) ? prefs[key] : [];
+    group.querySelectorAll(".chip-btn").forEach((btn) => {
+      btn.classList.toggle("active", selected.includes(btn.dataset.value));
+    });
+  });
+}
+
+function renderThemeOptions() {
+  const theme = state.preferences.theme || "light";
+  $$(".theme-option").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.value === theme);
+  });
 }
 
 function savePreferences() {
-  const previousLanguage = currentLanguageKey();
-  const nextLanguage = $("#targetLanguageSelect").value;
-  state.preferences = {
-    theme: "light",
-    dailyGoal: Number($("#dailyGoalInput").value) || 30,
-    targetLanguage: nextLanguage,
-    wordBookId: nextLanguage === "en" ? currentBookId() : "general",
-    autoSpeak: $("#autoSpeakToggle").checked,
-    reminder: $("#reminderToggle").checked,
-  };
-  if (previousLanguage !== currentLanguageKey()) {
-    state.cardIndex = 0;
-    state.listeningIndex = 0;
-    state.speakingIndex = 0;
-    state.dailyPath = createDailyPath();
-  }
+  const prefs = { ...state.preferences };
+  const autoSpeakEl = $("#autoSpeakToggle");
+  if (autoSpeakEl) prefs.autoSpeak = autoSpeakEl.checked;
+  const reminderEl = $("#reminderToggle");
+  if (reminderEl) prefs.reminder = reminderEl.checked;
+  state.preferences = prefs;
   saveState();
   applyPreferences();
-  $("#settingsFeedback").textContent = "设置已保存。";
-  $("#settingsFeedback").className = "feedback good";
-  renderAll();
 }
 
 async function fetchAdminUsers() {
@@ -6100,9 +6149,105 @@ function bindEvents() {
   on("#openAuthButton", "click", () => setView("auth"));
   on("#logoutButton", "click", logout);
   on("#logoutButtonSettings", "click", logout);
-["#targetLanguageSelect", "#dailyGoalInput", "#autoSpeakToggle", "#reminderToggle"].forEach((selector) => {
-  on(selector, "change", savePreferences);
-});
+  ["#autoSpeakToggle", "#reminderToggle"].forEach((selector) => {
+    on(selector, "change", savePreferences);
+  });
+
+  document.addEventListener("click", (event) => {
+    const segBtn = event.target.closest(".segment-btn");
+    if (segBtn) {
+      const group = segBtn.closest(".segment-group");
+      if (!group) return;
+      const key = group.dataset.pref;
+      const val = segBtn.dataset.value;
+      if (key && val !== undefined) {
+        state.preferences = { ...state.preferences, [key]: isNaN(val) ? val : Number(val) };
+        saveState();
+        renderSegmentButtons();
+      }
+      return;
+    }
+
+    const chipBtn = event.target.closest(".chip-btn");
+    if (chipBtn) {
+      const group = chipBtn.closest(".chip-group");
+      if (!group) return;
+      const key = group.dataset.pref;
+      const val = chipBtn.dataset.value;
+      if (key && val) {
+        const selected = Array.isArray(state.preferences[key]) ? [...state.preferences[key]] : [];
+        const idx = selected.indexOf(val);
+        if (idx >= 0) selected.splice(idx, 1);
+        else selected.push(val);
+        state.preferences = { ...state.preferences, [key]: selected };
+        saveState();
+        renderChipButtons();
+      }
+      return;
+    }
+
+    const themeBtn = event.target.closest(".theme-option");
+    if (themeBtn) {
+      const group = themeBtn.closest(".theme-grid");
+      if (!group) return;
+      const val = themeBtn.dataset.value;
+      if (val) {
+        state.preferences = { ...state.preferences, theme: val };
+        saveState();
+        applyPreferences();
+      }
+      return;
+    }
+  });
+
+  on("#exportDataBtn", "click", () => {
+    const data = JSON.stringify(state, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `linguaflow-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  on("#resetProgressBtn", "click", () => {
+    openConfirmDialog({
+      title: "重置学习进度",
+      message: "这将清除所有学习记录（单词进度、打卡、练习记录），但保留账号和收藏。确认吗？",
+      action: () => {
+        state.wordProgress = {};
+        state.answers = [];
+        state.checkInDates = [];
+        state.minutes = 0;
+        state.wordsLearned = 0;
+        state.quizScore = 0;
+        state.streak = 1;
+        state.dailyPath = createDailyPath();
+        saveState();
+        renderAll();
+      },
+    });
+  });
+
+  on("#deleteAccountBtn", "click", () => {
+    openConfirmDialog({
+      title: "注销账号",
+      message: "此操作将永久删除你的账号和所有学习数据，无法恢复。确认吗？",
+      action: async () => {
+        if (USE_SUPABASE && isAuthenticated()) {
+          try {
+            const supabase = getSupabase();
+            await supabase.auth.admin.deleteUser(state.authUser.id).catch(() => {});
+          } catch (e) { /* ignore */ }
+        }
+        localStorage.removeItem(STORAGE_KEY);
+        state = hydrateState({ ...defaultState });
+        renderAll();
+        setView("auth");
+      },
+    });
+  });
   on("#adminWordForm", "submit", addAdminWord);
   on("#refreshAdminUsersButton", "click", loadAdminUsers);
   on("#generateTestDataButton", "click", generateTestData);

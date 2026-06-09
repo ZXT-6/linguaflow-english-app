@@ -745,86 +745,213 @@
         </section>
 
         <section class="view" id="settings" aria-label="设置">
-          <div class="settings-layout">
-            <section class="panel profile-panel">
-              <div class="section-heading">
-                <h2>用户资料</h2>
-                <span id="userStatusLabel">未登录</span>
-              </div>
-              <div class="profile-card">
-                <div class="avatar" id="profileAvatar">LF</div>
-                <div class="profile-card-copy">
-                  <span>昵称</span>
-                  <strong id="profileName">游客</strong>
-                  <p id="profileNicknameLabel">未设置昵称</p>
-                  <p id="profileAccountLabel">登录后同步学习资料</p>
+          <div class="settings-dual-layout">
+
+            <!-- ===== 左侧：用户资料 + 统计 ===== -->
+            <div class="settings-left">
+              <section class="panel settings-profile-card">
+                <div class="settings-avatar-section">
+                  <div class="avatar settings-avatar" id="profileAvatar">LF</div>
+                  <div class="settings-avatar-info">
+                    <h2 id="profileName">游客</h2>
+                    <p id="profileAccountLabel">登录后同步学习资料</p>
+                    <span class="status-badge" id="userStatusLabel">未登录</span>
+                  </div>
                 </div>
-              </div>
-              <div class="profile-account-grid" aria-label="账号学习概况">
-                <article>
-                  <span>连续学习</span>
-                  <strong id="profileSettingStreak">1 天</strong>
-                </article>
-                <article>
-                  <span>收藏单词</span>
-                  <strong id="profileSettingFavorites">0 个</strong>
-                </article>
-              </div>
-              <div class="inline-actions">
-                <button class="primary-button" id="openAuthButton" type="button">登录 / 注册</button>
-                <button class="secondary-button" id="logoutButtonSettings" type="button" hidden>退出登录</button>
-              </div>
-            </section>
+                <div class="settings-avatar-actions">
+                  <button class="secondary-button compact-button" id="editProfileBtn" type="button">编辑资料</button>
+                  <button class="secondary-button compact-button" id="changePasswordBtn" type="button">修改密码</button>
+                </div>
+                <div class="inline-actions">
+                  <button class="primary-button" id="openAuthButton" type="button">登录 / 注册</button>
+                  <button class="secondary-button" id="logoutButtonSettings" type="button" hidden>退出登录</button>
+                </div>
+              </section>
 
-            <section class="panel preferences-panel">
-              <div class="section-heading">
-                <h2>学习偏好</h2>
-                <span>个性化设置</span>
-              </div>
-              <div class="settings-list">
-                <label class="setting-row">
-                  <span>
-                    <strong>学习语言</strong>
-                    <small>选择目标语言</small>
-                  </span>
-                  <select id="targetLanguageSelect"><option value="en">英语</option></select>
-                </label>
-                <label class="setting-row">
-                  <span>
-                    <strong>每日目标</strong>
-                    <small>每天学习时长（分钟）</small>
-                  </span>
-                  <input id="dailyGoalInput" type="number" min="5" max="180" step="5" value="30" />
-                </label>
-                <label class="setting-row">
-                  <span>
-                    <strong>自动朗读</strong>
-                    <small>切换卡片时自动播放发音</small>
-                  </span>
-                  <input id="autoSpeakToggle" type="checkbox" />
-                </label>
-                <label class="setting-row">
-                  <span>
-                    <strong>复习提醒</strong>
-                    <small>到期复习时推送通知</small>
-                  </span>
-                  <input id="reminderToggle" type="checkbox" />
-                </label>
-              </div>
-              <p class="feedback" id="settingsFeedback" aria-live="polite"></p>
-            </section>
+              <section class="panel settings-stats-card">
+                <h3>学习数据</h3>
+                <div class="settings-stats-grid">
+                  <article class="settings-stat-item">
+                    <span class="settings-stat-icon">📚</span>
+                    <div>
+                      <strong id="settingsMasteredWords">0</strong>
+                      <small>已掌握单词</small>
+                    </div>
+                  </article>
+                  <article class="settings-stat-item">
+                    <span class="settings-stat-icon">🔥</span>
+                    <div>
+                      <strong id="profileSettingStreak">1 天</strong>
+                      <small>连续学习</small>
+                    </div>
+                  </article>
+                  <article class="settings-stat-item">
+                    <span class="settings-stat-icon">🏆</span>
+                    <div>
+                      <strong id="settingsCurrentLevel">基础阶段</strong>
+                      <small>当前等级</small>
+                    </div>
+                  </article>
+                  <article class="settings-stat-item">
+                    <span class="settings-stat-icon">⭐</span>
+                    <div>
+                      <strong id="settingsWeeklyRate">0%</strong>
+                      <small>本周完成率</small>
+                    </div>
+                  </article>
+                </div>
+              </section>
 
-            <section class="panel preferences-panel">
-              <div class="section-heading">
-                <h2>关于</h2>
-                <span>LinguaFlow</span>
-              </div>
-              <div class="about-content">
-                <p><strong>LinguaFlow</strong> — 你的英语学习伙伴</p>
-                <p>每日单词、练习、听写、口语、阅读，一个安静的学习闭环。</p>
-                <p class="muted-text">版本 0.2.0 · Supabase 后端</p>
-              </div>
-            </section>
+              <!-- 数据管理 -->
+              <section class="panel settings-data-card">
+                <h3>数据管理</h3>
+                <div class="settings-action-list">
+                  <button class="settings-action-row" type="button" id="syncDataBtn">
+                    <span class="settings-action-icon">☁️</span>
+                    <span class="settings-action-text"><strong>数据同步</strong><small>同步学习进度到云端</small></span>
+                    <span class="settings-action-arrow">›</span>
+                  </button>
+                  <button class="settings-action-row" type="button" id="exportDataBtn">
+                    <span class="settings-action-icon">📤</span>
+                    <span class="settings-action-text"><strong>导出学习记录</strong><small>下载 JSON 格式的学习数据</small></span>
+                    <span class="settings-action-arrow">›</span>
+                  </button>
+                  <button class="settings-action-row" type="button" id="resetProgressBtn">
+                    <span class="settings-action-icon">🔄</span>
+                    <span class="settings-action-text"><strong>重置学习进度</strong><small>清除所有学习记录，保留账号</small></span>
+                    <span class="settings-action-arrow">›</span>
+                  </button>
+                  <button class="settings-action-row danger" type="button" id="deleteAccountBtn">
+                    <span class="settings-action-icon">🗑</span>
+                    <span class="settings-action-text"><strong>注销账号</strong><small>永久删除账号和所有数据</small></span>
+                    <span class="settings-action-arrow">›</span>
+                  </button>
+                </div>
+              </section>
+            </div>
+
+            <!-- ===== 右侧：学习偏好 + 主题 + 关于 ===== -->
+            <div class="settings-right">
+              <!-- 学习偏好 -->
+              <section class="panel settings-prefs-card">
+                <h3>学习偏好</h3>
+
+                <div class="pref-group">
+                  <label class="pref-label">学习目标</label>
+                  <div class="segment-group" data-pref="learningGoal">
+                    <button class="segment-btn active" data-value="daily" type="button">日常交流</button>
+                    <button class="segment-btn" data-value="exam" type="button">考试备考</button>
+                    <button class="segment-btn" data-value="work" type="button">职场英语</button>
+                    <button class="segment-btn" data-value="abroad" type="button">出国留学</button>
+                  </div>
+                </div>
+
+                <div class="pref-group">
+                  <label class="pref-label">当前水平</label>
+                  <div class="segment-group" data-pref="currentLevel">
+                    <button class="segment-btn" data-value="A1" type="button">A1 初学者</button>
+                    <button class="segment-btn" data-value="A2" type="button">A2 基础</button>
+                    <button class="segment-btn active" data-value="B1" type="button">B1 中级</button>
+                    <button class="segment-btn" data-value="B2" type="button">B2 进阶</button>
+                    <button class="segment-btn" data-value="C1" type="button">C1 高级</button>
+                  </div>
+                </div>
+
+                <div class="pref-group">
+                  <label class="pref-label">每日学习时长</label>
+                  <div class="segment-group" data-pref="dailyDuration">
+                    <button class="segment-btn" data-value="5" type="button">5 分钟</button>
+                    <button class="segment-btn" data-value="10" type="button">10 分钟</button>
+                    <button class="segment-btn" data-value="20" type="button">20 分钟</button>
+                    <button class="segment-btn active" data-value="30" type="button">30 分钟</button>
+                    <button class="segment-btn" data-value="60" type="button">60 分钟</button>
+                  </div>
+                </div>
+
+                <div class="pref-group">
+                  <label class="pref-label">学习强度</label>
+                  <div class="segment-group segment-3" data-pref="intensity">
+                    <button class="segment-btn" data-value="relaxed" type="button">轻松模式</button>
+                    <button class="segment-btn active" data-value="standard" type="button">标准模式</button>
+                    <button class="segment-btn" data-value="intensive" type="button">冲刺模式</button>
+                  </div>
+                </div>
+
+                <div class="pref-group">
+                  <label class="pref-label">学习内容偏好</label>
+                  <div class="chip-group" data-pref="contentPrefs">
+                    <button class="chip-btn active" data-value="vocab" type="button">📖 单词记忆</button>
+                    <button class="chip-btn active" data-value="listening" type="button">🎧 听力训练</button>
+                    <button class="chip-btn active" data-value="reading" type="button">📰 阅读训练</button>
+                    <button class="chip-btn active" data-value="speaking" type="button">🎤 口语跟读</button>
+                    <button class="chip-btn active" data-value="grammar" type="button">📝 语法学习</button>
+                  </div>
+                </div>
+
+                <div class="pref-group pref-toggles">
+                  <label class="toggle-row">
+                    <span><strong>自动朗读</strong><small>切换卡片时自动播放发音</small></span>
+                    <input id="autoSpeakToggle" type="checkbox" />
+                  </label>
+                  <label class="toggle-row">
+                    <span><strong>复习提醒</strong><small>到期复习时推送通知</small></span>
+                    <input id="reminderToggle" type="checkbox" />
+                  </label>
+                </div>
+              </section>
+
+              <!-- 主题设置 -->
+              <section class="panel settings-theme-card">
+                <h3>外观主题</h3>
+                <div class="theme-grid" data-pref="theme">
+                  <button class="theme-option active" data-value="light" type="button">
+                    <div class="theme-preview theme-preview-light">
+                      <span></span><span></span><span></span>
+                    </div>
+                    <small>浅色模式</small>
+                  </button>
+                  <button class="theme-option" data-value="dark" type="button">
+                    <div class="theme-preview theme-preview-dark">
+                      <span></span><span></span><span></span>
+                    </div>
+                    <small>深色模式</small>
+                  </button>
+                  <button class="theme-option" data-value="coffee" type="button">
+                    <div class="theme-preview theme-preview-coffee">
+                      <span></span><span></span><span></span>
+                    </div>
+                    <small>咖啡主题</small>
+                  </button>
+                  <button class="theme-option" data-value="system" type="button">
+                    <div class="theme-preview theme-preview-system">
+                      <span></span><span></span><span></span>
+                    </div>
+                    <small>跟随系统</small>
+                  </button>
+                </div>
+              </section>
+
+              <!-- 关于 -->
+              <section class="panel settings-about-card">
+                <div class="about-row">
+                  <div class="about-brand">
+                    <div class="about-logo">LF</div>
+                    <div>
+                      <strong>LinguaFlow</strong>
+                      <small>你的英语学习伙伴</small>
+                    </div>
+                  </div>
+                  <span class="about-version">v0.2.0</span>
+                </div>
+                <div class="about-links">
+                  <a href="#" class="about-link">检查更新</a>
+                  <a href="#" class="about-link">意见反馈</a>
+                  <a href="#" class="about-link">用户协议</a>
+                  <a href="#" class="about-link">隐私政策</a>
+                </div>
+              </section>
+            </div>
+
           </div>
         </section>
 
