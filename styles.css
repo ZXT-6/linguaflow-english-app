@@ -142,34 +142,35 @@ body,
   border-color: rgba(228, 220, 208, 0.5);
 }
 
-/* === 夜读模式 (Warm Dark) === */
+/* === 夜读模式 (Warm Dark) — Coffee Learning Theme === */
 .theme-warm-dark {
-  --bg: #1e1a16;
-  --surface: #282320;
-  --surface-soft: #332d28;
-  --surface-strong: #3e3730;
-  --ink: #ede5da;
-  --muted: #a89888;
-  --line: #3e3730;
-  --primary: #ede5da;
-  --primary-dark: #ede5da;
-  --accent: #d4a57a;
-  --cafe: #d4a57a;
-  --coffee: #c49070;
-  --scene: #1e1a16;
-  --gold: #d4b87a;
+  --bg: #25211D;
+  --surface: #352F29;
+  --surface-soft: #2F2924;
+  --surface-strong: #4A4038;
+  --ink: #F6EFE7;
+  --muted: #D3C6B8;
+  --line: #4A4038;
+  --primary: #F6EFE7;
+  --primary-dark: #F6EFE7;
+  --accent: #D8A36A;
+  --cafe: #D8A36A;
+  --coffee: #D8A36A;
+  --scene: #25211D;
+  --gold: #E8B47B;
   --success: #6a9a7a;
-  --danger: #c47060;
-  --shadow: 0 22px 60px rgba(0, 0, 0, 0.35);
-  --soft-shadow: 0 12px 34px rgba(0, 0, 0, 0.25);
+  --danger: #D8756A;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  --soft-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 .theme-warm-dark,
 .theme-warm-dark body {
-  background: #1e1a16;
-  color: #ede5da;
+  background: #25211D;
+  color: #F6EFE7;
 }
 
+/* 卡片样式 — 减少毛玻璃，增加实感 */
 .theme-warm-dark .panel,
 .theme-warm-dark .flashcard,
 .theme-warm-dark .practice-panel,
@@ -188,12 +189,15 @@ body,
 .theme-warm-dark .profile-achievements-card,
 .theme-warm-dark .profile-review-card,
 .theme-warm-dark .mistake-hero-panel {
-  background: rgba(40, 35, 32, 0.85);
-  border-color: rgba(62, 55, 48, 0.6);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  color: #ede5da;
+  background: #352F29;
+  border-color: #4A4038;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  color: #F6EFE7;
 }
 
+/* 小卡片/按钮/列表项 */
 .theme-warm-dark .dashboard-entry-card,
 .theme-warm-dark .dashboard-command-card,
 .theme-warm-dark .library-book-card,
@@ -218,107 +222,196 @@ body,
 .theme-warm-dark .favorite-item,
 .theme-warm-dark .word-book-option,
 .theme-warm-dark .daily-path-item,
-.theme-warm-dark .review-item {
-  background: rgba(40, 35, 32, 0.7);
-  border-color: rgba(62, 55, 48, 0.5);
-  color: #ede5da;
+.theme-warm-dark .review-item,
+.theme-warm-dark .admin-user-card,
+.theme-warm-dark .admin-word-card,
+.theme-warm-dark .review-queue-item {
+  background: #2F2924;
+  border-color: #4A4038;
+  color: #F6EFE7;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
+/* Hero 区域 */
 .theme-warm-dark .hero-panel {
-  background: linear-gradient(135deg, rgba(212, 165, 122, 0.06) 0%, rgba(40, 35, 32, 0.85) 100%);
-  border-color: rgba(62, 55, 48, 0.4);
+  background: linear-gradient(135deg, rgba(216, 163, 106, 0.06) 0%, #352F29 100%);
+  border-color: #4A4038;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
+/* 输入框 */
 .theme-warm-dark input,
 .theme-warm-dark select,
 .theme-warm-dark textarea {
-  background: rgba(40, 35, 32, 0.8);
-  border-color: rgba(62, 55, 48, 0.5);
-  color: #ede5da;
+  background: #2F2924;
+  border-color: #4A4038;
+  color: #F6EFE7;
 }
 
+.theme-warm-dark input::placeholder,
+.theme-warm-dark textarea::placeholder {
+  color: #8B7C6D;
+}
+
+/* 激活状态 */
 .theme-warm-dark .segment-btn.active,
 .theme-warm-dark .chip-btn.active {
-  background: rgba(212, 165, 122, 0.12);
-  border-color: #d4a57a;
-  color: #d4a57a;
+  background: rgba(216, 163, 106, 0.12);
+  border-color: #D8A36A;
+  color: #E8B47B;
 }
 
+/* 开关 */
 .theme-warm-dark .toggle-row input[type="checkbox"] {
-  background: #3e3730;
+  background: #4A4038;
 }
 
 .theme-warm-dark .toggle-row input[type="checkbox"]:checked {
-  background: #d4a57a;
+  background: #D8A36A;
 }
 
+/* 标题 — 提高20%亮度 */
 .theme-warm-dark h1,
 .theme-warm-dark h2,
 .theme-warm-dark h3,
-.theme-warm-dark h4,
-.theme-warm-dark strong {
-  color: #ede5da;
+.theme-warm-dark h4 {
+  color: #fff;
 }
 
+.theme-warm-dark strong {
+  color: #F6EFE7;
+}
+
+/* 次要文字 */
 .theme-warm-dark .muted-text,
 .theme-warm-dark .section-kicker,
-.theme-warm-dark .eyebrow {
-  color: #a89888;
+.theme-warm-dark .eyebrow,
+.theme-warm-dark small {
+  color: #D3C6B8;
 }
 
+/* 禁用/辅助文字 */
+.theme-warm-dark .disabled,
+.theme-warm-dark [disabled] {
+  color: #8B7C6D;
+}
+
+/* 主按钮 */
 .theme-warm-dark .primary-button {
-  background: linear-gradient(135deg, #7a5240 0%, #5c3d2e 100%);
-  color: #ede5da;
+  background: linear-gradient(135deg, #D8A36A 0%, #E8B47B 100%);
+  color: #25211D;
+  box-shadow: 0 4px 12px rgba(216, 163, 106, 0.2);
 }
 
+.theme-warm-dark .primary-button:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 16px rgba(216, 163, 106, 0.3);
+}
+
+/* 次要按钮 */
 .theme-warm-dark .secondary-button {
-  background: rgba(40, 35, 32, 0.7);
-  border-color: rgba(62, 55, 48, 0.5);
-  color: #ede5da;
+  background: #2F2924;
+  border-color: #4A4038;
+  color: #F6EFE7;
 }
 
+.theme-warm-dark .secondary-button:hover {
+  border-color: #D8A36A;
+  background: #352F29;
+}
+
+/* 徽章 */
 .theme-warm-dark .study-cafe-badge {
-  background: rgba(212, 165, 122, 0.1);
-  border-color: rgba(212, 165, 122, 0.2);
-  color: #d4a57a;
+  background: rgba(216, 163, 106, 0.1);
+  border-color: rgba(216, 163, 106, 0.2);
+  color: #E8B47B;
 }
 
-.theme-warm-dark .toggle-row input[type="checkbox"] {
-  background: #3e3730;
-}
-
+/* 滚动条 */
 .theme-warm-dark ::-webkit-scrollbar {
-  background: #282320;
+  background: #25211D;
 }
 
 .theme-warm-dark ::-webkit-scrollbar-thumb {
-  background: #3e3730;
+  background: #4A4038;
+  border-radius: 4px;
 }
 
+/* 主题预览卡 */
 .theme-warm-dark .theme-preview-light {
   opacity: 0.4;
 }
 
 .theme-warm-dark .theme-option.active {
-  border-color: #d4a57a;
+  border-color: #D8A36A;
 }
 
+/* Hero Card */
 .theme-warm-dark .profile-hero-card {
-  background: linear-gradient(135deg, rgba(212, 165, 122, 0.08) 0%, rgba(40, 35, 32, 0.85) 100%);
-  border-color: rgba(62, 55, 48, 0.4);
+  background: linear-gradient(135deg, rgba(216, 163, 106, 0.08) 0%, #352F29 100%);
+  border-color: #4A4038;
 }
 
+/* 进度条 */
 .theme-warm-dark .profile-goal-fill,
-.theme-warm-dark .profile-weekly-fill {
-  background: linear-gradient(90deg, #d4b87a, #d4a57a);
+.theme-warm-dark .profile-weekly-fill,
+.theme-warm-dark .audio-fill {
+  background: linear-gradient(90deg, #D8A36A, #E8B47B);
 }
 
+/* 危险操作 */
 .theme-warm-dark .settings-action-row.danger {
-  border-color: rgba(196, 112, 96, 0.2);
+  border-color: rgba(216, 117, 106, 0.2);
 }
 
 .theme-warm-dark .settings-action-row.danger .settings-action-text strong {
-  color: #c47060;
+  color: #D8756A;
+}
+
+/* 反馈信息 */
+.theme-warm-dark .feedback.good {
+  color: #6a9a7a;
+}
+
+.theme-warm-dark .feedback.bad {
+  color: #D8756A;
+}
+
+/* 统计数字高亮 */
+.theme-warm-dark .profile-stat-card strong,
+.theme-warm-dark .settings-stat-item strong,
+.theme-warm-dark .stat-chip strong {
+  color: #F6EFE7;
+}
+
+/* 成就徽章 — 已获得 */
+.theme-warm-dark .achievement-badge.earned {
+  background: rgba(216, 163, 106, 0.1);
+  border-color: rgba(216, 163, 106, 0.3);
+}
+
+/* 侧边栏 */
+.theme-warm-dark .sidebar {
+  background: #2F2924;
+  border-color: #4A4038;
+}
+
+/* 移动导航 */
+.theme-warm-dark .mobile-nav {
+  background: #2F2924;
+  border-color: #4A4038;
+}
+
+/* 对话框 */
+.theme-warm-dark .dialog-backdrop {
+  background: rgba(37, 33, 29, 0.85);
+}
+
+.theme-warm-dark .dialog {
+  background: #352F29;
+  border-color: #4A4038;
 }
   --surface-soft: #282520;
   --surface-strong: #33302a;
@@ -4381,12 +4474,12 @@ select:focus {
 .theme-preview-light span:nth-child(3) { background: #e8e0d4; }
 
 .theme-preview-dark {
-  background: #1e1a16;
+  background: #25211D;
 }
 
-.theme-preview-dark span:nth-child(1) { background: #282320; }
-.theme-preview-dark span:nth-child(2) { background: #332d28; }
-.theme-preview-dark span:nth-child(3) { background: #3e3730; }
+.theme-preview-dark span:nth-child(1) { background: #2F2924; }
+.theme-preview-dark span:nth-child(2) { background: #352F29; }
+.theme-preview-dark span:nth-child(3) { background: #4A4038; }
 
 .theme-preview-latte {
   background: #f5f0e8;
