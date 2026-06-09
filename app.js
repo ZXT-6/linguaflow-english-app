@@ -4830,6 +4830,11 @@ function renderListening() {
         )
         .join("")
     : illustratedEmptyState("暂无听力素材，请先在后台或词库中添加练习内容。", "empty-notebook.svg", "笔记本线稿插画");
+
+  const progress = Math.round(((state.listeningIndex % sentences.length) / sentences.length) * 100);
+  const fill = $("#listeningProgressFill");
+  if (fill) fill.style.width = `${progress}%`;
+  setTextIfPresent("#listeningProgressLabel", `${progress}%`);
 }
 
 function checkDictation() {

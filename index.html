@@ -657,10 +657,12 @@
                 <button class="secondary-button compact-button" id="playListeningButton" type="button">播放</button>
               </div>
               <p class="listening-text" id="listeningPrompt">Every small step builds a strong habit.</p>
-              <div class="audio-study-bar" aria-hidden="true">
-                <span></span>
-                <div><i></i></div>
-                <em>短句听写</em>
+              <div class="audio-study-bar" id="listeningProgressBar">
+                <span class="audio-icon">♪</span>
+                <div class="audio-track">
+                  <i class="audio-fill" id="listeningProgressFill"></i>
+                </div>
+                <em id="listeningProgressLabel">0%</em>
               </div>
               <label class="input-label" for="dictationInput">听到的句子</label>
               <textarea id="dictationInput" rows="4" placeholder="输入英文句子"></textarea>

@@ -2843,29 +2843,60 @@ select:focus {
   margin: 16px 0;
   padding: 12px;
   border-radius: 999px;
-  background: #f5ecdf;
+  background: rgba(255, 253, 248, 0.7);
+  border: 1px solid rgba(217, 208, 194, 0.4);
+  box-shadow:
+    0 4px 12px rgba(40, 30, 20, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-.audio-study-bar > span {
+.audio-study-bar .audio-icon {
   width: 36px;
   height: 36px;
+  display: grid;
+  place-items: center;
   border-radius: 50%;
-  background: var(--ink);
+  background: linear-gradient(135deg, var(--coffee) 0%, var(--scene) 100%);
+  color: #faf8f4;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
-.audio-study-bar > div {
+.audio-study-bar .audio-track {
   height: 8px;
   overflow: hidden;
   border-radius: 999px;
-  background: #e6d8c8;
+  background: rgba(217, 208, 194, 0.5);
+  position: relative;
 }
 
-.audio-study-bar i {
+.audio-study-bar .audio-fill {
   display: block;
-  width: 42%;
+  width: 0%;
   height: 100%;
   border-radius: inherit;
-  background: var(--cafe);
+  background: linear-gradient(90deg, var(--gold), var(--cafe));
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.audio-study-bar .audio-fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: audioShimmer 2s ease-in-out infinite;
+}
+
+@keyframes audioShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 .audio-study-bar em {
@@ -2873,6 +2904,8 @@ select:focus {
   font-style: normal;
   font-size: 12px;
   font-weight: 800;
+  min-width: 32px;
+  text-align: right;
 }
 
 .profile-section-group {
