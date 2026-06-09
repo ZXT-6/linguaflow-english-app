@@ -30,7 +30,17 @@ import {
   getAllBooks,
 } from "./supabase-client.js";
 
-const STORAGE_KEY = "linguaflow-state-v1";
+const STORAGE_KEY_BASE = "linguaflow-state-v1";
+function getStorageKey() {
+  const userId = state?.authUser?.id;
+  if (userId && !String(userId).startsWith("local-")) {
+    return `${STORAGE_KEY_BASE}-user-${userId}`;
+  }
+  if (userId && String(userId).startsWith("local-")) {
+    return `${STORAGE_KEY_BASE}-user-${userId}`;
+  }
+  return STORAGE_KEY_BASE;
+}
 const LIBRARY_PAGE_SIZE = 20;
 const USE_SUPABASE = Boolean(
   typeof window !== "undefined" &&
@@ -3443,7 +3453,7 @@ function findRegisteredUser(identifier) {
 
 function loadState() {
   try {
-    return hydrateState({ ...defaultState, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") });
+    return hydrateState({ ...defaultState, ...JSON.parse(localStorage.getItem(getStorageKey()) || "{}") });
   } catch {
     return hydrateState({ ...defaultState });
   }
@@ -3476,7 +3486,7 @@ function saveState({ touch = true, remote = true } = {}) {
   if (touch) {
     state = touchLocalState(state);
   }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  localStorage.setItem(getStorageKey(), JSON.stringify(state));
   if (remote && USE_SUPABASE && isAuthenticated()) {
     queueSupabaseSave();
   } else if (remote && USE_NETLIFY_BACKEND && isAuthenticated() && state.authToken) {
@@ -5419,7 +5429,8 @@ async function submitAuth(event) {
       role: account.role,
       createdAt: account.createdAt,
     });
-    saveState();
+    // 加载用户专属本地数据
+    loadUserLocalState();
     renderUser();
     feedback.textContent = "登录成功。";
     feedback.className = "feedback good";
@@ -5478,11 +5489,43 @@ async function onSupabaseLogin(supabaseUser) {
       email: supabaseUser.email || "",
       role: userRole,
     });
-    saveState({ touch: false, remote: false });
+    // 加载用户专属本地数据
+    loadUserLocalState();
     renderUser();
     await loadUserDataFromSupabase(supabaseUser.id);
   } catch (e) {
     console.warn("登录数据加载失败:", e.message);
+  }
+}
+
+function loadUserLocalState() {
+  const key = getStorageKey();
+  const guestKey = STORAGE_KEY_BASE;
+  try {
+    // 从 guest key 获取 registeredUsers（共享）
+    const guestData = JSON.parse(localStorage.getItem(guestKey) || "{}");
+    const guestRegisteredUsers = guestData.registeredUsers || [];
+
+    // 加载用户专属数据
+    const saved = JSON.parse(localStorage.getItem(key) || "{}");
+    const mergedRegisteredUsers = [
+      ...new Set([...(saved.registeredUsers || []), ...guestRegisteredUsers].map(u => JSON.stringify(u)))
+    ].map(s => JSON.parse(s));
+
+    if (saved && Object.keys(saved).length > 0) {
+      state = hydrateState({
+        ...defaultState,
+        ...saved,
+        registeredUsers: mergedRegisteredUsers,
+        authUser: state.authUser,
+      });
+    } else {
+      // 首次登录，保留 guest 数据中的 registeredUsers
+      state.registeredUsers = mergedRegisteredUsers;
+    }
+    saveState({ touch: false, remote: false });
+  } catch (e) {
+    console.warn("加载用户本地数据失败:", e.message);
   }
 }
 
@@ -6330,7 +6373,7 @@ function bindEvents() {
             await supabase.auth.admin.deleteUser(state.authUser.id).catch(() => {});
           } catch (e) { /* ignore */ }
         }
-        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(getStorageKey());
         state = hydrateState({ ...defaultState });
         renderAll();
         setView("auth");
