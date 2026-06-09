@@ -5434,6 +5434,7 @@ async function submitAuth(event) {
     // 加载用户专属本地数据
     loadUserLocalState();
     renderUser();
+    renderAll();
     feedback.textContent = "登录成功。";
     feedback.className = "feedback good";
     setView("dashboard");
@@ -5477,6 +5478,7 @@ async function submitAuth(event) {
   resetLearningData();
   saveState();
   renderUser();
+  renderAll();
   feedback.textContent = "注册成功，已登录。";
   feedback.className = "feedback good";
   setView("dashboard");
@@ -5648,6 +5650,8 @@ async function logout() {
   }
   state.authUser = null;
   state.authToken = null;
+  // 退出登录时清空学习数据，防止下一个用户继承
+  resetLearningData();
   saveState({ remote: false });
   // 清空登录表单
   const authForm = $("#authForm");
@@ -5657,6 +5661,7 @@ async function logout() {
   const feedback = $("#authFeedback");
   if (feedback) { feedback.textContent = ""; feedback.className = "feedback"; }
   renderUser();
+  renderAll();
   setView("auth");
 }
 
