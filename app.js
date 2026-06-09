@@ -3510,9 +3510,9 @@ function hasCheckedInToday() {
 
 function checkInToday() {
   const today = todayKey();
-  const alreadyChecked = state.checkInDates.includes(today);
+  const alreadyChecked = (state.checkInDates || []).includes(today);
   if (!alreadyChecked) {
-    state.checkInDates = [...state.checkInDates, today];
+    state.checkInDates = [...(state.checkInDates || []), today];
     state.streak = Math.max(state.streak || 1, countCurrentStreak(state.checkInDates));
     saveState();
     if (USE_SUPABASE && isAuthenticated()) {
@@ -5415,12 +5415,12 @@ function renderUser() {
   renderUserAvatar("#profileHeroAvatar", user);
   setTextIfPresent("#authButtonNickname", user ? nickname : "登录/注册");
   $("#authButton")?.classList.toggle("is-guest", !user);
-  $("#userStatusLabel").textContent = user ? "已登录" : "未登录";
-  $("#profileName").textContent = nickname;
-  $("#profileNicknameLabel").textContent = user ? `昵称：${nickname}` : "未设置昵称";
-  $("#profileAccountLabel").textContent = account;
-  $("#profileSettingStreak").textContent = `${state.streak} 天`;
-  $("#profileSettingFavorites").textContent = `${state.favoriteWords?.length || 0} 个`;
+  setTextIfPresent("#userStatusLabel", user ? "已登录" : "未登录");
+  setTextIfPresent("#profileName", nickname);
+  setTextIfPresent("#profileNicknameLabel", user ? `昵称：${nickname}` : "未设置昵称");
+  setTextIfPresent("#profileAccountLabel", account);
+  setTextIfPresent("#profileSettingStreak", `${state.streak} 天`);
+  setTextIfPresent("#profileSettingFavorites", `${state.favoriteWords?.length || 0} 个`);
   renderUserAvatar("#profileAvatar", user);
   $("#openAuthButton")?.toggleAttribute("hidden", Boolean(user));
   $("#logoutButton")?.toggleAttribute("hidden", !user);
@@ -5675,12 +5675,12 @@ function renderAdmin() {
   const pack = activePack();
   const wordList = allWords();
   const wordCount = wordList.length;
-  $("#adminLanguageMetric").textContent = pack.label;
-  $("#adminWordsMetric").textContent = wordCount;
-  $("#adminRoleLabel").textContent = isAdminUser() ? "管理员" : "无权限";
-  $("#adminAccessHint").textContent = isAdminUser()
+  setTextIfPresent("#adminLanguageMetric", pack.label);
+  setTextIfPresent("#adminWordsMetric", String(wordCount));
+  setTextIfPresent("#adminRoleLabel", isAdminUser() ? "管理员" : "无权限");
+  setTextIfPresent("#adminAccessHint", isAdminUser()
     ? "可以维护当前语言的课程词条，新增内容会进入本地状态并参与同步。"
-    : "当前账号不是管理员。测试环境中，用户名包含 admin 的账号会获得管理员角色。";
+    : "当前账号不是管理员。测试环境中，用户名包含 admin 的账号会获得管理员角色。");
   $$("#adminWordForm input, #adminWordForm textarea, #adminWordForm button").forEach((control) => {
     control.disabled = !isAdminUser();
   });
@@ -6036,9 +6036,9 @@ function bindEvents() {
   on("#settingsButton", "click", () => setView("settings"));
   on("#openAuthButton", "click", () => setView("auth"));
   on("#logoutButton", "click", logout);
-  ["#targetLanguageSelect", "#dailyGoalInput", "#autoSpeakToggle", "#reminderToggle"].forEach((selector) => {
-    $(selector).addEventListener("change", savePreferences);
-  });
+["#targetLanguageSelect", "#dailyGoalInput", "#autoSpeakToggle", "#reminderToggle"].forEach((selector) => {
+  on(selector, "change", savePreferences);
+});
   on("#adminWordForm", "submit", addAdminWord);
   on("#refreshAdminUsersButton", "click", loadAdminUsers);
   on("#generateTestDataButton", "click", generateTestData);

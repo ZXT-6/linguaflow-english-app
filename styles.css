@@ -1990,9 +1990,6 @@ select:focus {
   line-height: 1.6;
 }
 
-.danger-action {
-  background: var(--danger);
-}
 
 .mobile-nav {
   position: fixed;
@@ -3205,7 +3202,7 @@ select:focus {
 
 .auth-links .text-button {
   font-size: 13px;
-  color: var(--ink-muted);
+  color: var(--muted);
   background: none;
   border: none;
   cursor: pointer;
@@ -3230,10 +3227,15 @@ select:focus {
   background: var(--btn-bg);
   color: var(--btn-color);
   border-color: var(--btn-border);
+  transition: background 0.2s ease;
 }
 
 .danger-action:hover {
   --btn-bg: #fef2f2;
+}
+
+.danger-action:active {
+  --btn-bg: #fee2e2;
 }
 
 #resetPasswordForm {
