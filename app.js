@@ -3576,6 +3576,10 @@ function renderCheckInCalendar() {
   checkInButton.classList.toggle("checked", hasCheckedInToday());
 }
 
+let listeningProgressTimer = null;
+let listeningStartTime = null;
+let listeningEstimatedDuration = 0;
+
 function speak(text) {
   if (!("speechSynthesis" in window)) {
     return;
@@ -3585,6 +3589,61 @@ function speak(text) {
   utterance.lang = activePack().speechLang;
   utterance.rate = 0.9;
   window.speechSynthesis.speak(utterance);
+  return utterance;
+}
+
+function speakWithProgress(text) {
+  if (!("speechSynthesis" in window)) {
+    return;
+  }
+  stopListeningProgress();
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = activePack().speechLang;
+  utterance.rate = 0.9;
+
+  const charCount = text.length;
+  const estimatedMs = Math.max(1500, charCount * 180);
+  listeningEstimatedDuration = estimatedMs;
+  listeningStartTime = Date.now();
+
+  updateListeningProgress(0);
+
+  listeningProgressTimer = setInterval(() => {
+    const elapsed = Date.now() - listeningStartTime;
+    const progress = Math.min(100, Math.round((elapsed / listeningEstimatedDuration) * 100));
+    updateListeningProgress(progress);
+    if (progress >= 100) {
+      clearInterval(listeningProgressTimer);
+      listeningProgressTimer = null;
+    }
+  }, 80);
+
+  utterance.onend = () => {
+    stopListeningProgress();
+    updateListeningProgress(100);
+  };
+
+  utterance.onerror = () => {
+    stopListeningProgress();
+    updateListeningProgress(0);
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function stopListeningProgress() {
+  if (listeningProgressTimer) {
+    clearInterval(listeningProgressTimer);
+    listeningProgressTimer = null;
+  }
+}
+
+function updateListeningProgress(percent) {
+  const fill = $("#listeningProgressFill");
+  if (fill) fill.style.width = `${percent}%`;
+  setTextIfPresent("#listeningProgressLabel", percent >= 100 ? "完成" : `${percent}%`);
 }
 
 function speakCurrentCardWord() {
@@ -4831,10 +4890,8 @@ function renderListening() {
         .join("")
     : illustratedEmptyState("暂无听力素材，请先在后台或词库中添加练习内容。", "empty-notebook.svg", "笔记本线稿插画");
 
-  const progress = Math.round(((state.listeningIndex % sentences.length) / sentences.length) * 100);
-  const fill = $("#listeningProgressFill");
-  if (fill) fill.style.width = `${progress}%`;
-  setTextIfPresent("#listeningProgressLabel", `${progress}%`);
+  stopListeningProgress();
+  updateListeningProgress(0);
 }
 
 function checkDictation() {
@@ -6009,7 +6066,7 @@ function bindEvents() {
   on("#speakCardButton", "click", speakCurrentCardWord);
   on("#playListeningButton", "click", () => {
     const sentences = activeListeningSentences();
-    speak(sentences[state.listeningIndex % sentences.length]);
+    speakWithProgress(sentences[state.listeningIndex % sentences.length]);
   });
   on("#nextListeningButton", "click", () => {
     state.listeningIndex = (state.listeningIndex + 1) % activeListeningSentences().length;
