@@ -358,6 +358,18 @@ body,
   border-color: #4A4038;
 }
 
+.theme-warm-dark .nav-item:hover,
+.theme-warm-dark .nav-item.active {
+  background: #352F29;
+  color: #F6EFE7;
+}
+
+.theme-warm-dark .nav-item:hover .icon,
+.theme-warm-dark .nav-item.active .icon {
+  background: linear-gradient(135deg, #D8A36A 0%, #E8B47B 100%);
+  color: #25211D;
+}
+
 /* 移动导航 */
 .theme-warm-dark .mobile-nav {
   background: #2F2924;
@@ -2859,7 +2871,20 @@ select:focus {
   .nav-item.active,
   .nav-item:hover {
     color: var(--ink);
-    background: #fffaf2;
+    background: var(--surface-soft);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40, 30, 20, 0.08);
+  }
+
+  .nav-item:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  .nav-item.active .icon,
+  .nav-item:hover .icon {
+    background: linear-gradient(135deg, var(--coffee) 0%, var(--scene) 100%);
+    color: #faf8f4;
   }
 
   .streak-panel {
@@ -3362,7 +3387,7 @@ select:focus {
   border: 1px solid rgba(111, 78, 55, 0.12);
   border-radius: 14px;
   color: var(--muted);
-  background: #fbf6ed;
+  background: var(--surface-soft);
 }
 
 .answer-explain-card strong {
@@ -3377,7 +3402,7 @@ select:focus {
 }
 
 .confidence-button {
-  background: #fbf6ed;
+  background: var(--surface-soft);
 }
 
 .mistake-hero-panel {
@@ -3793,7 +3818,7 @@ select:focus {
   padding: 16px;
   border: 1px solid rgba(111, 78, 55, 0.12);
   border-radius: 18px;
-  background: #fbf6ed;
+  background: var(--surface-soft);
 }
 
 .spelling-practice-form input {
