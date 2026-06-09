@@ -5473,6 +5473,8 @@ async function submitAuth(event) {
     createdAt: localAccount.createdAt,
   });
   state.pendingCode = null;
+  // 注册新用户时清空学习数据，保留用户列表
+  resetLearningData();
   saveState();
   renderUser();
   feedback.textContent = "注册成功，已登录。";
@@ -6012,6 +6014,28 @@ function resetDay() {
   };
   saveState();
   renderAll();
+}
+
+function resetLearningData() {
+  state.minutes = 0;
+  state.wordsLearned = 0;
+  state.answers = [];
+  state.knownWords = [];
+  state.favoriteWords = [];
+  state.checkInDates = [];
+  state.wordProgress = {};
+  state.customWords = [];
+  state.quizScore = 0;
+  state.cardIndex = 0;
+  state.practiceIndex = 0;
+  state.libraryPage = 0;
+  state.listeningIndex = 0;
+  state.speakingIndex = 0;
+  state.notes = [];
+  state.streak = 1;
+  state.doneTasks = [];
+  state.dailyPath = createDailyPath();
+  state.sync = createSyncState();
 }
 
 function bindEvents() {
