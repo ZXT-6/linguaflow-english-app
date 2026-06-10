@@ -5608,6 +5608,7 @@ function renderUser() {
   setTextIfPresent("#profileSettingStreak", `${state.streak} 天`);
   renderUserAvatar("#profileAvatar", user);
   $("#openAuthButton")?.toggleAttribute("hidden", Boolean(user));
+  $("#openAuthButtonSettings")?.toggleAttribute("hidden", Boolean(user));
   $("#logoutButton")?.toggleAttribute("hidden", !user);
   $("#logoutButtonSettings")?.toggleAttribute("hidden", !user);
   renderProfileDashboard();
@@ -6304,6 +6305,7 @@ function bindEvents() {
   on("#authButton", "click", openAccountEntry);
   on("#settingsButton", "click", () => setView("settings"));
   on("#openAuthButton", "click", () => setView("auth"));
+  on("#openAuthButtonSettings", "click", () => setView("auth"));
   on("#logoutButton", "click", logout);
   on("#logoutButtonSettings", "click", logout);
   ["#autoSpeakToggle", "#reminderToggle"].forEach((selector) => {
