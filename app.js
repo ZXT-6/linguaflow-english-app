@@ -6308,6 +6308,10 @@ function bindEvents() {
   on("#openAuthButtonSettings", "click", () => setView("auth"));
   on("#logoutButton", "click", logout);
   on("#logoutButtonSettings", "click", logout);
+  on("#editProfileBtn", "click", () => setView("settings"));
+  on("#changePasswordBtn", "click", () => {
+    setAuthMode("reset");
+  });
   ["#autoSpeakToggle", "#reminderToggle"].forEach((selector) => {
     on(selector, "change", savePreferences);
   });
