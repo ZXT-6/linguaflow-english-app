@@ -29,7 +29,7 @@
             <img src="./assets/study-cafe-desk.svg" alt="咖啡馆学习桌面线稿插画" />
             <figcaption>
               <strong>Study Café learning flow</strong>
-              <span>单词、练习、听写、复习，每天一条清晰路径。</span>
+              <span>单词、练习、填空、复习，每天一条清晰路径。</span>
             </figcaption>
           </figure>
         </div>
@@ -127,7 +127,7 @@
             </button>
             <button class="nav-item" data-view="listening" type="button">
               <span class="icon" aria-hidden="true"><img class="nav-icon-image" src="./assets/nav-listen-a.svg" alt="" /></span>
-              <span>听写训练</span>
+              <span>填空训练</span>
             </button>
             <button class="nav-item" data-view="reading" type="button">
               <span class="icon" aria-hidden="true"><img class="nav-icon-image" src="./assets/nav-reading-a.svg" alt="" /></span>
@@ -266,10 +266,10 @@
                   <small>选择、拼写、听力</small>
                 </button>
                 <button class="dashboard-entry-card" data-view="listening" type="button">
-                  <span class="entry-icon">🎧</span>
-                  <span>Dictation</span>
-                  <strong>听写训练</strong>
-                  <small>听句子并写下来</small>
+                  <span class="entry-icon">✏️</span>
+                  <span>Fill Blanks</span>
+                  <strong>填空训练</strong>
+                  <small>英语填空、听写填空、句子听力</small>
                 </button>
                 <button class="dashboard-entry-card" data-view="mistakes" type="button">
                   <span class="entry-icon">🔄</span>
@@ -484,7 +484,7 @@
             <button class="practice-tab" type="button" data-mistake-filter="word">单词</button>
             <button class="practice-tab" type="button" data-mistake-filter="choice">选择题</button>
             <button class="practice-tab" type="button" data-mistake-filter="spelling">拼写题</button>
-            <button class="practice-tab" type="button" data-mistake-filter="listening">听力题</button>
+            <button class="practice-tab" type="button" data-mistake-filter="fillblank">填空题</button>
           </div>
           <section class="panel mistakes-panel">
             <div class="mistake-list" id="mistakeList"></div>
@@ -726,69 +726,124 @@
             </div>
           </div>
         </section>
-        <section class="view" id="listening" aria-label="听力训练">
+        <section class="view" id="listening" aria-label="填空训练">
           <div class="content-grid">
             <section class="panel listening-panel">
               <div class="section-heading">
-                <h2>听写训练</h2>
-                <button class="secondary-button compact-button" id="playListeningButton" type="button">播放</button>
+                <h2>填空训练</h2>
+                <span class="fill-stats" id="fillStats"></span>
               </div>
-              <p class="listening-text" id="listeningPrompt">Every small step builds a strong habit.</p>
-              <div class="audio-study-bar" id="listeningProgressBar">
-                <span class="audio-icon">♪</span>
-                <div class="audio-track">
-                  <i class="audio-fill" id="listeningProgressFill"></i>
+              <div class="practice-tabs" role="tablist" aria-label="训练类型">
+                <button class="practice-tab active" type="button" data-fill-mode="english">英语填空</button>
+                <button class="practice-tab" type="button" data-fill-mode="dictation">听写填空</button>
+                <button class="practice-tab" type="button" data-fill-mode="sentence">句子听力</button>
+              </div>
+              <div id="fillQuestionCard">
+                <p class="listening-text" id="fillPrompt"></p>
+                <div class="audio-study-bar" id="listeningProgressBar" style="display:none">
+                  <span class="audio-icon">♪</span>
+                  <div class="audio-track">
+                    <i class="audio-fill" id="listeningProgressFill"></i>
+                  </div>
+                  <em id="listeningProgressLabel">0%</em>
                 </div>
-                <em id="listeningProgressLabel">0%</em>
+                <button class="secondary-button compact-button" id="playListeningButton" type="button" style="display:none">播放音频</button>
+                <label class="input-label" for="fillInput">填写答案</label>
+                <input id="fillInput" type="text" placeholder="输入缺失的单词" autocomplete="off" />
+                <div class="inline-actions">
+                  <button class="primary-button" id="checkFillButton" type="button">检查答案</button>
+                  <button class="secondary-button" id="nextFillButton" type="button">下一题</button>
+                </div>
+                <p class="feedback" id="fillFeedback" aria-live="polite"></p>
               </div>
-              <label class="input-label" for="dictationInput">听到的句子</label>
-              <textarea id="dictationInput" rows="4" placeholder="输入英文句子"></textarea>
-              <div class="inline-actions">
-                <button class="primary-button" id="checkDictationButton" type="button">检查</button>
-                <button class="secondary-button" id="nextListeningButton" type="button">下一句</button>
-              </div>
-              <p class="feedback" id="dictationFeedback" aria-live="polite"></p>
             </section>
             <section class="panel">
               <div class="section-heading">
-                <h2>听力素材</h2>
-                <span>短句</span>
+                <h2>训练统计</h2>
               </div>
-              <div class="resource-list" id="listeningList"></div>
+              <div class="mistake-stats-grid" id="fillStatsGrid"></div>
             </section>
           </div>
         </section>
 
-        <section class="view" id="reading" aria-label="阅读理解">
-          <div class="content-grid">
-            <article class="panel reading-card">
+        <section class="view" id="reading" aria-label="阅读训练">
+          <div class="reading-layout">
+
+            <!-- 文章库视图 -->
+            <section class="reading-library-view" id="readingLibraryView">
               <div class="section-heading">
-                <h2>短文阅读</h2>
-                <span>3 分钟</span>
+                <h2>文章库</h2>
+                <span id="readingArticleCount">8 个主题</span>
               </div>
-              <h3 id="readingTitle">Building an English Habit</h3>
-              <p id="readingBody">
-                Learning English becomes easier when practice is small and regular. Read one short
-                text, listen to one clear sentence, and speak for one minute every day. Progress
-                grows from repeatable actions.
-              </p>
-              <div class="reading-question">
-                <strong id="readingQuestion">What helps English learning become easier?</strong>
-                <div class="choice-list" id="readingChoices"></div>
-                <p class="feedback" id="readingFeedback" aria-live="polite"></p>
-              </div>
-            </article>
-            <section class="panel">
-              <div class="section-heading">
-                <h2>生词摘录</h2>
-                <span>自动保存</span>
-              </div>
-              <div class="note-form">
-                <input id="noteInput" type="text" placeholder="输入生词或短语" />
-                <button class="primary-button" id="addNoteButton" type="button">添加</button>
-              </div>
-              <div class="note-list" id="noteList"></div>
+              <div class="reading-topic-tabs" id="readingTopicTabs"></div>
+              <div class="reading-article-list" id="readingArticleList"></div>
             </section>
+
+            <!-- 阅读视图 -->
+            <section class="reading-view-view" id="readingViewView" hidden>
+              <div class="reading-meta-bar">
+                <button class="secondary-button compact-button" id="readingBackBtn" type="button">← 返回文章库</button>
+                <div class="reading-meta-info">
+                  <span class="reading-level-badge" id="readingLevelBadge">A1</span>
+                  <span id="readingWordCount">80词</span>
+                  <span id="readingTime">预计3分钟</span>
+                  <span class="reading-topic-tag" id="readingTopicTag">学习习惯</span>
+                </div>
+              </div>
+              <div class="reading-progress-bar">
+                <div class="reading-progress-fill" id="readingProgressFill"></div>
+                <span class="reading-progress-text" id="readingProgressText">0%</span>
+              </div>
+              <article class="reading-content-card">
+                <h3 id="readingTitle2"></h3>
+                <div class="reading-body" id="readingBody2"></div>
+              </article>
+              <button class="primary-button" id="readingFinishBtn" type="button" disabled>完成阅读，开始答题</button>
+            </section>
+
+            <!-- 测验视图 -->
+            <section class="reading-quiz-view" id="readingQuizView" hidden>
+              <div class="reading-quiz-header">
+                <button class="secondary-button compact-button" id="readingQuizBackBtn" type="button">← 返回文章</button>
+                <span class="reading-quiz-progress" id="readingQuizProgress">1/4</span>
+              </div>
+              <div class="reading-quiz-card" id="readingQuizCard"></div>
+              <button class="primary-button" id="readingQuizNextBtn" type="button" hidden>下一题</button>
+            </section>
+
+            <!-- 完成视图 -->
+            <section class="reading-complete-view" id="readingCompleteView" hidden>
+              <div class="reading-complete-card">
+                <div class="reading-complete-icon">🎉</div>
+                <h2>阅读完成！</h2>
+                <div class="reading-complete-stats">
+                  <div><span>⏱</span><strong id="readingCompleteTime">4分钟</strong><small>阅读时长</small></div>
+                  <div><span>🎯</span><strong id="readingCompleteAccuracy">75%</strong><small>正确率</small></div>
+                  <div><span>📖</span><strong id="readingCompleteWords">5个</strong><small>新增生词</small></div>
+                  <div><span>⭐</span><strong id="readingCompleteScore">10</strong><small>阅读积分</small></div>
+                </div>
+                <div class="reading-complete-actions">
+                  <button class="primary-button" id="readingNextArticleBtn" type="button">下一篇</button>
+                  <button class="secondary-button" id="readingRetryBtn" type="button">重新阅读</button>
+                  <button class="secondary-button" id="readingCollectBtn" type="button">收藏文章</button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 单词弹窗 -->
+            <div class="reading-word-popup" id="readingWordPopup" hidden>
+              <div class="reading-word-popup-content">
+                <strong id="readingWordPopupWord"></strong>
+                <span id="readingWordPopupPhonetic" class="reading-word-phonetic"></span>
+                <p id="readingWordPopupMeaning"></p>
+                <div class="reading-word-popup-actions">
+                  <button class="secondary-button compact-button" id="readingWordSpeakBtn" type="button">🔊 发音</button>
+                  <button class="secondary-button compact-button" id="readingWordFavBtn" type="button">☆ 收藏</button>
+                </div>
+                <button class="text-button" id="readingWordPopupClose" type="button">关闭</button>
+              </div>
+            </div>
+
           </div>
         </section>
 
@@ -839,6 +894,7 @@
                   <button class="secondary-button compact-button" id="editProfileBtn" type="button">编辑资料</button>
                   <button class="secondary-button compact-button" id="changePasswordBtn" type="button">修改密码</button>
                 </div>
+                <p class="feedback" id="settingsFeedback" aria-live="polite"></p>
                 <div class="inline-actions">
                   <button class="primary-button" id="openAuthButtonSettings" type="button">登录 / 注册</button>
                   <button class="secondary-button" id="logoutButtonSettings" type="button" hidden>退出登录</button>
@@ -958,7 +1014,7 @@
                   <label class="pref-label">学习内容偏好</label>
                   <div class="chip-group" data-pref="contentPrefs">
                     <button class="chip-btn active" data-value="vocab" type="button">📖 单词记忆</button>
-                    <button class="chip-btn active" data-value="listening" type="button">🎧 听力训练</button>
+                    <button class="chip-btn active" data-value="listening" type="button">✏️ 填空训练</button>
                     <button class="chip-btn active" data-value="reading" type="button">📰 阅读训练</button>
                     <button class="chip-btn active" data-value="speaking" type="button">🎤 口语跟读</button>
                     <button class="chip-btn active" data-value="grammar" type="button">📝 语法学习</button>

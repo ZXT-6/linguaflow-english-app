@@ -3035,6 +3035,45 @@ const listeningSentences = [
   "I can understand short conversations in English.",
 ];
 
+const fillBlankExercises = {
+  english: [
+    { sentence: "I usually ____ up at seven o'clock.", answer: "get", meaning: "起床" },
+    { sentence: "She is ____ at English than me.", answer: "better", meaning: "更好的" },
+    { sentence: "We need to ____ our homework before dinner.", answer: "finish", meaning: "完成" },
+    { sentence: "He ____ to school by bus every day.", answer: "goes", meaning: "去" },
+    { sentence: "They have ____ visited the Great Wall.", answer: "already", meaning: "已经" },
+    { sentence: "Would you like some ____ or tea?", answer: "coffee", meaning: "咖啡" },
+    { sentence: "The weather is getting ____ and colder.", answer: "colder", meaning: "更冷的" },
+    { sentence: "I can't find my keys ____.", answer: "anywhere", meaning: "任何地方" },
+    { sentence: "She plays the piano very ____.", answer: "well", meaning: "好地" },
+    { sentence: "We should take ____ of this opportunity.", answer: "advantage", meaning: "利用" },
+  ],
+  dictation: [
+    { sentence: "I want to drink a cup of coffee.", blank: "coffee", meaning: "咖啡" },
+    { sentence: "The sun rises in the east.", blank: "east", meaning: "东方" },
+    { sentence: "She is reading an interesting book.", blank: "interesting", meaning: "有趣的" },
+    { sentence: "We have English class on Monday.", blank: "Monday", meaning: "星期一" },
+    { sentence: "He is good at playing basketball.", blank: "basketball", meaning: "篮球" },
+    { sentence: "My mother cooks dinner every evening.", blank: "evening", meaning: "晚上" },
+    { sentence: "The cat is sleeping under the table.", blank: "under", meaning: "在...下面" },
+    { sentence: "I need to buy some vegetables.", blank: "vegetables", meaning: "蔬菜" },
+    { sentence: "They are going to the park tomorrow.", blank: "tomorrow", meaning: "明天" },
+    { sentence: "Please close the door when you leave.", blank: "close", meaning: "关闭" },
+  ],
+  sentence: [
+    { sentence: "Nice to meet you.", meaning: "很高兴见到你。" },
+    { sentence: "How are you doing today?", meaning: "你今天怎么样？" },
+    { sentence: "I love learning new languages.", meaning: "我喜欢学习新语言。" },
+    { sentence: "The early bird catches the worm.", meaning: "早起的鸟儿有虫吃。" },
+    { sentence: "Practice makes perfect.", meaning: "熟能生巧。" },
+    { sentence: "Where is the nearest hospital?", meaning: "最近的医院在哪里？" },
+    { sentence: "Could you please speak more slowly?", meaning: "你能说慢一点吗？" },
+    { sentence: "I have been studying English for three years.", meaning: "我已经学了三年英语了。" },
+    { sentence: "What time does the movie start?", meaning: "电影几点开始？" },
+    { sentence: "Thank you for your help.", meaning: "谢谢你的帮助。" },
+  ],
+};
+
 const speakingPhrases = [
   "Could you say that again more slowly?",
   "I am still learning, but I can try.",
@@ -3060,7 +3099,7 @@ const languagePacks = {
 
 const tasks = [
   { id: "vocab", title: "背 20 个核心单词", meta: "单词卡 + 选择题", minutes: 10 },
-  { id: "listen", title: "完成 4 句听写", meta: "短句听力", minutes: 8 },
+  { id: "listen", title: "完成 4 道填空", meta: "填空训练", minutes: 8 },
   { id: "read", title: "读 1 篇短文", meta: "阅读理解", minutes: 7 },
   { id: "speak", title: "跟读 4 个场景句", meta: "口语表达", minutes: 5 },
 ];
@@ -3108,6 +3147,11 @@ const defaultState = {
   speakingIndex: 0,
   notes: [],
   streak: 1,
+  fillMode: "english",
+  fillIndex: 0,
+  fillCorrect: 0,
+  fillTotal: 0,
+  fillStreak: 0,
 };
 
 let state = loadState();
@@ -3721,7 +3765,7 @@ function setView(viewId) {
     profile: "我的",
     favorites: "收藏夹",
     library: "\u8bcd\u5e93",
-    listening: "\u542c\u529b\u8bad\u7ec3",
+    listening: "填空训练",
     reading: "\u9605\u8bfb\u7406\u89e3",
     speaking: "\u53e3\u8bed\u8bad\u7ec3",
     auth: "\u767b\u5f55\u6ce8\u518c",
@@ -4610,7 +4654,7 @@ function renderTimeline() {
     return;
   }
   const today = new Date().toISOString().slice(0, 10);
-  const labels = { 0: "单词学习", 1: "练习测试", 2: "听写训练", 3: "阅读理解", 4: "口语跟读" };
+  const labels = { 0: "单词学习", 1: "练习测试", 2: "填空训练", 3: "阅读理解", 4: "口语跟读" };
   container.innerHTML = checkins.map((date, i) => {
     const label = date === today ? "今天" : new Date(date + "T00:00:00").toLocaleDateString("zh-CN", { month: "long", day: "numeric" });
     const activity = labels[i % 5] || "学习";
@@ -4955,71 +4999,349 @@ function markKnown() {
 }
 
 function renderListening() {
-  const sentences = activeListeningSentences();
-  const sentence = sentences[state.listeningIndex % sentences.length];
-  $("#listeningPrompt").textContent = sentence;
-  $("#dictationInput").value = "";
-  $("#dictationFeedback").textContent = "";
-  $("#dictationFeedback").className = "feedback";
-  $("#listeningList").innerHTML = sentences.length
-    ? sentences
-        .map(
-          (item, index) => `
-        <button class="resource-item" data-listening-index="${index}" type="button">
-          <strong>句子 ${index + 1}</strong>
-          <span>${item}</span>
-        </button>
-      `,
-        )
-        .join("")
-    : illustratedEmptyState("暂无听力素材，请先在后台或词库中添加练习内容。", "empty-notebook.svg", "笔记本线稿插画");
-
-  stopListeningProgress();
-  updateListeningProgress(0);
+  renderFillBlank();
 }
 
-function checkDictation() {
-  const sentences = activeListeningSentences();
-  const expected = sentences[state.listeningIndex % sentences.length];
-  const actual = $("#dictationInput").value.trim();
+function renderFillBlank() {
+  const mode = state.fillMode || "english";
+  const exercises = fillBlankExercises[mode] || fillBlankExercises.english;
+  const index = state.fillIndex % exercises.length;
+  const exercise = exercises[index];
+
+  $$("[data-fill-mode]").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.fillMode === mode);
+  });
+
+  if (mode === "english") {
+    $("#fillPrompt").textContent = exercise.sentence;
+    $("#fillInput").placeholder = "输入缺失的单词";
+    $("#fillInput").style.display = "";
+    $("#playListeningButton").style.display = "none";
+    $("#listeningProgressBar").style.display = "none";
+  } else if (mode === "dictation") {
+    const displaySentence = exercise.sentence.replace(exercise.blank, "____");
+    $("#fillPrompt").textContent = displaySentence;
+    $("#fillInput").placeholder = "听音频后填写空缺单词";
+    $("#fillInput").style.display = "";
+    $("#playListeningButton").style.display = "";
+    $("#listeningProgressBar").style.display = "";
+  } else if (mode === "sentence") {
+    $("#fillPrompt").textContent = "听完整句子后输入你听到的内容";
+    $("#fillInput").placeholder = "输入听到的完整句子";
+    $("#fillInput").style.display = "";
+    $("#playListeningButton").style.display = "";
+    $("#listeningProgressBar").style.display = "";
+  }
+
+  $("#fillInput").value = "";
+  $("#fillFeedback").textContent = "";
+  $("#fillFeedback").className = "feedback";
+  stopListeningProgress();
+  updateListeningProgress(0);
+  renderFillStats();
+}
+
+function checkFillBlank() {
+  const mode = state.fillMode || "english";
+  const exercises = fillBlankExercises[mode] || fillBlankExercises.english;
+  const index = state.fillIndex % exercises.length;
+  const exercise = exercises[index];
+  const userAnswer = $("#fillInput").value.trim();
+
+  if (!userAnswer) {
+    $("#fillFeedback").textContent = "请输入答案";
+    $("#fillFeedback").className = "feedback bad";
+    return;
+  }
+
   const normalized = (text) =>
-    text
-      .toLocaleLowerCase()
+    text.toLocaleLowerCase()
       .replace(/[^\p{Letter}\p{Number}\s]/gu, "")
       .replace(/\s+/g, " ")
       .trim();
-  const isCorrect = normalized(actual) === normalized(expected);
-  state.answers = [...state.answers.slice(-9), isCorrect];
-  const knownWords = new Map(allWords().map((word) => [normalizeWord(word.word), word.word]));
-  tokenizeEnglish(expected).forEach((token) => {
-    const word = knownWords.get(token);
-    if (word) {
-      recordWordStudy(word, isCorrect);
-    }
-  });
-  if (isCorrect) {
-    state.minutes += 2;
+
+  let isCorrect = false;
+  let correctAnswer = "";
+  let meaning = "";
+
+  if (mode === "english") {
+    correctAnswer = exercise.answer;
+    meaning = exercise.meaning;
+    isCorrect = normalized(userAnswer) === normalized(correctAnswer);
+  } else if (mode === "dictation") {
+    correctAnswer = exercise.blank;
+    meaning = exercise.meaning;
+    isCorrect = normalized(userAnswer) === normalized(correctAnswer);
+  } else if (mode === "sentence") {
+    correctAnswer = exercise.sentence;
+    meaning = exercise.meaning;
+    isCorrect = normalized(userAnswer) === normalized(correctAnswer);
   }
-  $("#dictationFeedback").textContent = isCorrect ? "听写正确。" : `参考句：${expected}`;
-  $("#dictationFeedback").className = `feedback ${isCorrect ? "good" : "bad"}`;
+
+  state.fillTotal = (state.fillTotal || 0) + 1;
+  if (isCorrect) {
+    state.fillCorrect = (state.fillCorrect || 0) + 1;
+    state.fillStreak = (state.fillStreak || 0) + 1;
+    state.minutes += 1;
+  } else {
+    state.fillStreak = 0;
+    addPracticeMistake({
+      type: "fillblank",
+      word: { word: correctAnswer, meaning: meaning },
+      correct: correctAnswer,
+      wrong: userAnswer,
+    });
+  }
+
+  state.answers = [...state.answers.slice(-9), isCorrect];
+
+  if (isCorrect) {
+    $("#fillFeedback").textContent = "回答正确！";
+    $("#fillFeedback").className = "feedback good";
+  } else {
+    const feedbackText = mode === "sentence"
+      ? `正确答案：${correctAnswer}\n中文释义：${meaning}`
+      : `正确答案：${correctAnswer}（${meaning}）`;
+    $("#fillFeedback").textContent = feedbackText;
+    $("#fillFeedback").className = "feedback bad";
+  }
+
   saveState();
   if (isCorrect) {
-    recordDailyPathStep("dictation", 1);
+    recordDailyPathStep("fillblank", 1);
   }
   updateMetrics();
+  renderFillStats();
   renderReviewQueue();
 }
 
+function nextFillBlank() {
+  const mode = state.fillMode || "english";
+  const exercises = fillBlankExercises[mode] || fillBlankExercises.english;
+  state.fillIndex = (state.fillIndex + 1) % exercises.length;
+  saveState();
+  renderFillBlank();
+}
+
+function switchFillMode(mode) {
+  state.fillMode = mode;
+  state.fillIndex = 0;
+  saveState();
+  renderFillBlank();
+}
+
+function renderFillStats() {
+  const total = state.fillTotal || 0;
+  const correct = state.fillCorrect || 0;
+  const streak = state.fillStreak || 0;
+  const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+  const statsHtml = `
+    <article><strong>${accuracy}%</strong><span>正确率</span></article>
+    <article><strong>${total}</strong><span>已完成</span></article>
+    <article><strong>${streak}</strong><span>连续正确</span></article>
+  `;
+  const statsGrid = $("#fillStatsGrid");
+  if (statsGrid) {
+    statsGrid.innerHTML = statsHtml;
+  }
+
+  const statsLabel = $("#fillStats");
+  if (statsLabel) {
+    statsLabel.textContent = `${accuracy}% · ${total}题`;
+  }
+}
+
+function checkDictation() {
+  checkFillBlank();
+}
+
+let readingArticles = [];
+let currentReadingIndex = 0;
+let readingStartTime = 0;
+let readingProgress = 0;
+let readingQuizIndex = 0;
+let readingQuizAnswers = [];
+let readingReadingWords = new Set();
+
+async function loadReadingArticles() {
+  try {
+    const mod = await import("./data/reading-articles.mjs");
+    readingArticles = mod.default || [];
+  } catch (e) {
+    console.warn("加载阅读文章失败:", e.message);
+    readingArticles = [];
+  }
+}
+
+function readingWordCount(text) {
+  return text.trim().split(/\s+/).length;
+}
+
+function readingEstimateTime(wordCount) {
+  return Math.max(1, Math.round(wordCount / 40));
+}
+
 function renderReading() {
-  const pack = activePack();
-  $("#readingTitle").textContent = pack.readingTitle;
-  $("#readingBody").textContent = pack.readingBody;
-  $("#readingQuestion").textContent = pack.readingQuestion;
-  const options = pack.readingOptions;
-  $("#readingChoices").innerHTML = options
-    .map((option) => `<button class="choice-button" data-reading="${option}" type="button">${option}</button>`)
-    .join("");
-  renderNotes();
+  if (!readingArticles.length) {
+    loadReadingArticles().then(() => renderReading());
+    return;
+  }
+  showReadingLibrary();
+}
+
+function showReadingLibrary() {
+  const lv = $("#readingLibraryView");
+  const rv = $("#readingViewView");
+  const qv = $("#readingQuizView");
+  const cv = $("#readingCompleteView");
+  if (lv) lv.hidden = false;
+  if (rv) rv.hidden = true;
+  if (qv) qv.hidden = true;
+  if (cv) cv.hidden = true;
+
+  setTextIfPresent("#readingArticleCount", `${readingArticles.length} 篇文章`);
+  const topics = [...new Set(readingArticles.map((a) => a.topic))];
+  const tabs = $("#readingTopicTabs");
+  if (tabs) {
+    tabs.innerHTML = `<button class="reading-topic-tab active" data-topic="all" type="button">全部</button>` +
+      topics.map((t) => `<button class="reading-topic-tab" data-topic="${t}" type="button">${t}</button>`).join("");
+    tabs.onclick = (e) => {
+      const btn = e.target.closest(".reading-topic-tab");
+      if (!btn) return;
+      tabs.querySelectorAll(".reading-topic-tab").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderArticleList(btn.dataset.topic);
+    };
+  }
+  renderArticleList("all");
+}
+
+function renderArticleList(topic) {
+  const list = $("#readingArticleList");
+  if (!list) return;
+  const filtered = topic === "all" ? readingArticles : readingArticles.filter((a) => a.topic === topic);
+  list.innerHTML = filtered.length
+    ? filtered.map((a) => `
+      <article class="reading-article-card" data-article-id="${a.id}" type="button">
+        <div class="reading-article-card-header">
+          <span class="reading-level-badge">${a.level}</span>
+          <span class="reading-article-meta">${a.wordCount}词 · ${a.estimatedTime}分钟</span>
+        </div>
+        <h3>${escapeHtml(a.title)}</h3>
+        <span class="reading-topic-tag">${a.topic}</span>
+      </article>
+    `).join("")
+    : illustratedEmptyState("暂无该主题文章。");
+  list.onclick = (e) => {
+    const card = e.target.closest(".reading-article-card");
+    if (!card) return;
+    const id = card.dataset.articleId;
+    const article = readingArticles.find((a) => a.id === id);
+    if (article) startReading(article);
+  };
+}
+
+function startReading(article) {
+  currentReadingIndex = readingArticles.indexOf(article);
+  readingStartTime = Date.now();
+  readingProgress = 0;
+  readingQuizIndex = 0;
+  readingQuizAnswers = [];
+  readingReadingWords = new Set();
+
+  const lv = $("#readingLibraryView");
+  const rv = $("#readingViewView");
+  const qv = $("#readingQuizView");
+  const cv = $("#readingCompleteView");
+  if (lv) lv.hidden = true;
+  if (rv) rv.hidden = false;
+  if (qv) qv.hidden = true;
+  if (cv) cv.hidden = true;
+
+  setTextIfPresent("#readingLevelBadge", article.level);
+  setTextIfPresent("#readingWordCount", `${article.wordCount}词`);
+  setTextIfPresent("#readingTime", `预计${article.estimatedTime}分钟`);
+  setTextIfPresent("#readingTopicTag", article.topic);
+  setTextIfPresent("#readingTitle2", article.title);
+
+  const body = $("#readingBody2");
+  if (body) {
+    body.innerHTML = article.paragraphs.map((p) => {
+      return `<p>${p.split(" ").map((w) => `<span class="reading-word" data-word="${escapeHtml(w.toLowerCase().replace(/[^a-z]/g, ""))}">${escapeHtml(w)}</span>`).join(" ")}</p>`;
+    }).join("");
+    body.onclick = (e) => {
+      const word = e.target.closest(".reading-word");
+      if (!word) return;
+      showReadingWordPopup(word.dataset.word, word.textContent, article.vocabulary);
+    };
+  }
+
+  readingProgress = 0;
+  updateReadingProgress();
+  const finishBtn = $("#readingFinishBtn");
+  if (finishBtn) finishBtn.disabled = false;
+}
+
+function updateReadingProgress() {
+  const fill = $("#readingProgressFill");
+  const text = $("#readingProgressText");
+  if (fill) fill.style.width = `${readingProgress}%`;
+  if (text) text.textContent = `${readingProgress}%`;
+}
+
+function showReadingWordPopup(word, display, vocabulary) {
+  const popup = $("#readingWordPopup");
+  if (!popup) return;
+  const vEntry = vocabulary.find((v) => v.word.toLowerCase() === word.toLowerCase());
+  setTextIfPresent("#readingWordPopupWord", display);
+  setTextIfPresent("#readingWordPopupPhonetic", vEntry ? vEntry.phonetic : "");
+  setTextIfPresent("#readingWordPopupMeaning", vEntry ? vEntry.meaning : "未找到释义");
+  popup.hidden = false;
+  readingReadingWords.add(word);
+}
+
+document.addEventListener("click", (e) => {
+  if (e.target.id === "readingWordPopupClose" || e.target.closest("#readingWordPopupClose")) {
+    const popup = $("#readingWordPopup");
+    if (popup) popup.hidden = true;
+  }
+  if (e.target.id === "readingWordSpeakBtn") {
+    const w = $("#readingWordPopupWord")?.textContent;
+    if (w) speak(w);
+  }
+  if (e.target.id === "readingWordFavBtn") {
+    const w = $("#readingWordPopupWord")?.textContent;
+    if (w) toggleFavoriteWord(w);
+  }
+  if (e.target.id === "readingBackBtn") showReadingLibrary();
+  if (e.target.id === "readingFinishBtn") finishReading();
+  if (e.target.id === "readingNextArticleBtn") goNextArticle();
+  if (e.target.id === "readingRetryBtn") { if (readingArticles[currentReadingIndex]) startReading(readingArticles[currentReadingIndex]); }
+  if (e.target.id === "readingCollectBtn") { for (const w of readingReadingWords) { toggleFavoriteWord(w); } alert("已收藏文章中的生词！"); }
+});
+
+function finishReading() {
+  readingProgress = 100;
+  updateReadingProgress();
+  const elapsed = Math.round((Date.now() - readingStartTime) / 60000);
+  const accuracy = readingQuizAnswers.length ? Math.round(readingQuizAnswers.filter(Boolean).length / readingQuizAnswers.length * 100) : 75;
+  setTextIfPresent("#readingCompleteTime", `${Math.max(1, elapsed)}分钟`);
+  setTextIfPresent("#readingCompleteAccuracy", `${accuracy}%`);
+  setTextIfPresent("#readingCompleteWords", `${readingReadingWords.size}个`);
+  setTextIfPresent("#readingCompleteScore", `${10 + readingReadingWords.size * 2}`);
+
+  const lv = $("#readingLibraryView");
+  const rv = $("#readingViewView");
+  const cv = $("#readingCompleteView");
+  if (lv) lv.hidden = true;
+  if (rv) rv.hidden = true;
+  if (cv) cv.hidden = false;
+}
+
+function goNextArticle() {
+  const next = (currentReadingIndex + 1) % readingArticles.length;
+  startReading(readingArticles[next]);
 }
 
 function renderNotes() {
@@ -6272,15 +6594,18 @@ function bindEvents() {
   on("#cardWord", "keydown", (event) => speakOnKeyboard(event, speakCurrentCardWord));
   on("#speakCardButton", "click", speakCurrentCardWord);
   on("#playListeningButton", "click", () => {
-    const sentences = activeListeningSentences();
-    speakWithProgress(sentences[state.listeningIndex % sentences.length]);
+    const mode = state.fillMode || "english";
+    const exercises = fillBlankExercises[mode] || fillBlankExercises.english;
+    const index = state.fillIndex % exercises.length;
+    const exercise = exercises[index];
+    speakWithProgress(exercise.sentence);
   });
-  on("#nextListeningButton", "click", () => {
-    state.listeningIndex = (state.listeningIndex + 1) % activeListeningSentences().length;
-    saveState();
-    renderListening();
+  on("#nextFillButton", "click", nextFillBlank);
+  on("#checkFillButton", "click", checkFillBlank);
+  on("#checkDictationButton", "click", checkFillBlank);
+  $$("[data-fill-mode]").forEach((button) => {
+    button.addEventListener("click", () => switchFillMode(button.dataset.fillMode));
   });
-  on("#checkDictationButton", "click", checkDictation);
   on("#librarySearchInput", "input", () => {
     state.libraryPage = 0;
     renderLibrary();
