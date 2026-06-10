@@ -6308,9 +6308,24 @@ function bindEvents() {
   on("#openAuthButtonSettings", "click", () => setView("auth"));
   on("#logoutButton", "click", logout);
   on("#logoutButtonSettings", "click", logout);
-  on("#editProfileBtn", "click", () => setView("settings"));
+  on("#editProfileBtn", "click", () => {
+    const fb = $("#settingsFeedback");
+    if (fb) { fb.textContent = "昵称修改功能即将上线。"; fb.className = "feedback good"; }
+  });
   on("#changePasswordBtn", "click", () => {
-    setAuthMode("reset");
+    const fb = $("#settingsFeedback");
+    if (fb) {
+      if (USE_SUPABASE) {
+        fb.textContent = "正在发送密码重置邮件...";
+        fb.className = "feedback";
+        getSupabase().then((s) => s.auth.resetPasswordForEmail(state.authUser?.email || ""))
+          .then(() => { fb.textContent = "密码重置链接已发送到你的邮箱。"; fb.className = "feedback good"; })
+          .catch(() => { fb.textContent = "发送失败，请稍后重试。"; fb.className = "feedback bad"; });
+      } else {
+        fb.textContent = "本地模式下，请直接在设置中修改密码。";
+        fb.className = "feedback";
+      }
+    }
   });
   ["#autoSpeakToggle", "#reminderToggle"].forEach((selector) => {
     on(selector, "change", savePreferences);
